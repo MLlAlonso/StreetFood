@@ -1,0 +1,30 @@
+{
+  "name": "streetfood",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MLlAlonso/StreetFood.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MLlAlonso/StreetFood/issues"
+  },
+  "homepage": "https://github.com/MLlAlonso/StreetFood#readme",
+  "devDependencies": {
+    "turbo": "^2.9.14"
+  }
+}
