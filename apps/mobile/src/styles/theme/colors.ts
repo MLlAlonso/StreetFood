@@ -10,7 +10,7 @@ export const colors = {
   tertiaryHover: "#A41623",
 
   // Backgrounds
-  background: "#FDF9ED",
+  background: "#F9F7F4",
   card: "#F7F7F7",
 
   // Text

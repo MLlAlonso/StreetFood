@@ -15,8 +15,39 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'nullable|in:customer,merchant',
+            'phone' => 'nullable|string|max:20',
+
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+                'confirmed',
+            ],
+
+            'role' => 'required|in:customer,vendor',
+            'language' => 'required|in:en,es',
+
+            // Vendor only
+            'business_type' => [
+                'nullable',
+                'required_if:role,vendor',
+                'in:food_truck,restaurant',
+            ],
+
+            'business_name' => [
+                'nullable',
+                'required_if:role,vendor',
+                'string',
+                'max:255',
+            ],
+
+            'logo' => 'nullable|string',
+            'description' => 'nullable|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'categories' => 'nullable|array',
+            'categories.*' => 'string',
         ];
     }
 }

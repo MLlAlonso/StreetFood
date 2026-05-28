@@ -1,9 +1,5 @@
-import { View, Text } from "react-native";
+import RegisterScreen from "@/modules/auth/screens/RegisterScreen";
 
-export default function RegisterScreen() {
-  return (
-    <View>
-      <Text>Register</Text>
-    </View>
-  );
+export default function Welcome() {
+  return <RegisterScreen />;
 }
