@@ -1,7 +1,8 @@
-import { TextInput, StyleSheet,} from "react-native";
+import { TextInput, StyleSheet, } from "react-native";
 import { colors } from "@/styles/theme/colors";
 import { spacing } from "@/styles/theme/spacing";
 import { typography } from "@/styles/theme/typography";
+import { useResponsive } from "@/hooks/useResponsive";
 
 interface Props {
   value: string;
@@ -16,6 +17,9 @@ export default function Input({
   placeholder,
   secureTextEntry,
 }: Props) {
+
+  const { isDesktop } = useResponsive();
+
   return (
     <TextInput
       value={value}
@@ -23,7 +27,15 @@ export default function Input({
       placeholder={placeholder}
       placeholderTextColor="rgba(38,39,48,0.5)"
       secureTextEntry={secureTextEntry}
-      style={styles.input}
+      style={[
+        styles.input,
+
+        isDesktop && {
+          height: 65,
+          fontSize: 18,
+          paddingHorizontal: 20,
+        },
+      ]}
     />
   );
 }
