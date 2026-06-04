@@ -6,9 +6,16 @@ use App\Models\User;
 use App\Models\Business;
 use Illuminate\Support\Facades\Hash;
 use App\Modules\Shared\Responses\ApiResponse;
+use App\Modules\Auth\Services\EmailVerificationService;
 
 class AuthService
 {
+    protected EmailVerificationService $verificationService;
+
+    public function __construct( EmailVerificationService $verificationService) {
+        $this->verificationService = $verificationService;
+    }
+
     public function register(array $data)
     {
         $user = User::create([
@@ -75,17 +82,27 @@ class AuthService
 
     public function me(User $user)
     {
-        return ApiResponse::success(
-            'Authenticated user',
-            $user
-        );
+        return ApiResponse::success( 'Authenticated user', $user );
     }
 
     public function logout(User $user)
     {
         $user->tokens()->delete();
-        return ApiResponse::success(
-            'Logout successful'
-        );
+        return ApiResponse::success( 'Logout successful' );
+    }
+
+    public function sendVerificationCode( string $email ) {
+        $this->verificationService ->sendCode($email);
+        return ApiResponse::success('Verification code sent' );
+    }
+
+    public function verifyCode( string $email, string $code) {
+        $valid = $this->verificationService ->verify( $email, $code);
+
+        if (!$valid) {
+            return ApiResponse::error( 'Invalid verification code' );
+        }
+
+        return ApiResponse::success( 'Code verified' );
     }
 }

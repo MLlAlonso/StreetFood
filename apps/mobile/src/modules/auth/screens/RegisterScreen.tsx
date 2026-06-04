@@ -18,6 +18,7 @@ import { colors } from "@/styles/theme/colors";
 import { styles } from "../styles/register.styles";
 
 import { pickImage, uploadToCloudinary, } from "../services/cloudinary.service";
+import EmailVerificationModal from "@/components/ui/EmailVerificationModal";
 
 export default function RegisterScreen() {
     const router = useRouter();
@@ -40,9 +41,11 @@ export default function RegisterScreen() {
     const foodTruckIcon = require("@/assets/icons/foodtruck.png");
     const restaurantIcon = require("@/assets/icons/restaurant.png");
     const [showModal, setShowModal] = useState(false);
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const [verificationCode, setVerificationCode] = useState("");
     const [modalTitle, setModalTitle] = useState("");
     const [modalMessage, setModalMessage] = useState("");
-    
+
     const [location, setLocation] = useState<{
         latitude: number;
         longitude: number;
@@ -58,28 +61,19 @@ export default function RegisterScreen() {
         description: "",
     });
 
-    const openModal = (
-        title: string,
-        message: string
-    ) => {
+    const openModal = ( title: string, message: string ) => {
         setModalTitle(title);
         setModalMessage(message);
         setShowModal(true);
     };
 
-    const toggleCategory = (
-        category: string
-    ) => {
-
-        if (
-            categories.includes(category)
-        ) {
+    const toggleCategory = ( category: string) => {
+        if ( categories.includes(category) ) {
             setCategories(prev =>
                 prev.filter(
                     item => item !== category
                 )
             );
-
             return;
         }
 
@@ -154,6 +148,28 @@ export default function RegisterScreen() {
         }
     };
 
+    const sendVerificationCode =
+        async () => {
+            try {
+                await api.post(
+                    "/auth/send-verification-code",
+                    {
+                        email: form.email,
+                    }
+                );
+
+                setShowVerificationModal(
+                    true
+                );
+
+            } catch {
+                openModal(
+                    "Error",
+                    "Could not send verification code"
+                );
+            }
+        };
+
     const handleContinue = async () => {
         if (
             !form.name.trim() ||
@@ -168,11 +184,7 @@ export default function RegisterScreen() {
             return;
         }
 
-        if (
-            !EMAIL_REGEX.test(
-                form.email.trim()
-            )
-        ) {
+        if ( !EMAIL_REGEX.test( form.email.trim() ) ) {
             openModal(
                 "Invalid email",
                 "Please enter a valid email address"
@@ -181,9 +193,7 @@ export default function RegisterScreen() {
             return;
         }
 
-        if (
-            form.password !== form.repeatPassword
-        ) {
+        if ( form.password !== form.repeatPassword ) {
             openModal(
                 "Error",
                 "Passwords do not match"
@@ -192,9 +202,7 @@ export default function RegisterScreen() {
             return;
         }
 
-        if (
-            !PASSWORD_REGEX.test(form.password)
-        ) {
+        if ( !PASSWORD_REGEX.test(form.password) ) {
             openModal(
                 "Invalid password",
                 "Password must contain at least 8 characters, 1 uppercase letter and 1 number"
@@ -205,7 +213,7 @@ export default function RegisterScreen() {
 
         // CUSTOMER
         if (role === "customer") {
-            await handleRegister();
+            await sendVerificationCode();
             return;
         }
 
@@ -217,12 +225,31 @@ export default function RegisterScreen() {
         }, 100);
     };
 
-    const handleRegister = async () => {
-        if (role === "vendor") {
-            if (
-                !form.business_name.trim()
-            ) {
+    const verifyCodeAndRegister =
+        async () => {
+            try {
+                await api.post(
+                    "/auth/verify-code",
+                    {
+                        email: form.email,
+                        code: verificationCode,
+                    }
+                );
 
+                setShowVerificationModal( false );
+                await handleRegister();
+
+            } catch {
+                openModal(
+                    "Error",
+                    "Invalid verification code"
+                );
+            }
+        };
+
+    const handleVendorSubmit =
+        async () => {
+            if ( !form.business_name.trim() ) {
                 openModal(
                     "Missing information",
                     "Business name is required"
@@ -249,7 +276,7 @@ export default function RegisterScreen() {
                 return;
             }
 
-            if ( categories.length === 0) {
+            if ( categories.length === 0 ) {
                 openModal(
                     "Missing categories",
                     "Select at least one category"
@@ -257,7 +284,10 @@ export default function RegisterScreen() {
 
                 return;
             }
-        }
+            await sendVerificationCode();
+        };
+
+    const handleRegister = async () => {
         try {
             setLoading(true);
 
@@ -280,6 +310,7 @@ export default function RegisterScreen() {
                     description: form.description || undefined,
                     latitude: location?.latitude || undefined,
                     longitude: location?.longitude || undefined,
+
                     categories:
                         categories.length > 0
                             ? categories
@@ -287,14 +318,23 @@ export default function RegisterScreen() {
                 };
             }
 
-            const response = await api.post( "/auth/register", payload );
-            openModal( "Success", response.data.message );
+            const response =
+                await api.post(
+                    "/auth/register",
+                    payload
+                );
+
+            openModal(
+                "Success",
+                response.data.message
+            );
+
             router.replace("/(tabs)/home");
 
         } catch (error: any) {
-            console.log( "FULL ERROR", error );
-            console.log( "RESPONSE", error?.response );
-            console.log( "DATA", error?.response?.data );
+            console.log( "FULL ERROR", error);
+            console.log( "RESPONSE", error?.response);
+            console.log( "DATA", error?.response?.data);
 
             openModal(
                 "Error",
@@ -304,6 +344,7 @@ export default function RegisterScreen() {
                     error
                 )
             );
+
         } finally {
             setLoading(false);
         }
@@ -311,30 +352,12 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <View
-                style={[
-                    styles.header,
-                    isDesktop &&
-                    styles.desktopHeader,
-                ]}
-            >
-                <Text
-                    style={[
-                        styles.headerTitle,
-                        isDesktop &&
-                        styles.desktopTextCenter,
-                    ]}
-                >
+            <View style={[ styles.header, isDesktop && styles.desktopHeader, ]} >
+                <Text style={[ styles.headerTitle, isDesktop && styles.desktopTextCenter, ]} >
                     Create Account
                 </Text>
 
-                <Text
-                    style={[
-                        styles.headerSubtitle,
-                        isDesktop &&
-                        styles.desktopTextCenter,
-                    ]}
-                >
+                <Text style={[ styles.headerSubtitle, isDesktop && styles.desktopTextCenter, ]} >
                     Join and explore the best food near you
                 </Text>
             </View>
@@ -348,21 +371,13 @@ export default function RegisterScreen() {
                                 I am
                             </Text>
 
-                            <View
-                                style={[
-                                    styles.row,
-                                    !isMobile &&
-                                    styles.desktopRow,
-                                ]}
-                            >
+                            <View style={[ styles.row, !isMobile && styles.desktopRow, ]} >
                                 <SelectorCard
                                     icon={customerIcon}
                                     title="Customer"
                                     subtitle="Find & explore food"
                                     active={role === "customer"}
-                                    onPress={() =>
-                                        setRole("customer")
-                                    }
+                                    onPress={() => setRole("customer") }
                                 />
 
                                 <SelectorCard
@@ -370,9 +385,7 @@ export default function RegisterScreen() {
                                     title="Vendor"
                                     subtitle="List your business"
                                     active={role === "vendor"}
-                                    onPress={() =>
-                                        setRole("vendor")
-                                    }
+                                    onPress={() => setRole("vendor") }
                                 />
                             </View>
 
@@ -451,7 +464,7 @@ export default function RegisterScreen() {
                                 </Text>
 
                                 <Input
-                                    value={ form.repeatPassword }
+                                    value={form.repeatPassword}
                                     onChangeText={text =>
                                         setForm({
                                             ...form,
@@ -469,20 +482,10 @@ export default function RegisterScreen() {
                                     Select language
                                 </Text>
 
-                                <View
-                                    style={[
-                                        styles.row,
-                                        !isMobile &&
-                                        styles.desktopRow,
-                                    ]}
-                                >
+                                <View style={[ styles.row, !isMobile && styles.desktopRow, ]} >
                                     <TouchableOpacity
                                         style={[styles.languageButton, selectedLanguage === "en" && styles.languageButtonActive,]}
-                                        onPress={() =>
-                                            setSelectedLanguage(
-                                                "en"
-                                            )
-                                        }
+                                        onPress={() => setSelectedLanguage( "en" ) }
                                     >
                                         <Text style={[styles.languageText, selectedLanguage === "en" && styles.languageTextActive,]} >
                                             English
@@ -491,11 +494,7 @@ export default function RegisterScreen() {
 
                                     <TouchableOpacity
                                         style={[styles.languageButton, selectedLanguage === "es" && styles.languageButtonActive,]}
-                                        onPress={() =>
-                                            setSelectedLanguage(
-                                                "es"
-                                            )
-                                        }
+                                        onPress={() => setSelectedLanguage( "es" ) }
                                     >
                                         <Text style={[styles.languageText, selectedLanguage === "es" && styles.languageTextActive,]} >
                                             Español
@@ -509,7 +508,7 @@ export default function RegisterScreen() {
                                     <ActivityIndicator color="#FFF" />
                                 ) : (
                                     <Text
-                                        style={ styles.primaryButtonText } >
+                                        style={styles.primaryButtonText} >
                                         {role ===
                                             "customer"
                                             ? "Create Account"
@@ -518,7 +517,7 @@ export default function RegisterScreen() {
                                 )}
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => router.push("/login") }  >
+                            <TouchableOpacity onPress={() => router.push("/login")}  >
                                 <Text style={styles.footerText}>
                                     Already have an
                                     account?{" "}
@@ -531,7 +530,7 @@ export default function RegisterScreen() {
                     ) : (
                         <>
                             <TouchableOpacity
-                                onPress={() => setStep(1) }
+                                onPress={() => setStep(1)}
                                 style={styles.backButton}
                             >
                                 <Text style={styles.backText}>
@@ -553,15 +552,15 @@ export default function RegisterScreen() {
                                 <SelectorCard
                                     icon={foodTruckIcon}
                                     title="Food Truck"
-                                    active={ businessType === "food_truck" }
-                                    onPress={() => setBusinessType( "food_truck" ) }
+                                    active={businessType === "food_truck"}
+                                    onPress={() => setBusinessType("food_truck")}
                                 />
 
                                 <SelectorCard
                                     icon={restaurantIcon}
                                     title="Restaurant"
-                                    active={ businessType === "restaurant" }
-                                    onPress={() => setBusinessType( "restaurant" ) }
+                                    active={businessType === "restaurant"}
+                                    onPress={() => setBusinessType("restaurant")}
                                 />
                             </View>
 
@@ -571,7 +570,7 @@ export default function RegisterScreen() {
                                 </Text>
 
                                 <Input
-                                    value={ form.business_name }
+                                    value={form.business_name}
                                     onChangeText={text =>
                                         setForm({
                                             ...form,
@@ -609,8 +608,8 @@ export default function RegisterScreen() {
                                     Location
                                 </Text>
 
-                                <TouchableOpacity style={ styles.inputButton } onPress={ handleLocation } >
-                                    <Text style={ styles.inputButtonText } >
+                                <TouchableOpacity style={styles.inputButton} onPress={handleLocation} >
+                                    <Text style={styles.inputButtonText} >
                                         {location
                                             ? "Location selected"
                                             : "Select location"}
@@ -623,14 +622,14 @@ export default function RegisterScreen() {
                                     Logo
                                 </Text>
 
-                                <TouchableOpacity style={ styles.inputButton } onPress={ handlePickLogo } >
-                                    <Text style={ styles.inputButtonText } >
+                                <TouchableOpacity style={styles.inputButton} onPress={handlePickLogo} >
+                                    <Text style={styles.inputButtonText} >
                                         Upload Logo
                                     </Text>
                                 </TouchableOpacity>
 
                                 {logo && (
-                                    <TouchableOpacity onPress={() => setShowLogoModal(true) } >
+                                    <TouchableOpacity onPress={() => setShowLogoModal(true)} >
                                         <Image source={{ uri: logo }} style={styles.logoPreview} />
                                     </TouchableOpacity>
                                 )}
@@ -645,13 +644,13 @@ export default function RegisterScreen() {
                                     {categories.length}/3 selected
                                 </Text>
 
-                                <View style={ styles.chipsContainer } >
+                                <View style={styles.chipsContainer} >
                                     {FOOD_CATEGORIES.map(
                                         category => (
                                             <Chip
-                                                key={ category }
-                                                label={ category }
-                                                selected={categories.includes( category )}
+                                                key={category}
+                                                label={category}
+                                                selected={categories.includes(category)}
                                                 onPress={() =>
                                                     toggleCategory(
                                                         category
@@ -669,20 +668,23 @@ export default function RegisterScreen() {
                                 </Text>
 
                                 <TouchableOpacity
-                                    style={ styles.menuButton } >
-                                    <View style={ styles.plusCircle } >
-                                        <Text style={ styles.plusText } >
+                                    style={styles.menuButton} >
+                                    <View style={styles.plusCircle} >
+                                        <Text style={styles.plusText} >
                                             +
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
 
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleRegister} >
+                            <TouchableOpacity
+                                style={styles.primaryButton}
+                                onPress={handleVendorSubmit}
+                            >
                                 {loading ? (
                                     <ActivityIndicator color="#FFF" />
                                 ) : (
-                                    <Text style={ styles.primaryButtonText } >
+                                    <Text style={styles.primaryButtonText} >
                                         Create Account
                                     </Text>
                                 )}
@@ -694,7 +696,7 @@ export default function RegisterScreen() {
 
             <Modal visible={showLogoModal} transparent animationType="fade" >
                 <View style={styles.modalOverlay} >
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowLogoModal(false) } >
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowLogoModal(false)} >
                         <Text style={styles.closeButtonText} >
                             ✕
                         </Text>
@@ -712,9 +714,15 @@ export default function RegisterScreen() {
                 visible={showModal}
                 title={modalTitle}
                 message={modalMessage}
-                onClose={() =>
-                    setShowModal(false)
-                }
+                onClose={() => setShowModal(false) }
+            />
+
+            <EmailVerificationModal
+                visible={ showVerificationModal }
+                code={verificationCode}
+                setCode={setVerificationCode}
+                onCancel={() => setShowVerificationModal( false ) }
+                onAccept={ verifyCodeAndRegister }
             />
         </View>
     );
