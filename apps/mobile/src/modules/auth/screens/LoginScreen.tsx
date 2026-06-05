@@ -14,7 +14,7 @@ import { createStyles } from "../styles/login.styles";
 export default function LoginScreen() {
     const router = useRouter();
     const { isDesktop, isTablet } = useResponsive();
-    const styles = createStyles( isDesktop, isTablet);
+    const styles = createStyles(isDesktop, isTablet);
     const [emailOrPhone, setEmailOrPhone] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ export default function LoginScreen() {
     const [modalTitle, setModalTitle] = useState("");
     const [modalMessage, setModalMessage] = useState("");
 
-    const openModal = ( title: string, message: string) => {
+    const openModal = (title: string, message: string) => {
         setModalTitle(title);
         setModalMessage(message);
         setModalVisible(true);
@@ -49,7 +49,7 @@ export default function LoginScreen() {
                     response.data.data.token
                 );
 
-                router.replace( "/(tabs)/home");
+                router.replace("/(tabs)/home");
             } catch (error: any) {
                 openModal(
                     "Login Error",
@@ -67,20 +67,20 @@ export default function LoginScreen() {
             <View style={styles.wrapper}>
                 <View style={styles.header}>
                     <View style={styles.headerRow}>
-                        <Image source={require("@/assets/logo/logo.png")} style={styles.logo}/>
-                        <View style={ styles.headerContent }>
+                        <Image source={require("@/assets/logo/logo.png")} style={styles.logo} />
+                        <View style={styles.headerContent}>
                             <Text style={styles.title}>
                                 Welcome Back!
                             </Text>
 
-                            <Text style={ styles.subtitle } >
+                            <Text style={styles.subtitle} >
                                 Log in to continue exploring
                             </Text>
 
                             {isDesktop && (
                                 <TouchableOpacity
                                     style={{ marginTop: 40 }}
-                                    onPress={() => router.replace("/(tabs)/home") }
+                                    onPress={() => router.replace("/(tabs)/home")}
                                 >
                                     <Text style={styles.guestText}>
                                         Continue as guest →
@@ -91,52 +91,55 @@ export default function LoginScreen() {
                     </View>
                 </View>
 
-                <ScrollView contentContainerStyle={ styles.content } >
-                    <View style={ styles.formGroup } >
+                <ScrollView contentContainerStyle={styles.content} >
+                    <View style={styles.formGroup} >
                         <Text style={styles.label} >
-                            Email or Phone
+                            Email
                         </Text>
 
                         <Input
                             value={emailOrPhone}
-                            onChangeText={ setEmailOrPhone }
+                            onChangeText={setEmailOrPhone}
                             placeholder="Email or phone"
                         />
                     </View>
 
-                    <View style={ styles.formGroup } >
+                    <View style={styles.formGroup} >
                         <Text style={styles.label} >
                             Password
                         </Text>
 
                         <PasswordInput
                             value={password}
-                            onChangeText={ setPassword }
+                            onChangeText={setPassword}
                             placeholder="Password"
                         />
 
-                        <TouchableOpacity style={ styles.forgotPassword }>
-                            <Text style={ styles.forgotPasswordText}>
+                        <TouchableOpacity
+                            style={styles.forgotPassword}
+                            onPress={() => router.push( "/forgot-password" ) }
+                        >
+                            <Text style={styles.forgotPasswordText}>
                                 Forgot password?
                             </Text>
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={ styles.loginButton } onPress={ handleLogin } >
+                    <TouchableOpacity style={styles.loginButton} onPress={handleLogin} >
                         {loading ? (
                             <ActivityIndicator color="#FFF" />
                         ) : (
-                            <Text style={ styles.loginButtonText } >
+                            <Text style={styles.loginButtonText} >
                                 Log In
                             </Text>
                         )}
                     </TouchableOpacity>
 
-                    <View style={ styles.registerContainer}>
-                        <Text style={ styles.registerText } >
+                    <View style={styles.registerContainer}>
+                        <Text style={styles.registerText} >
                             Don't have an
                             account?{" "}
-                            <Text style={ styles.registerAction } onPress={() => router.push( "/register" ) } >
+                            <Text style={styles.registerAction} onPress={() => router.push("/register")} >
                                 Sign Up
                             </Text>
                         </Text>
@@ -145,7 +148,7 @@ export default function LoginScreen() {
 
                 {!isDesktop && (
                     <View style={styles.footer}>
-                        <TouchableOpacity style={styles.guestButton} onPress={() => router.replace("/(tabs)/home") } >
+                        <TouchableOpacity style={styles.guestButton} onPress={() => router.replace("/(tabs)/home")} >
                             <Text style={styles.guestText}>
                                 or Continue as guest
                             </Text>
@@ -162,7 +165,7 @@ export default function LoginScreen() {
                 visible={modalVisible}
                 title={modalTitle}
                 message={modalMessage}
-                onClose={() => setModalVisible(false) }
+                onClose={() => setModalVisible(false)}
             />
         </View>
     );

@@ -7,12 +7,17 @@ use App\Models\Business;
 use Illuminate\Support\Facades\Hash;
 use App\Modules\Shared\Responses\ApiResponse;
 use App\Modules\Auth\Services\EmailVerificationService;
+use App\Models\PasswordResetCode;
+use App\Mail\ForgotPasswordMail;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class AuthService
 {
     protected EmailVerificationService $verificationService;
 
-    public function __construct( EmailVerificationService $verificationService) {
+    public function __construct(EmailVerificationService $verificationService)
+    {
         $this->verificationService = $verificationService;
     }
 
@@ -82,27 +87,84 @@ class AuthService
 
     public function me(User $user)
     {
-        return ApiResponse::success( 'Authenticated user', $user );
+        return ApiResponse::success('Authenticated user', $user);
     }
 
     public function logout(User $user)
     {
         $user->tokens()->delete();
-        return ApiResponse::success( 'Logout successful' );
+        return ApiResponse::success('Logout successful');
     }
 
-    public function sendVerificationCode( string $email ) {
-        $this->verificationService ->sendCode($email);
-        return ApiResponse::success('Verification code sent' );
+    public function sendVerificationCode(string $email)
+    {
+        $this->verificationService->sendCode($email);
+        return ApiResponse::success('Verification code sent');
     }
 
-    public function verifyCode( string $email, string $code) {
-        $valid = $this->verificationService ->verify( $email, $code);
+    public function verifyCode(string $email, string $code)
+    {
+        $valid = $this->verificationService->verify($email, $code);
 
         if (!$valid) {
-            return ApiResponse::error( 'Invalid verification code' );
+            return ApiResponse::error('Invalid verification code');
         }
 
-        return ApiResponse::success( 'Code verified' );
+        return ApiResponse::success('Code verified');
+    }
+
+    public function forgotPassword( array $data) {
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user) {
+            return ApiResponse::error(
+                'User not found',
+                null,
+                404
+            );
+        }
+
+        $code = str_pad( random_int( 0, 999999),6, '0', STR_PAD_LEFT );
+
+        PasswordResetCode::updateOrCreate(
+            [
+                'email' => $user->email
+            ],
+            [
+                'code' => $code,
+                'expires_at' => now() ->addMinutes(10),
+            ]
+        );
+
+        Mail::to($user->email)->send( new ForgotPasswordMail( $code));
+        return ApiResponse::success( 'Code sent');
+    }
+
+    public function verifyResetCode( array $data) {
+        $record = PasswordResetCode::where('email',$data['email'])
+            ->where('code',$data['code'])
+            ->first();
+
+        if ( !$record || now()->gt( $record->expires_at )) {
+            return ApiResponse::error(
+                'Invalid code',
+                null,
+                422
+            );
+        }
+
+        return ApiResponse::success(
+            'Code verified'
+        );
+    }
+
+    public function resetPassword( array $data) {
+        $user = User::where( 'email', $data['email'])->first();
+        $user->update([ 'password' => bcrypt( $data['password'] ), ]);
+        PasswordResetCode::where( 'email', $data['email'] )->delete();
+
+        return ApiResponse::success(
+            'Password updated'
+        );
     }
 }
