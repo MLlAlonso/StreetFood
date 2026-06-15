@@ -48,6 +48,11 @@ class RegisterRequest extends FormRequest
             'longitude' => 'nullable|numeric',
             'categories' => 'nullable|array',
             'categories.*' => 'string',
+
+            'menu' => 'nullable|array',
+            'menu.*.name' => 'required|string|max:255',
+            'menu.*.description' => 'nullable|string',
+            'menu.*.image' => 'nullable|string',
         ];
     }
 }

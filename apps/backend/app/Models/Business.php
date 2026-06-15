@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+use App\Models\MenuItem;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
@@ -23,5 +25,10 @@ class Business extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function menuItems()
+    {
+        return $this->hasMany( MenuItem::class);
     }
 }

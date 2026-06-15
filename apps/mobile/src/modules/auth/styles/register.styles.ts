@@ -165,10 +165,27 @@ export const styles = StyleSheet.create({
     },
 
     logoPreview: {
-        width: 100,
-        height: 100,
+        width: "100%",
+        height: 220,
         borderRadius: 20,
         marginTop: 16,
+        backgroundColor: "#FFF",
+    },
+
+    removeLogoButton: {
+        marginTop: 12,
+        height: 52,
+        borderRadius: 15,
+        backgroundColor: colors.danger,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    removeLogoText: {
+        color: "#FFF",
+        fontSize: typography.size.md,
+        fontFamily: typography.fontFamily.title,
+        fontWeight: typography.weight.bold as any,
     },
 
     backButton: {
@@ -184,8 +201,7 @@ export const styles = StyleSheet.create({
 
     modalOverlay: {
         flex: 1,
-        backgroundColor:
-            "rgba(0,0,0,0.85)",
+        backgroundColor: "rgba(0,0,0,0.85)",
         justifyContent: "center",
         alignItems: "center",
     },
