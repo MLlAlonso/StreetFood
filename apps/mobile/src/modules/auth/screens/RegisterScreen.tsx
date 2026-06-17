@@ -291,11 +291,9 @@ export default function RegisterScreen() {
                 };
             }
 
-            const response =
-                await api.post("/auth/register", payload);
-
+            const response = await api.post("/auth/register", payload);
             openModal("Success", response.data.message);
-            router.replace("/(tabs)/home");
+            router.replace("/main");
 
         } catch (error: any) {
             console.log("FULL ERROR", error);

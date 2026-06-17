@@ -4,6 +4,7 @@ namespace App\Modules\Auth\Services;
 
 use App\Models\User;
 use App\Models\Business;
+use App\Models\MenuItem;
 use Illuminate\Support\Facades\Hash;
 use App\Modules\Shared\Responses\ApiResponse;
 use App\Modules\Auth\Services\EmailVerificationService;
@@ -33,7 +34,6 @@ class AuthService
         ]);
 
         if ($data['role'] === 'vendor') {
-
             $business = $user->business()->create([
                 'business_type' => $data['business_type'],
                 'business_name' => $data['business_name'],
@@ -43,14 +43,15 @@ class AuthService
                 'longitude' => $data['longitude'] ?? null,
             ]);
 
-            // Categories temporarily disabled
-            // because frontend is sending names instead of IDs
-
-            /*
-            if (!empty($data['categories'])) {
-                $business->categories()->sync($data['categories']);
+            if (!empty($data['menu'])) {
+                foreach ($data['menu'] as $dish) {
+                    $business->menuItems()->create([
+                        'name' => $dish['name'],
+                        'description' => $dish['description'] ?? null,
+                        'image' => $dish['image'] ?? null,
+                    ]);
+                }
             }
-            */
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -113,7 +114,8 @@ class AuthService
         return ApiResponse::success('Code verified');
     }
 
-    public function forgotPassword( array $data) {
+    public function forgotPassword(array $data)
+    {
         $user = User::where('email', $data['email'])->first();
 
         if (!$user) {
@@ -124,7 +126,7 @@ class AuthService
             );
         }
 
-        $code = str_pad( random_int( 0, 999999),6, '0', STR_PAD_LEFT );
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
         PasswordResetCode::updateOrCreate(
             [
@@ -132,20 +134,21 @@ class AuthService
             ],
             [
                 'code' => $code,
-                'expires_at' => now() ->addMinutes(10),
+                'expires_at' => now()->addMinutes(10),
             ]
         );
 
-        Mail::to($user->email)->send( new ForgotPasswordMail( $code));
-        return ApiResponse::success( 'Code sent');
+        Mail::to($user->email)->send(new ForgotPasswordMail($code));
+        return ApiResponse::success('Code sent');
     }
 
-    public function verifyResetCode( array $data) {
-        $record = PasswordResetCode::where('email',$data['email'])
-            ->where('code',$data['code'])
+    public function verifyResetCode(array $data)
+    {
+        $record = PasswordResetCode::where('email', $data['email'])
+            ->where('code', $data['code'])
             ->first();
 
-        if ( !$record || now()->gt( $record->expires_at )) {
+        if (!$record || now()->gt($record->expires_at)) {
             return ApiResponse::error(
                 'Invalid code',
                 null,
@@ -158,10 +161,11 @@ class AuthService
         );
     }
 
-    public function resetPassword( array $data) {
-        $user = User::where( 'email', $data['email'])->first();
-        $user->update([ 'password' => bcrypt( $data['password'] ), ]);
-        PasswordResetCode::where( 'email', $data['email'] )->delete();
+    public function resetPassword(array $data)
+    {
+        $user = User::where('email', $data['email'])->first();
+        $user->update(['password' => bcrypt($data['password']),]);
+        PasswordResetCode::where('email', $data['email'])->delete();
 
         return ApiResponse::success(
             'Password updated'

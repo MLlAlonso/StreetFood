@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingHorizontal: spacing.lg,
-    paddingTop: 120,
-    paddingBottom: 50,
+    paddingTop: 0,
+    paddingBottom: 40,
   },
 
   desktopWrapper: {
@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 260,
     height: 260,
-    marginBottom: spacing.xl,
   },
 
   title: {

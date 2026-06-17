@@ -1,9 +1,6 @@
-import { View, Text } from "react-native";
+import ExploreScreen
+from "@/modules/explore/screens/MainScreen";
 
-export default function MainScreen() {
-  return (
-    <View>
-      <Text>Main App</Text>
-    </View>
-  );
+export default function Main() {
+    return <ExploreScreen />;
 }
