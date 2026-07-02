@@ -2,35 +2,34 @@
   "expo": {
     "name": "StreetFood",
     "slug": "streetfood",
-
     "version": "1.0.0",
-
     "orientation": "portrait",
-
     "scheme": "streetfood",
-
     "userInterfaceStyle": "light",
-
     "experiments": {
       "typedRoutes": true
     },
-
     "plugins": [
       "expo-router",
       "expo-font",
       "expo-image"
     ],
-
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.mllalonsosteam.streetfood"
     },
-
     "web": {
       "bundler": "metro"
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "37ce63d0-1d7b-46d9-b79b-4c4240b1d66e"
+      }
+    },
+    "owner": "mllalonsos-team"
   }
 }

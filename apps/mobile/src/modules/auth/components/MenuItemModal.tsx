@@ -90,9 +90,7 @@ export default function MenuItemModal({ visible, onClose, onSave, onUpdate, dish
                     <View style={styles.formGroup}>
                         <Text style={styles.title}>
                             {
-                                dish
-                                    ? "Edit dish"
-                                    : "Add a dish to the menu"
+                                dish ? "Edit dish" : "Add a dish to the menu"
                             }
                         </Text>
 
@@ -214,8 +212,8 @@ const styles = StyleSheet.create({
     },
 
     previewImage: {
-        width: 350,
-        height: 200,
+        width: 300,
+        height: 150,
         borderRadius: 12,
         marginTop: 16,
         alignSelf: "center",

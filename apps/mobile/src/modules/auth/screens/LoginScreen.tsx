@@ -49,7 +49,7 @@ export default function LoginScreen() {
                     response.data.data.token
                 );
 
-                router.replace("/(tabs)/home");
+                router.replace("/main");
             } catch (error: any) {
                 openModal(
                     "Login Error",

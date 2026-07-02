@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet,} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, } from "react-native";
 
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
@@ -7,21 +7,14 @@ interface Props {
     image: string;
     title: string;
     description: string;
-    onEdit: () => void;
-    onDelete: () => void;
-    editIcon: any;
-    deleteIcon: any;
+    showActions?: boolean;
+    onEdit?: () => void;
+    onDelete?: () => void;
+    editIcon?: any;
+    deleteIcon?: any;
 }
 
-export default function MenuItemCard({
-    image,
-    title,
-    description,
-    onEdit,
-    onDelete,
-    editIcon,
-    deleteIcon,
-}: Props) {
+export default function MenuItemCard({ image, title, description, showActions = true, onEdit, onDelete, editIcon, deleteIcon, }: Props) {
     return (
         <View style={styles.card}>
             <Image source={{ uri: image, }} style={styles.image} />
@@ -37,15 +30,19 @@ export default function MenuItemCard({
                     </Text>
                 </View>
 
-                <View style={styles.actions}>
-                    <TouchableOpacity style={styles.actionButton} onPress={onEdit} >
-                        <Image source={editIcon} style={styles.icon} />
-                    </TouchableOpacity>
+                {
+                    showActions && (
+                        <View style={styles.actions}>
+                            <TouchableOpacity style={styles.actionButton} onPress={onEdit} >
+                                <Image source={editIcon} style={styles.icon} />
+                            </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.actionButton} onPress={onDelete} >
-                        <Image source={deleteIcon} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                            <TouchableOpacity style={styles.actionButton} onPress={onDelete} >
+                                <Image source={deleteIcon} style={styles.icon} />
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
             </View>
         </View>
     );

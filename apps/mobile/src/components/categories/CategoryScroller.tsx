@@ -1,72 +1,90 @@
-import { ScrollView, TouchableOpacity, Text, View, StyleSheet,} from "react-native";
+import { ScrollView, TouchableOpacity, Text, View, StyleSheet, } from "react-native";
 
-import { useResponsive } from "@/hooks/useResponsive";
+import { useRouter, } from "expo-router";
 import { colors } from "@/styles/theme/colors";
+import { useResponsive } from "@/hooks/useResponsive";
 import { FOOD_CATEGORIES, } from "@/modules/auth/constants/foodCategories";
 
 interface Props {
     selected?: string;
-    onSelect?: ( category: string ) => void;
+    onSelect?: (category: string) => void;
+    showMore?: boolean;
 }
 
-export default function CategoryScroller({ selected, onSelect,}: Props) {
+export default function CategoryScroller({ selected, onSelect, showMore, }: Props) {
+    const router = useRouter();
     const { isDesktop, } = useResponsive();
 
     if (isDesktop) {
         return (
             <View style={styles.desktopContainer}>
+
                 {FOOD_CATEGORIES.map(
                     category => (
                         <TouchableOpacity
                             key={category}
-                            style={[
-                                styles.chip,
-                                selected === category && styles.selectedChip,
-                            ]}
-                            onPress={() => onSelect?.( category ) }
+                            style={[styles.chip, selected === category && styles.selectedChip,]}
+                            onPress={() => {
+                                if (selected === category) {
+                                    onSelect?.("");
+                                    return;
+                                }
+                                onSelect?.(category);
+                            }}
                         >
-                            <Text
-                                style={[
-                                    styles.text,
-                                    selected === category && styles.selectedText,
-                                ]}
-                            >
+                            <Text style={[styles.text, selected === category && styles.selectedText,]} >
                                 {category}
                             </Text>
                         </TouchableOpacity>
                     )
                 )}
+
+                {
+                    showMore && (
+                        <TouchableOpacity onPress={() => router.push("/categories")} >
+                            <Text style={styles.showMore} >
+                                +
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                }
             </View>
         );
     }
 
     return (
-        <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={ false}
-            contentContainerStyle={ styles.mobileContainer }
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.mobileContainer} >
+
             {FOOD_CATEGORIES.map(
                 category => (
                     <TouchableOpacity
                         key={category}
-                        style={[
-                            styles.chip,
-                            selected === category && styles.selectedChip,
-                        ]}
-                        onPress={() => onSelect?.( category) }
+                        style={[styles.chip, selected === category && styles.selectedChip,]}
+                        onPress={() => {
+                            if (selected === category) {
+                                onSelect?.("");
+                                return;
+                            }
+                            onSelect?.(category);
+                        }}
                     >
                         <Text
-                            style={[
-                                styles.text,
-                                selected === category && styles.selectedText,
-                            ]}
-                        >
+                            style={[styles.text, selected === category && styles.selectedText,]} >
                             {category}
                         </Text>
                     </TouchableOpacity>
                 )
             )}
+
+            {
+                showMore && (
+                    <TouchableOpacity onPress={() => router.push("/categories")} >
+                        <Text style={styles.showMore} >
+                            +
+                        </Text>
+                    </TouchableOpacity>
+                )
+            }
         </ScrollView>
     );
 }
@@ -110,4 +128,12 @@ const styles = StyleSheet.create({
         color: colors.background,
         fontSize: 16,
     },
+
+    showMore: {
+        color: colors.textMuted,
+        fontSize: 30,
+        fontWeight: "600",
+        alignSelf: "center",
+        marginRight: 8,
+    }
 });
