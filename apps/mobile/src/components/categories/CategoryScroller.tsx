@@ -3,6 +3,7 @@ import { ScrollView, TouchableOpacity, Text, View, StyleSheet, } from "react-nat
 import { useRouter, } from "expo-router";
 import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 import { FOOD_CATEGORIES, } from "@/modules/auth/constants/foodCategories";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 export default function CategoryScroller({ selected, onSelect, showMore, }: Props) {
     const router = useRouter();
+    const { t } = useTranslation();
     const { isDesktop, } = useResponsive();
 
     if (isDesktop) {
@@ -25,15 +27,12 @@ export default function CategoryScroller({ selected, onSelect, showMore, }: Prop
                             key={category}
                             style={[styles.chip, selected === category && styles.selectedChip,]}
                             onPress={() => {
-                                if (selected === category) {
-                                    onSelect?.("");
-                                    return;
-                                }
+                                if (selected === category) { onSelect?.(""); return; }
                                 onSelect?.(category);
                             }}
                         >
                             <Text style={[styles.text, selected === category && styles.selectedText,]} >
-                                {category}
+                                {t(category)}
                             </Text>
                         </TouchableOpacity>
                     )
@@ -61,16 +60,12 @@ export default function CategoryScroller({ selected, onSelect, showMore, }: Prop
                         key={category}
                         style={[styles.chip, selected === category && styles.selectedChip,]}
                         onPress={() => {
-                            if (selected === category) {
-                                onSelect?.("");
-                                return;
-                            }
+                            if (selected === category) { onSelect?.(""); return; }
                             onSelect?.(category);
                         }}
                     >
-                        <Text
-                            style={[styles.text, selected === category && styles.selectedText,]} >
-                            {category}
+                        <Text style={[styles.text, selected === category && styles.selectedText,]} >
+                            {t(category)}
                         </Text>
                     </TouchableOpacity>
                 )

@@ -11,4 +11,7 @@ export const FOOD_CATEGORIES = [
   "Italian",
   "Mexican",
   "Chinese",
-];
+] as const;
+
+export type FoodCategory =
+    typeof FOOD_CATEGORIES[number];

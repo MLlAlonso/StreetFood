@@ -1,9 +1,13 @@
 import { Modal, View, Text, TouchableOpacity, StyleSheet, } from "react-native";
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
-interface Props { visible: boolean; title: string; message: string; buttonText?: string; onClose: () => void;}
+import { useTranslation } from "@/translations/hooks/useTranslation";
+interface Props { visible: boolean; title: string; message: string; buttonText?: string; onClose: () => void; }
 
-export default function AppModal({ visible, title, message, buttonText = "Accept", onClose, }: Props) {
+export default function AppModal({ visible, title, message, buttonText, onClose, }: Props) {
+  const { t } = useTranslation();
+  const text = buttonText ?? t("accept");
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} >
       <View style={styles.overlay}>
@@ -18,7 +22,7 @@ export default function AppModal({ visible, title, message, buttonText = "Accept
 
           <TouchableOpacity style={styles.button} onPress={onClose} >
             <Text style={styles.buttonText}>
-              {buttonText}
+              {text}
             </Text>
           </TouchableOpacity>
         </View>

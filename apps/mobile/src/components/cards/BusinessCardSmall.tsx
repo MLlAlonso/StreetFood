@@ -1,30 +1,24 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity,} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, } from "react-native";
 
 import { useRouter } from "expo-router";
 import { Business } from "@/modules/customer/types/Business";
 import { colors } from "@/styles/theme/colors";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 interface Props { business: Business; }
 
 export default function BusinessCardSmall({ business, }: Props) {
     const router = useRouter();
+    const { t } = useTranslation();
     const starIcon = require("@/assets/icons/star.png");
 
     return (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            style={styles.card}
-            onPress={() => router.push( `/business/${business.id}` )}
-        >
+        <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={() => router.push(`/business/${business.id}`)} >
             <View>
                 <Image source={{ uri: business.logo, }} style={styles.image} />
 
                 <View style={styles.badge}>
                     <Text style={styles.badgeText}>
-                        {
-                            business.business_type === "food_truck"
-                                ? "Food Truck"
-                                : "Restaurant"
-                        }
+                        {business.business_type === "food_truck" ? t("foodTruck") : t("restaurant")}
                     </Text>
                 </View>
             </View>

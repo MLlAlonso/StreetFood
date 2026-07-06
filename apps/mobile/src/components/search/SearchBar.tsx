@@ -3,37 +3,25 @@ import { View, TextInput, Image, StyleSheet, } from "react-native";
 import { useState } from "react";
 import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
-interface Props {
-    value?: string;
-    onChangeText?: (text: string) => void;
-}
+interface Props { value?: string; onChangeText?: (text: string) => void; }
 
 export default function SearchBar({ value = "", onChangeText, }: Props) {
     const [focused, setFocused] = useState(false);
+    const { t } = useTranslation();
     const { isDesktop, isTablet, } = useResponsive();
     const searchIcon = require("@/assets/icons/search.png");
 
     return (
-        <View
-            style={[
-                styles.wrapper,
-                isTablet && styles.tabletWrapper,
-                isDesktop && styles.desktopWrapper,
-            ]}
-        >
-            <View
-                style={[
-                    styles.container,
-                    focused && styles.containerFocused,
-                ]}
-            >
+        <View style={[styles.wrapper, isTablet && styles.tabletWrapper, isDesktop && styles.desktopWrapper,]} >
+            <View style={[styles.container, focused && styles.containerFocused,]} >
                 <Image source={searchIcon} style={styles.icon} />
 
                 <TextInput
                     value={value}
                     onChangeText={onChangeText}
-                    placeholder="Search food..."
+                    placeholder={t("searchFood")}
                     placeholderTextColor="rgba(104,93,93,0.7)"
                     style={styles.input}
                     onFocus={() => setFocused(true)}

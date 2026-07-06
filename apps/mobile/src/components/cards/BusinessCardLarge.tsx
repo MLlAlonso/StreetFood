@@ -1,24 +1,22 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity,} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, } from "react-native";
 
 import { useRouter } from "expo-router";
 import { Business } from "@/modules/customer/types/Business";
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 interface Props { business: Business; }
 
 export default function BusinessCardLarge({ business, }: Props) {
     const router = useRouter();
+    const { t } = useTranslation();
     const starIcon = require("@/assets/icons/star.png");
     const truckIcon = require("@/assets/icons/foodtruck.png");
     const restaurantIcon = require("@/assets/icons/restaurant2.png");
 
     return (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => router.push( `/business/${business.id}` ) }
-            style={styles.card}
-        >
+        <TouchableOpacity activeOpacity={0.9} onPress={() => router.push(`/business/${business.id}`)} style={styles.card} >
             <Image source={{ uri: business.logo, }} style={styles.image} />
 
             <View style={styles.content}>
@@ -29,15 +27,9 @@ export default function BusinessCardLarge({ business, }: Props) {
                         </Text>
 
                         <Text style={styles.subtitle} >
-                            {
-                                business.business_type === "food_truck"
-                                    ? "Food Truck"
-                                    : "Restaurant"
-                            }
-
+                            {business.business_type === "food_truck" ? t("foodTruck") : t("restaurant")}
                             {" • "}
-
-                            {business.distance}km
+                            {business.distance} km
                         </Text>
 
                         <View style={styles.ratingRow} >
@@ -55,7 +47,7 @@ export default function BusinessCardLarge({ business, }: Props) {
                                 tag => (
                                     <View key={tag} style={styles.tag} >
                                         <Text style={styles.tagText} >
-                                            {tag}
+                                            {t(tag as any)}
                                         </Text>
                                     </View>
                                 )

@@ -15,8 +15,11 @@ import { getBusinesses } from "@/modules/customer/services/business.service";
 import { TouchableOpacity, } from "react-native";
 import { useRouter, } from "expo-router";
 
+import { useTranslation } from "@/translations/hooks/useTranslation";
+
 export default function MainScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory,] = useState("");
     const [businesses, setBusinesses,] = useState<Business[]>([]);
@@ -66,14 +69,14 @@ export default function MainScreen() {
                         <>
                             <View style={styles.sectionHeader} >
                                 <Text style={styles.sectionTitle} >
-                                    Open Nearby
+                                    {t("openNearby")}
                                 </Text>
 
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     onPress={() => router.push("/business/nearby")} >
                                     <Text style={styles.showMore} >
-                                        Show more
+                                        {t("showMore")}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -103,12 +106,12 @@ export default function MainScreen() {
                         <>
                             <View style={styles.sectionHeader} >
                                 <Text style={styles.sectionTitle} >
-                                    Trending
+                                    {t("trending")}
                                 </Text>
 
                                 <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/trending")} >
                                     <Text style={styles.showMore} >
-                                        Show more
+                                        {t("showMore")}
                                     </Text>
                                 </TouchableOpacity>
                             </View>

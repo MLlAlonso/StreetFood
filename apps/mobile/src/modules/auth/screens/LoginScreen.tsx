@@ -10,9 +10,11 @@ import AppModal from "@/components/ui/AppModal";
 
 import { useResponsive } from "@/hooks/useResponsive";
 import { createStyles } from "../styles/login.styles";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function LoginScreen() {
     const router = useRouter();
+    const { setLanguage } = useTranslation();
     const { isDesktop, isTablet } = useResponsive();
     const styles = createStyles(isDesktop, isTablet);
     const [emailOrPhone, setEmailOrPhone] = useState("");
@@ -28,39 +30,31 @@ export default function LoginScreen() {
         setModalVisible(true);
     };
 
-    const handleLogin =
-        async () => {
-            try {
-                setLoading(true);
+    const handleLogin = async () => {
+        try {
+            setLoading(true);
+            const payload = { email: emailOrPhone, password, };
+            const response = await api.post("/auth/login", payload);
+            const { token, user } = response.data.data;
+            await AsyncStorage.setItem("token", token);
 
-                const payload = {
-                    email: emailOrPhone,
-                    password,
-                };
-
-                const response =
-                    await api.post(
-                        "/auth/login",
-                        payload
-                    );
-
-                await AsyncStorage.setItem(
-                    "token",
-                    response.data.data.token
-                );
-
-                router.replace("/main");
-            } catch (error: any) {
-                openModal(
-                    "Login Error",
-                    error?.response?.data
-                        ?.message ??
-                    "Invalid credentials"
-                );
-            } finally {
-                setLoading(false);
+            if (user.language === "es" || user.language === "en") {
+                await setLanguage(user.language);
             }
-        };
+
+            await AsyncStorage.setItem("user", JSON.stringify(user));
+            router.replace("/main");
+        } catch (error: any) {
+            openModal(
+                "Login Error",
+                error?.response?.data?.message ??
+                "Invalid credentials"
+            );
+
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -78,10 +72,7 @@ export default function LoginScreen() {
                             </Text>
 
                             {isDesktop && (
-                                <TouchableOpacity
-                                    style={{ marginTop: 40 }}
-                                    onPress={() => router.replace("/(tabs)/home")}
-                                >
+                                <TouchableOpacity style={{ marginTop: 40 }} onPress={() => router.replace("/(tabs)/home")} >
                                     <Text style={styles.guestText}>
                                         Continue as guest →
                                     </Text>
@@ -97,11 +88,7 @@ export default function LoginScreen() {
                             Email
                         </Text>
 
-                        <Input
-                            value={emailOrPhone}
-                            onChangeText={setEmailOrPhone}
-                            placeholder="Email or phone"
-                        />
+                        <Input value={emailOrPhone} onChangeText={setEmailOrPhone} placeholder="Email or phone" />
                     </View>
 
                     <View style={styles.formGroup} >
@@ -109,16 +96,9 @@ export default function LoginScreen() {
                             Password
                         </Text>
 
-                        <PasswordInput
-                            value={password}
-                            onChangeText={setPassword}
-                            placeholder="Password"
-                        />
+                        <PasswordInput value={password} onChangeText={setPassword} placeholder="Password" />
 
-                        <TouchableOpacity
-                            style={styles.forgotPassword}
-                            onPress={() => router.push( "/forgot-password" ) }
-                        >
+                        <TouchableOpacity style={styles.forgotPassword} onPress={() => router.push("/forgot-password")} >
                             <Text style={styles.forgotPasswordText}>
                                 Forgot password?
                             </Text>
@@ -137,8 +117,7 @@ export default function LoginScreen() {
 
                     <View style={styles.registerContainer}>
                         <Text style={styles.registerText} >
-                            Don't have an
-                            account?{" "}
+                            Don't have an account?{" "}
                             <Text style={styles.registerAction} onPress={() => router.push("/register")} >
                                 Sign Up
                             </Text>

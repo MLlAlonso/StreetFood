@@ -1,48 +1,45 @@
-import { View, TouchableOpacity, Image, Text, StyleSheet,} from "react-native";
+import { View, TouchableOpacity, Image, Text, StyleSheet, } from "react-native";
 
 import { useRouter, usePathname } from "expo-router";
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
 import { useResponsive } from "@/hooks/useResponsive";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function BottomTabs() {
     const router = useRouter();
     const pathname = usePathname();
-    const { isDesktop,} = useResponsive();
+    const { t } = useTranslation();
+    const { isDesktop, } = useResponsive();
 
     const tabs = [
         {
-            label: "Home",
+            label: t("home"),
             route: "/main",
-            icon: require( "@/assets/icons/home.png" ),
+            icon: require("@/assets/icons/home.png"),
         },
 
         {
-            label: "Map",
+            label: t("map"),
             route: "/(tabs)/map",
-            icon: require( "@/assets/icons/map.png" ),
+            icon: require("@/assets/icons/map.png"),
         },
 
         {
-            label: "Favorites",
+            label: t("favorites"),
             route: "/(tabs)/favorites",
-            icon: require( "@/assets/icons/favorite.png" ),
+            icon: require("@/assets/icons/favorite.png"),
         },
 
         {
-            label: "My Account",
+            label: t("myAccount"),
             route: "/(tabs)/profile",
-            icon: require( "@/assets/icons/profile.png" ),
+            icon: require("@/assets/icons/profile.png"),
         },
     ];
 
     return (
-        <View
-            style={[
-                styles.container,
-                isDesktop && styles.desktopContainer,
-            ]}
-        >
+        <View style={[ styles.container, isDesktop && styles.desktopContainer, ]} >
             {
                 tabs.map((tab, index) => {
                     const active = pathname === tab.route;
@@ -53,19 +50,14 @@ export default function BottomTabs() {
                             activeOpacity={0.9}
                             style={[
                                 styles.tab,
-                                index === tabs.length - 1 && { borderRightWidth: 0,},
+                                index === tabs.length - 1 && { borderRightWidth: 0, },
                                 active && styles.activeTab,
                             ]}
-                            onPress={() => router.replace( tab.route )}
+                            onPress={() => router.replace(tab.route)}
                         >
-                            <Image source={ tab.icon} style={ styles.icon} />
+                            <Image source={tab.icon} style={styles.icon} />
 
-                            <Text
-                                style={[
-                                    styles.label,
-                                    active && styles.activeLabel,
-                                ]}
-                            >
+                            <Text style={[ styles.label, active && styles.activeLabel, ]} >
                                 {tab.label}
                             </Text>
                         </TouchableOpacity>

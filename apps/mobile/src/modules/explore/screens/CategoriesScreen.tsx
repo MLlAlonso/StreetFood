@@ -1,27 +1,19 @@
-import {
-    View,
-    ScrollView,
-    StyleSheet,
-    Text,
-} from "react-native";
+import { View, ScrollView, StyleSheet, Text, } from "react-native";
 
-import {
-    useRouter,
-} from "expo-router";
-
+import { useRouter, } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import BottomTabs from "@/components/layout/BottomTabs";
 import CategoryCard from "@/components/cards/CategoryCard";
-
-import { FOOD_CATEGORIES } from "@/modules/auth/constants/foodCategories";
+import { FOOD_CATEGORIES, FoodCategory, } from "@/modules/auth/constants/foodCategories";
 
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
 import { useResponsive } from "@/hooks/useResponsive";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function CategoriesScreen() {
     const router = useRouter();
-
+    const { t } = useTranslation();
     const { isTablet, isDesktop, } = useResponsive();
 
     const categoryImages = {
@@ -44,41 +36,23 @@ export default function CategoriesScreen() {
             <AppHeader />
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} >
-
                 <Text style={styles.title}>
-                    Categories
+                    {t("categories")}
                 </Text>
 
-                <View
-                    style={[
-                        styles.grid,
-                        isTablet && styles.gridTablet,
-                        isDesktop && styles.gridDesktop,
-                    ]}
-                >
-
+                <View style={[styles.grid, isTablet && styles.gridTablet, isDesktop && styles.gridDesktop,]} >
                     {
                         FOOD_CATEGORIES.map(
                             category => (
                                 <View
                                     key={category}
-                                    style={[
-                                        styles.item,
-                                        isTablet && styles.itemTablet,
-                                        isDesktop && styles.itemDesktop,
-                                    ]}
+                                    style={[styles.item, isTablet && styles.itemTablet, isDesktop && styles.itemDesktop,]}
                                 >
 
                                     <CategoryCard
-                                        category={category}
+                                        category={t(category)}
                                         image={categoryImages[category]}
-
-                                        onPress={() =>
-                                            router.push({
-                                                pathname: "/business/nearby",
-                                                params: { category, },
-                                            })
-                                        }
+                                        onPress={() => router.push({ pathname: "/business/nearby", params: { category, }, })}
                                     />
                                 </View>
                             )

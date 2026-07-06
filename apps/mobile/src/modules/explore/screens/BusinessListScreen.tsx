@@ -12,12 +12,14 @@ import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
 import { Business } from "@/modules/customer/types/Business";
 import { getBusinesses } from "@/modules/customer/services/business.service";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 interface Props { mode: "nearby" | "trending"; }
 import { useLocalSearchParams, } from "expo-router";
 
 export default function BusinessListScreen({ mode, }: Props) {
     const params = useLocalSearchParams();
+    const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [businesses, setBusinesses,] = useState<Business[]>([]);
     const [loading, setLoading,] = useState(true);
@@ -73,7 +75,7 @@ export default function BusinessListScreen({ mode, }: Props) {
                     !loading && filteredBusinesses.length > 0 && mode === "nearby" && (
                         <>
                             <Text style={styles.sectionTitle} >
-                                Open Nearby
+                                {t("openNearby")}
                             </Text>
 
                             <View style={styles.largeGrid} >
@@ -103,17 +105,10 @@ export default function BusinessListScreen({ mode, }: Props) {
                     !loading && filteredBusinesses.length > 0 && mode === "trending" && (
                         <>
                             <Text style={styles.sectionTitle} >
-                                Trending
+                                {t("trending")}
                             </Text>
 
-                            <View
-                                style={[
-                                    styles.smallGrid,
-                                    isTablet && styles.smallGridTablet,
-                                    isDesktop && styles.smallGridDesktop,
-                                ]}
-                            >
-
+                            <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
                                 {
                                     filteredBusinesses.map(
                                         business => (

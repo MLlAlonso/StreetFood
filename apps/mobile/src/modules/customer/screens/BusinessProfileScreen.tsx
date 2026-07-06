@@ -7,11 +7,13 @@ import BottomTabs from "@/components/layout/BottomTabs";
 import { getBusiness, } from "../services/businessProfile.service";
 import { BusinessProfile, } from "../types/BusinessProfile";
 import MenuItemCard from "@/components/cards/MenuItemCard";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 import { styles, } from "../styles/businessProfile.styles";
 
 export default function BusinessProfileScreen() {
     const { id } = useLocalSearchParams();
+    const { t } = useTranslation();
     const [business, setBusiness] = useState<BusinessProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const starIcon = require("@/assets/icons/star.png");
@@ -46,7 +48,7 @@ export default function BusinessProfileScreen() {
         return (
             <View style={styles.loaderContainer}>
                 <Text>
-                    Business not found
+                    {t("businessNotFound")}
                 </Text>
             </View>
         );
@@ -72,13 +74,12 @@ export default function BusinessProfileScreen() {
                 {/* TYPE */}
                 <Text style={styles.businessType} >
                     {
-                        business.business_type === "food_truck" ? "Food Truck" : "Restaurant"
+                        business.business_type === "food_truck" ? t("foodTruck") : t("restaurant")
                     }
                 </Text>
 
                 {/* STATS */}
                 <View style={styles.statsCard} >
-
                     {/* Rating */}
                     <View style={styles.statItem} >
                         <Text style={styles.statValue} >
@@ -87,18 +88,19 @@ export default function BusinessProfileScreen() {
 
                         <View style={styles.ratingRow} >
                             <Text style={styles.statLabel} >
-                                Rating
+                                {t("rating")}
                             </Text>
                         </View>
                     </View>
 
                     {/* Distance */}
                     <View style={styles.statItem} >
-                        <Text style={styles.statValue} > {business.distance} 
+                        <Text style={styles.statValue} > 
+                            {business.distance}
                         </Text>
 
-                        <Text style={styles.statLabel} >
-                            km away
+                        <Text style={styles.statLabel}>
+                            {t("km")} {t("away")}
                         </Text>
                     </View>
 
@@ -109,7 +111,7 @@ export default function BusinessProfileScreen() {
                         </Text>
 
                         <Text style={styles.statLabel} >
-                            reviews
+                            {t("reviews")}
                         </Text>
                     </View>
                 </View>
@@ -119,7 +121,7 @@ export default function BusinessProfileScreen() {
                     <Image source={editIcon} style={styles.editIcon} />
 
                     <Text style={styles.editText} >
-                        Edit Profile
+                        {t("editProfile")}
                     </Text>
                 </TouchableOpacity>
 
@@ -128,7 +130,7 @@ export default function BusinessProfileScreen() {
                     business.description ? (
                         <>
                             <Text style={styles.sectionTitle} >
-                                About
+                                {t("about")}
                             </Text>
 
                             <Text style={styles.description} >
@@ -140,14 +142,14 @@ export default function BusinessProfileScreen() {
 
                 {/* MENU */}
                 <Text style={styles.sectionTitle} >
-                    Menu
+                    {t("menu")}
                 </Text>
 
                 <View style={styles.menuContainer} >
                     {
                         business.menu.length === 0 && (
                             <Text style={styles.description} >
-                                This business has not added any dishes yet.
+                                {t("noMenuItems")}
                             </Text>
                         )
                     }
@@ -175,7 +177,7 @@ export default function BusinessProfileScreen() {
                         <Image source={websiteIcon} style={styles.actionIcon} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.8} style={[ styles.actionButton, styles.whatsappButton, ]} >
+                    <TouchableOpacity activeOpacity={0.8} style={[styles.actionButton, styles.whatsappButton,]} >
                         <Image source={whatsappIcon} style={styles.actionIcon} />
                     </TouchableOpacity>
 
