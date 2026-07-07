@@ -1,19 +1,40 @@
-import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, } from "react-native";
+import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Alert, } from "react-native";
 
 import { useEffect, useState, } from "react";
 import { useLocalSearchParams, } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import BottomTabs from "@/components/layout/BottomTabs";
-import { getBusiness, } from "../services/businessProfile.service";
-import { BusinessProfile, } from "../types/BusinessProfile";
 import MenuItemCard from "@/components/cards/MenuItemCard";
-import { useTranslation } from "@/translations/hooks/useTranslation";
 
+import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { BusinessProfile, } from "../types/BusinessProfile";
+import { getBusiness, } from "../services/businessProfile.service";
+import { useFavorite } from "../hooks/useFavorite";
 import { styles, } from "../styles/businessProfile.styles";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function BusinessProfileScreen() {
     const { id } = useLocalSearchParams();
     const { t } = useTranslation();
+    const { authenticated, } = useAuth();
+
+    const {
+        favorite,
+        loading: favoriteLoading,
+        toggleFavorite,
+    } = useFavorite(Number(id));
+
+    const handleFavorite = () => {
+        if (!authenticated) {
+            Alert.alert(
+                t("loginRequired"),
+                t("loginRequiredDescription")
+            );
+            return;
+        }
+        toggleFavorite();
+    };
+
     const [business, setBusiness] = useState<BusinessProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const starIcon = require("@/assets/icons/star.png");
@@ -22,6 +43,8 @@ export default function BusinessProfileScreen() {
     const websiteIcon = require("@/assets/icons/website.png");
     const whatsappIcon = require("@/assets/icons/whatsapp.png");
     const instagramIcon = require("@/assets/icons/instagram.png");
+    const heartOutlineIcon = require("@/assets/icons/heart-outline.png");
+    const heartFilledIcon = require("@/assets/icons/heart-filled.png");
 
     useEffect(() => { loadBusiness(); }, []);
 
@@ -64,10 +87,23 @@ export default function BusinessProfileScreen() {
                 <View style={styles.hero}>
                     <Image source={{ uri: business.logo, }} style={styles.heroImage} />
 
-                    <View style={styles.heroOverlay} >
-                        <Text style={styles.businessName} >
+                    <View style={styles.heroOverlay}>
+                        <Text style={styles.businessName}>
                             {business.business_name}
                         </Text>
+
+                        {
+                            authenticated && !favoriteLoading && (
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    style={[styles.favoriteButton, !authenticated && { opacity: 0.6, },]}
+                                    onPress={handleFavorite}
+                                >
+
+                                    <Image source={favorite ? heartFilledIcon : heartOutlineIcon} style={styles.favoriteIcon} />
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 </View>
 
@@ -95,7 +131,7 @@ export default function BusinessProfileScreen() {
 
                     {/* Distance */}
                     <View style={styles.statItem} >
-                        <Text style={styles.statValue} > 
+                        <Text style={styles.statValue} >
                             {business.distance}
                         </Text>
 

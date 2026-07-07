@@ -38,6 +38,10 @@ const en: Record<TranslationKeys, string> = {
     whatsapp: "WhatsApp",
     km: "km",
     contact: "Contact",
+    noFavorites: "No favorites yet",
+    noFavoritesDescription: "Businesses you save will appear here.",
+    loginRequired: "Login required",
+    loginRequiredDescription: "Please log in to save businesses as favorites.",
 };
 
 export default en;

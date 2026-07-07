@@ -36,4 +36,8 @@ export type TranslationKeys =
     | "whatsapp"
     | "km"
     | "contact"
+    | "noFavorites"
+    | "noFavoritesDescription"
+    | "loginRequired"
+    | "loginRequiredDescription"
     ;

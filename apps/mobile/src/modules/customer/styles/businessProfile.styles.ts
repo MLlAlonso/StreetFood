@@ -237,4 +237,20 @@ export const styles = StyleSheet.create({
         height: 30,
         resizeMode: "contain",
     },
+
+    favoriteButton: {
+        position: "absolute",
+        right: 18,
+        width: 50,
+        height: 50,
+        borderRadius: 24,
+        backgroundColor: "rgba(0,0,0,0.30)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    favoriteIcon: {
+        width: 35,
+        height: 35,
+    },
 });

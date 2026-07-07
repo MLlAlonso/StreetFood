@@ -16,33 +16,37 @@ export default function BottomTabs() {
         {
             label: t("home"),
             route: "/main",
+            path: "/main",
             icon: require("@/assets/icons/home.png"),
         },
 
         {
             label: t("map"),
             route: "/(tabs)/map",
+            path: "/map",
             icon: require("@/assets/icons/map.png"),
         },
 
         {
             label: t("favorites"),
             route: "/(tabs)/favorites",
+            path: "/favorites",
             icon: require("@/assets/icons/favorite.png"),
         },
 
         {
             label: t("myAccount"),
             route: "/(tabs)/profile",
+            path: "/profile",
             icon: require("@/assets/icons/profile.png"),
         },
     ];
 
     return (
-        <View style={[ styles.container, isDesktop && styles.desktopContainer, ]} >
+        <View style={[styles.container, isDesktop && styles.desktopContainer,]} >
             {
                 tabs.map((tab, index) => {
-                    const active = pathname === tab.route;
+                    const active = pathname === tab.path;
 
                     return (
                         <TouchableOpacity
@@ -57,7 +61,7 @@ export default function BottomTabs() {
                         >
                             <Image source={tab.icon} style={styles.icon} />
 
-                            <Text style={[ styles.label, active && styles.activeLabel, ]} >
+                            <Text style={[styles.label, active && styles.activeLabel,]} >
                                 {tab.label}
                             </Text>
                         </TouchableOpacity>
