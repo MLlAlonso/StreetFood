@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Business;
 use App\Models\Favorite;
+use App\Models\Review;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -43,18 +44,26 @@ class User extends Authenticatable
      * Get the attributes that should be cast.
      * @return array<string, string>
      */
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function business() {
+    public function business()
+    {
         return $this->hasOne(Business::class);
     }
 
-    public function favorites() {
+    public function favorites()
+    {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

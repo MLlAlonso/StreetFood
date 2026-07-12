@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 
     content: {
         padding: 20,
-        paddingBottom: 120,
+        paddingBottom: 20,
     },
 
     title: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     },
 
     emptyTitle: {
-        fontSize: 22,
+        fontSize: 26,
         fontWeight: "700",
         color: colors.primary,
     },
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: "center",
         color: colors.textMuted,
-        fontSize: 16,
+        fontSize: 20,
         paddingHorizontal: 30,
     },
 });

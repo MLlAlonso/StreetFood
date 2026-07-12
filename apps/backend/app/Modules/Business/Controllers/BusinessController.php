@@ -18,4 +18,9 @@ class BusinessController extends Controller
     {
         return $this->service->show($id);
     }
+
+    public function reviews(int $id)
+    {
+        return $this->service->reviews($id);
+    }
 }

@@ -42,6 +42,17 @@ const es: Record<TranslationKeys, string> = {
     noFavoritesDescription: "Los negocios que marques como favoritos aparecerán aquí.",
     loginRequired: "Inicia sesión",
     loginRequiredDescription: "Debes iniciar sesión para guardar negocios como favoritos.",
+    getDirections: "Cómo llegar",
+    rate: "Calificar",
+    leaveReview: "Dejar una reseña",
+    review: "Reseña",
+    cancel: "Cancelar",
+    couldBeBetter: "Podría mejorar",
+    excellent: "Excelente",
+    seeMore: "Ver más",
+    noReviews: "Todavía no hay reseñas.",
+    reviewSent: "Reseña enviada correctamente.",
+    reviewUpdated: "Reseña actualizada.",
 };
 
 export default es;

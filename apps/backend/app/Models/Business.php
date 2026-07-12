@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\MenuItem;
 use App\Models\Favorite;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
@@ -18,19 +19,28 @@ class Business extends Model
         'longitude',
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function categories() {
+    public function categories()
+    {
         return $this->belongsToMany(Category::class);
     }
 
-    public function menuItems() {
+    public function menuItems()
+    {
         return $this->hasMany(MenuItem::class);
     }
 
-    public function favorites() {
+    public function favorites()
+    {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

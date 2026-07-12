@@ -18,14 +18,10 @@ class BusinessService
                     'business_name' => $business->business_name,
                     'business_type' => $business->business_type,
                     'logo' => $business->logo,
-                    'image' => $business
-                        ->menuItems
-                        ->first()?->image
-                        ??
-                        $business->logo,
+                    'image' => $business->menuItems
+                        ->first()?->image ?? $business->logo,
 
-                    'categories' => $business
-                        ->categories
+                    'categories' => $business->categories
                         ->pluck('name')
                         ->values(),
 
@@ -44,7 +40,19 @@ class BusinessService
             'user',
             'categories',
             'menuItems',
+            'reviews.user',
         ])->findOrFail($id);
+
+        $rating = round(
+            $business->reviews->avg('rating') ?? 0,
+            1
+        );
+
+        $totalReviews = $business->reviews->count();
+        $latestReviews = $business->reviews
+            ->sortByDesc('created_at')
+            ->take(3)
+            ->values();
 
         return ApiResponse::success(
             'Business retrieved',
@@ -54,16 +62,14 @@ class BusinessService
                 'business_type' => $business->business_type,
                 'logo' => $business->logo,
 
-                'image' => $business
-                    ->menuItems
-                    ->first()?->image
-                    ??
-                    $business->logo,
+                'image' => $business->menuItems
+                    ->first()?->image ?? $business->logo,
 
                 'description' => $business->description,
                 'latitude' => $business->latitude,
                 'longitude' => $business->longitude,
-                'rating' => 0,
+                'rating' => $rating,
+                'reviews_count' => $totalReviews,
                 'distance' => 0,
 
                 'owner' => [
@@ -75,13 +81,11 @@ class BusinessService
                     'avatar' => $business->user->avatar,
                 ],
 
-                'categories' => $business
-                    ->categories
+                'categories' => $business->categories
                     ->pluck('name')
                     ->values(),
 
-                'menu' => $business
-                    ->menuItems
+                'menu' => $business->menuItems
                     ->map(function ($item) {
                         return [
                             'id' => $item->id,
@@ -90,7 +94,55 @@ class BusinessService
                             'image' => $item->image,
                         ];
                     }),
+
+                'reviews' => $latestReviews->map(function ($review) {
+                    return [
+                        'id' => $review->id,
+                        'rating' => $review->rating,
+                        'comment' => $review->comment,
+                        'created_at' => $review->created_at,
+
+                        'user' => [
+                            'id' => $review->user->id,
+                            'name' => $review->user->name,
+                            'avatar' => $review->user->avatar,
+                        ],
+                    ];
+                }),
             ]
+        );
+    }
+
+    public function reviews(int $id)
+    {
+
+        $business = Business::findOrFail($id);
+
+        $reviews = $business
+            ->reviews()
+            ->with('user')
+            ->latest()
+            ->paginate(10);
+
+        $reviews->through(
+            function ($review) {
+                return [
+                    'id' => $review->id,
+                    'rating' => $review->rating,
+                    'comment' => $review->comment,
+                    'created_at' => $review->created_at,
+
+                    'user' => [
+                        'id' => $review->user->id,
+                        'name' => $review->user->name,
+                        'avatar' => $review->user->avatar,
+                    ],
+                ];
+            }
+        );
+
+        return ApiResponse::success(
+            'Reviews retrieved.', $reviews
         );
     }
 }

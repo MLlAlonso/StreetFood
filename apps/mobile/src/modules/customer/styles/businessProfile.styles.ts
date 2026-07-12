@@ -123,6 +123,46 @@ export const styles = StyleSheet.create({
         fontWeight: typography.weight.bold as any,
     },
 
+    profileButtonsRow: {
+        flexDirection: "row",
+        marginHorizontal: 20,
+        marginTop: 22,
+        gap: 12,
+    },
+
+    directionButton: {
+        flex: 1,
+        height: 58,
+        borderRadius: 15,
+        backgroundColor: colors.primary,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+
+    rateButton: {
+        flex: 1,
+        height: 58,
+        borderRadius: 15,
+        backgroundColor: colors.tertiary,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+
+    directionIcon: {
+        width: 22,
+        height: 22,
+        resizeMode: "contain",
+        marginRight: 8,
+    },
+
+    directionText: {
+        color: "#FFF",
+        fontSize: 18,
+        fontWeight: typography.weight.bold as any,
+    },
+
     /* ------------------------- */
     /* TITLES */
     /* ------------------------- */
@@ -152,6 +192,15 @@ export const styles = StyleSheet.create({
     menuContainer: {
         marginHorizontal: 20,
         marginBottom: 10,
+    },
+
+    seeMoreReviews: {
+        marginTop: 15,
+        marginBottom: 15,
+        textAlign: "center",
+        color: colors.primary,
+        fontWeight: "700",
+        fontSize: 16,
     },
 
     /* ------------------------- */
