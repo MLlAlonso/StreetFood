@@ -13,19 +13,14 @@ export function useAuth() {
     const load = async () => {
         const logged = await isAuthenticated();
         setAuthenticated(logged);
-
         if (logged) {
             const stored = await getStoredUser();
             setUser(stored);
         }
-
         setLoading(false);
     };
 
     return {
-        authenticated,
-        user,
-        loading,
-        reload: load,
+        authenticated, user, loading, reload: load,
     };
 }
