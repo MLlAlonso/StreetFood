@@ -117,14 +117,13 @@ class BusinessService
     {
 
         $business = Business::findOrFail($id);
-
         $reviews = $business
             ->reviews()
             ->with('user')
             ->latest()
             ->paginate(10);
 
-        $reviews->through(
+        $reviews = $reviews->through(
             function ($review) {
                 return [
                     'id' => $review->id,
@@ -142,7 +141,8 @@ class BusinessService
         );
 
         return ApiResponse::success(
-            'Reviews retrieved.', $reviews
+            'Reviews retrieved.',
+            $reviews
         );
     }
 }
