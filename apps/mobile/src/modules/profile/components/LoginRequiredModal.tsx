@@ -3,6 +3,7 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet, } from "react-native";
 import { colors } from "@/styles/theme/colors";
 import { spacing } from "@/styles/theme/spacing";
 import { typography } from "@/styles/theme/typography";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 interface Props {
     visible: boolean;
@@ -11,28 +12,30 @@ interface Props {
 }
 
 export default function LoginRequiredModal({ visible, onCancel, onAccept, }: Props) {
+    const { t } = useTranslation();
+
     return (
         <Modal transparent visible={visible} animationType="fade" >
             <View style={styles.overlay}>
                 <View style={styles.card}>
                     <Text style={styles.title}>
-                        Login required
+                        {t("loginRequired")}
                     </Text>
 
                     <Text style={styles.description}>
-                        Create an account to access your profile.
+                        {t("profileLoginRequiredDescription")}
                     </Text>
 
                     <View style={styles.buttons}>
                         <TouchableOpacity style={styles.cancelButton} onPress={onCancel} >
                             <Text style={styles.cancelText}>
-                                Cancel
+                                {t("cancel")}
                             </Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.acceptButton} onPress={onAccept} >
                             <Text style={styles.acceptText}>
-                                Create account
+                                {t("createAccount")}
                             </Text>
                         </TouchableOpacity>
                     </View>

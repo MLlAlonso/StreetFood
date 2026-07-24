@@ -1,16 +1,25 @@
-import { View, TouchableOpacity, Image, Text, StyleSheet, } from "react-native";
+import { View, TouchableOpacity, Image, Text, StyleSheet, useWindowDimensions, } from "react-native";
 
 import { useRouter, usePathname } from "expo-router";
+import { useEffect, useState } from "react";
 import { colors } from "@/styles/theme/colors";
 import { typography } from "@/styles/theme/typography";
 import { useResponsive } from "@/hooks/useResponsive";
 import { useTranslation } from "@/translations/hooks/useTranslation";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
+import LoginRequiredModal from "@/modules/profile/components/LoginRequiredModal";
 
 export default function BottomTabs() {
     const router = useRouter();
     const pathname = usePathname();
     const { t } = useTranslation();
-    const { isDesktop, } = useResponsive();
+    const { isDesktop } = useResponsive();
+    const { authenticated, loading } = useAuth();
+    const [showLoginModal, setShowLoginModal] = useState(false);
+
+    useEffect(() => {
+        setShowLoginModal(false);
+    }, [pathname]);
 
     const tabs = [
         {
@@ -18,6 +27,7 @@ export default function BottomTabs() {
             route: "/main",
             path: "/main",
             icon: require("@/assets/icons/home.png"),
+            requiresAuth: false,
         },
 
         {
@@ -25,6 +35,7 @@ export default function BottomTabs() {
             route: "/(tabs)/map",
             path: "/map",
             icon: require("@/assets/icons/map.png"),
+            requiresAuth: false,
         },
 
         {
@@ -32,6 +43,7 @@ export default function BottomTabs() {
             route: "/(tabs)/favorites",
             path: "/favorites",
             icon: require("@/assets/icons/favorite.png"),
+            requiresAuth: true,
         },
 
         {
@@ -39,13 +51,29 @@ export default function BottomTabs() {
             route: "/(tabs)/profile",
             path: "/profile",
             icon: require("@/assets/icons/profile.png"),
+            requiresAuth: true,
         },
     ];
 
+    const handlePress = (tab: (typeof tabs)[number]) => {
+        if (loading) {
+            return;
+        }
+
+        if (tab.requiresAuth && !authenticated) {
+            setShowLoginModal(true);
+            return;
+        }
+
+        if (pathname !== tab.path) {
+            router.replace(tab.route);
+        }
+    };
+
     return (
-        <View style={[styles.container, isDesktop && styles.desktopContainer,]} >
-            {
-                tabs.map((tab, index) => {
+        <>
+            <View style={[styles.container, isDesktop && styles.desktopContainer,]} >
+                {tabs.map((tab, index) => {
                     const active = pathname === tab.path;
 
                     return (
@@ -54,10 +82,12 @@ export default function BottomTabs() {
                             activeOpacity={0.9}
                             style={[
                                 styles.tab,
-                                index === tabs.length - 1 && { borderRightWidth: 0, },
+                                index === tabs.length - 1 && {
+                                    borderRightWidth: 0,
+                                },
                                 active && styles.activeTab,
                             ]}
-                            onPress={() => router.replace(tab.route)}
+                            onPress={() => handlePress(tab)}
                         >
                             <Image source={tab.icon} style={styles.icon} />
 
@@ -66,9 +96,15 @@ export default function BottomTabs() {
                             </Text>
                         </TouchableOpacity>
                     );
-                })
-            }
-        </View>
+                })}
+            </View>
+
+            <LoginRequiredModal
+                visible={showLoginModal}
+                onCancel={() => setShowLoginModal(false)}
+                onAccept={() => { setShowLoginModal(false); router.push("/register"); }}
+            />
+        </>
     );
 }
 

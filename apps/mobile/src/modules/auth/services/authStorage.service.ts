@@ -12,12 +12,14 @@ export async function getStoredUser() {
 }
 
 export async function getStoredToken() {
-    return AsyncStorage.getItem(
-        "token"
-    );
+    return AsyncStorage.getItem("token");
 }
 
 export async function isAuthenticated() {
     const token = await getStoredToken();
     return !!token;
+}
+
+export async function clearAuthStorage() {
+    await AsyncStorage.multiRemove(["token", "user",]);
 }

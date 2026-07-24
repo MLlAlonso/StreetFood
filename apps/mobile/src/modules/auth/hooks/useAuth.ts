@@ -1,4 +1,6 @@
 import { useEffect, useState, } from "react";
+import { clearAuthStorage } from "../services/authStorage.service";
+import { logout } from "../services/auth.service";
 import { getStoredUser, isAuthenticated, } from "../services/authStorage.service";
 
 export function useAuth() {
@@ -20,7 +22,25 @@ export function useAuth() {
         setLoading(false);
     };
 
+    const signOut = async () => {
+        try {
+            await logout();
+        } catch {
+            // Si el token ya expiró o la petición falla, igualmente eliminamos la sesión local.
+        }
+
+        setLoading(true);
+        await clearAuthStorage();
+        setAuthenticated(false);
+        setUser(null);
+        setLoading(false);
+    };
+
     return {
-        authenticated, user, loading, reload: load,
+        authenticated,
+        user,
+        loading,
+        reload: load,
+        signOut,
     };
 }

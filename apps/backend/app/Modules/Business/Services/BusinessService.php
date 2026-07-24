@@ -4,6 +4,9 @@ namespace App\Modules\Business\Services;
 
 use App\Models\Business;
 use App\Modules\Shared\Responses\ApiResponse;
+use App\Models\User;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class BusinessService
 {
@@ -144,5 +147,178 @@ class BusinessService
             'Reviews retrieved.',
             $reviews
         );
+    }
+
+    public function my(User $user)
+    {
+        $businesses = $user
+            ->business()
+            ->with([
+                'categories',
+                'menuItems',
+            ])
+            ->get();
+
+        return ApiResponse::success(
+
+            'Businesses retrieved',
+
+            $businesses->map(
+
+                function ($business) {
+
+                    return [
+
+                        'id' => $business->id,
+
+                        'business_name' =>
+                        $business->business_name,
+
+                        'business_type' =>
+                        $business->business_type,
+
+                        'logo' =>
+                        $business->logo,
+
+                        'image' =>
+                        $business->menuItems
+                            ->first()?->image
+                            ??
+                            $business->logo,
+
+                        'categories' =>
+                        $business->categories
+                            ->pluck('name')
+                            ->values(),
+
+                        'rating' => 0,
+
+                        'distance' => 0,
+
+                    ];
+                }
+
+            )
+
+        );
+    }
+
+    public function store(User $user, array $data)
+    {
+        if ($user->business()->count() >= 5) {
+
+            return ApiResponse::error(
+                'Maximum number of businesses reached.',
+                null,
+                422
+            );
+        }
+
+        $business = $user
+            ->business()
+            ->create([
+
+                'business_type' =>
+                $data['business_type'],
+
+                'business_name' =>
+                $data['business_name'],
+
+                'logo' =>
+                $data['logo'] ?? null,
+
+                'description' =>
+                $data['description'] ?? null,
+
+                'latitude' =>
+                $data['latitude'] ?? null,
+
+                'longitude' =>
+                $data['longitude'] ?? null,
+
+            ]);
+
+        if (!empty($data['categories'])) {
+
+            $ids = Category::whereIn(
+                'name',
+                $data['categories']
+            )->pluck('id');
+
+            $business
+                ->categories()
+                ->sync($ids);
+        }
+
+        if (!empty($data['menu'])) {
+
+            foreach ($data['menu'] as $dish) {
+
+                $business
+                    ->menuItems()
+                    ->create([
+
+                        'name' =>
+                        $dish['name'],
+
+                        'description' =>
+                        $dish['description'] ?? null,
+
+                        'image' =>
+                        $dish['image'] ?? null,
+
+                    ]);
+            }
+        }
+
+        return ApiResponse::success(
+            'Business created successfully.',
+            $business->load(
+                'categories',
+                'menuItems'
+            ),
+            201
+        );
+    }
+
+    public function update(User $user, int $id, array $data)
+    {
+        $business = $user->business()->findOrFail($id);
+
+        DB::transaction(function () use ($business, $data) {
+            $business->update([
+                'business_type' => $data['business_type'],
+                'business_name' => $data['business_name'],
+                'logo' => $data['logo'] ?? null,
+                'description' => $data['description'] ?? null,
+                'latitude' => $data['latitude'] ?? null,
+                'longitude' => $data['longitude'] ?? null,
+            ]);
+
+            $ids = Category::whereIn('name', $data['categories'])->pluck('id');
+            $business->categories()->sync($ids);
+            $business->menuItems()->delete();
+
+            foreach ($data['menu'] ?? [] as $dish) {
+                $business->menuItems()->create([
+                    'name' => $dish['name'],
+                    'description' => $dish['description'] ?? null,
+                    'image' => $dish['image'] ?? null,
+                ]);
+            }
+        });
+
+        return ApiResponse::success(
+            'Business updated.',
+            $business->load('categories', 'menuItems')
+        );
+    }
+
+    public function destroy(User $user, int $id)
+    {
+        $business = $user->business()->findOrFail($id);
+        $business->delete();
+
+        return ApiResponse::success('Business deleted.');
     }
 }

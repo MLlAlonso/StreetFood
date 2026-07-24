@@ -7,4 +7,7 @@ export interface Business {
     categories: string[];
     rating: number;
     distance: number;
+    reviews_count?: number;
+    favorites_count?: number;
+    menu_items_count?: number;
 }

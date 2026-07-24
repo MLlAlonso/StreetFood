@@ -7,26 +7,23 @@ import { colors } from "@/styles/theme/colors";
 import { styles } from "../styles/profile.styles";
 import { useProfile } from "../hooks/useProfile";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import Button from "@/components/ui/Button";
 import AppHeader from "@/components/layout/AppHeader";
-import BottomTabs from "@/components/layout/BottomTabs";
+import AppModal from "@/components/ui/AppModal";
 import EditProfileModal from "../components/EditProfileModal";
 import ProfileOptionCard from "../components/ProfileOptionCard";
-import LoginRequiredModal from "../components/LoginRequiredModal";
+import { useTranslation } from "@/translations/hooks/useTranslation";
+import { useBusiness } from "../hooks/useBusiness";
 
 export default function ProfileScreen() {
     const router = useRouter();
-    const { authenticated, loading: authLoading } = useAuth();
+    const { authenticated, loading: authLoading, signOut, } = useAuth();
     const { profile, loading, saveProfile, } = useProfile();
     const [editVisible, setEditVisible,] = useState(false);
     const [saving, setSaving,] = useState(false);
-    const [showLoginModal, setShowLoginModal,] = useState(false);
-
-    useEffect(() => {
-        if (!authLoading && !authenticated) {
-            setShowLoginModal(true);
-        }
-    }, [authLoading, authenticated,]
-    );
+    const [showLogoutModal, setShowLogoutModal,] = useState(false);
+    const { t } = useTranslation();
+    const { business,} = useBusiness();
 
     const handleSaveProfile = async (data: any) => {
         try {
@@ -37,6 +34,15 @@ export default function ProfileScreen() {
             console.log(error);
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await signOut();
+            router.replace("/welcome");
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -77,7 +83,7 @@ export default function ProfileScreen() {
                                 <View style={styles.card}>
                                     <View style={styles.cardHeader}>
                                         <Text style={styles.cardTitle}>
-                                            My Account
+                                            {t("myProfile")}
                                         </Text>
 
                                         <TouchableOpacity onPress={() => setEditVisible(true)} >
@@ -91,7 +97,7 @@ export default function ProfileScreen() {
 
                                     <View style={styles.field}>
                                         <Text style={styles.label}>
-                                            Name
+                                            {t("name")}
                                         </Text>
 
                                         <Text style={styles.value}>
@@ -101,7 +107,7 @@ export default function ProfileScreen() {
 
                                     <View style={styles.field}>
                                         <Text style={styles.label}>
-                                            Email
+                                            {t("email")}
                                         </Text>
 
                                         <Text style={styles.value}>
@@ -111,7 +117,7 @@ export default function ProfileScreen() {
 
                                     <View style={styles.field}>
                                         <Text style={styles.label}>
-                                            Phone
+                                            {t("phone")}
                                         </Text>
 
                                         <Text style={styles.value}>
@@ -121,44 +127,60 @@ export default function ProfileScreen() {
                                 </View>
 
                                 <View style={styles.card}>
+                                    <Text style={[ styles.cardTitle, { marginBottom: 12, }, ]} >
+                                        My Business
+                                    </Text>
+
+                                    <Button
+                                        title={ business.length === 0 ? "Create Business" : "My Businesses" }
+                                        onPress={() => {
+                                            router.push("/my-business");
+                                        }}
+                                    />
+                                </View>
+
+                                <View style={styles.card}>
                                     <Text style={[styles.cardTitle, { marginBottom: 12, },]} >
-                                        More
+                                        {t("more")}
                                     </Text>
 
                                     <ProfileOptionCard
-                                        title="Settings"
+                                        title={t("settings")}
                                         icon={require("@/assets/icons/Settings.png")}
                                         onPress={() => { }}
                                     />
 
                                     <ProfileOptionCard
-                                        title="Help"
+                                        title={t("help")}
                                         icon={require("@/assets/icons/Help.png")}
                                         onPress={() => { }}
                                     />
 
                                     <ProfileOptionCard
-                                        title="Privacy"
+                                        title={t("privacy")}
                                         icon={require("@/assets/icons/Privacy.png")}
                                         onPress={() => { }}
                                     />
 
                                     <ProfileOptionCard
-                                        title="About us"
+                                        title={t("aboutUs")}
                                         icon={require("@/assets/icons/foodtruck.png")}
                                         onPress={() => { }}
                                     />
+
+                                    <View style={{ marginTop: 20, }} >
+                                        <Button
+                                            title={t("logout")}
+                                            onPress={() => setShowLogoutModal(true)}
+                                            backgroundColor="#E53935"
+                                            textColor="#FFF"
+                                        />
+                                    </View>
                                 </View>
                             </>
                         )
                 }
             </ScrollView>
-
-            <LoginRequiredModal
-                visible={showLoginModal}
-                onCancel={() => setShowLoginModal(false)}
-                onAccept={() => { setShowLoginModal(false); router.push("/register"); }}
-            />
 
             <EditProfileModal
                 visible={editVisible}
@@ -166,6 +188,14 @@ export default function ProfileScreen() {
                 loading={saving}
                 onCancel={() => setEditVisible(false)}
                 onSave={handleSaveProfile}
+            />
+
+            <AppModal
+                visible={showLogoutModal}
+                title={t("logoutConfirmation")}
+                message={t("logoutMessage")}
+                buttonText={t("logout")}
+                onClose={async () => { setShowLogoutModal(false); await handleLogout(); }}
             />
         </View>
     );

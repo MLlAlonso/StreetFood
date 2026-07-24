@@ -72,7 +72,7 @@ export default function LoginScreen() {
                             </Text>
 
                             {isDesktop && (
-                                <TouchableOpacity style={{ marginTop: 40 }} onPress={() => router.replace("/(tabs)/home")} >
+                                <TouchableOpacity style={{ marginTop: 40 }} onPress={() => router.replace("/main")} >
                                     <Text style={styles.guestText}>
                                         Continue as guest →
                                     </Text>
