@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";;
 import { Animated, } from "react-native";
 import { useRef, } from "react";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useBusiness } from "@/modules/profile/hooks/useBusiness";
 import { BusinessProfile, } from "../types/BusinessProfile";
 import { createReview, } from "../services/review.service";
 import { getBusiness, } from "../services/businessProfile.service";
@@ -23,6 +24,7 @@ export default function BusinessProfileScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { authenticated, user, } = useAuth();
+    const { updateStatus } = useBusiness();
 
     const {
         favorite,
@@ -52,6 +54,39 @@ export default function BusinessProfileScreen() {
         }
         toggleFavorite();
     };
+
+
+
+    const handleToggleStatus = async () => {
+        if (!business) return;
+
+        try {
+            setLoading(true);
+
+            await updateStatus(
+                business.id,
+                business.status === "open"
+                    ? "closed"
+                    : "open"
+            );
+
+            await loadBusiness();
+
+        } catch (error) {
+            console.log(error);
+
+            Alert.alert(
+                "Error",
+                t("businessStatusUpdateError")
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+
 
     const [rating, setRating] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -166,6 +201,28 @@ export default function BusinessProfileScreen() {
                             {business.business_name}
                         </Text>
 
+
+
+
+                        <View
+                            style={[
+                                styles.statusBadge,
+                                business.status === "open"
+                                    ? styles.statusOpen
+                                    : styles.statusClosed,
+                            ]}
+                        >
+                            <Text style={styles.statusBadgeText}>
+                                {
+                                    business.status === "open"
+                                        ? t("open")
+                                        : t("closed")
+                                }
+                            </Text>
+                        </View>
+
+
+
                         {
                             authenticated && !favoriteLoading && (
                                 <TouchableOpacity
@@ -231,13 +288,62 @@ export default function BusinessProfileScreen() {
                 {/* OWNER / VISITOR ACTIONS */}
                 {
                     isOwner ? (
-                        <TouchableOpacity activeOpacity={0.9} style={styles.editButton} >
-                            <Image source={editIcon} style={styles.editIcon} />
 
-                            <Text style={styles.editText}>
-                                {t("editProfile")}
-                            </Text>
-                        </TouchableOpacity>
+
+
+
+
+
+
+
+
+
+
+
+                        <View style={styles.ownerActions}>
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                style={styles.editButton}
+                            >
+                                <Image
+                                    source={editIcon}
+                                    style={styles.editIcon}
+                                />
+
+                                <Text style={styles.editText}>
+                                    {t("editProfile")}
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                onPress={handleToggleStatus}
+                                style={[
+                                    styles.statusButton,
+                                    business.status === "open"
+                                        ? styles.closeButton
+                                        : styles.openButton,
+                                ]}
+                            >
+                                <Text style={styles.statusButtonText}>
+                                    {
+                                        business.status === "open"
+                                            ? t("closeTemporarily")
+                                            : t("openNow")
+                                    }
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+
+
+
+
+
+
+
+
                     ) : (
                         <Animated.View style={styles.profileButtonsRow}>
                             <TouchableOpacity activeOpacity={0.85} style={styles.directionButton} >

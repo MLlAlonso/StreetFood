@@ -10,4 +10,8 @@ export interface Business {
     reviews_count?: number;
     favorites_count?: number;
     menu_items_count?: number;
+    status: "open" | "closed";
+    status_reason: "manual" | "schedule";
+    opens_at: string | null;
+    closes_at: string | null;
 }

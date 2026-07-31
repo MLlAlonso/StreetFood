@@ -19,13 +19,19 @@ class UpdateBusinessRequest extends FormRequest
             'logo' => ['nullable', 'string',],
             'description' => ['nullable', 'string',],
             'latitude' => ['nullable', 'numeric',],
-            'longitude' => [ 'nullable', 'numeric', ],
+            'longitude' => ['nullable', 'numeric',],
             'categories' => ['required', 'array', 'min:1', 'max:3',],
             'categories.*' => ['string',],
             'menu' => ['nullable', 'array',],
             'menu.*.name' => ['required', 'string',],
             'menu.*.description' => ['nullable', 'string',],
             'menu.*.image' => ['nullable', 'string',],
+            'schedule_enabled' => ['required', 'boolean',],
+            'hours' => ['required', 'array', 'size:7',],
+            'hours.*.day_of_week' => ['required', 'integer', 'between:0,6',],
+            'hours.*.enabled' => ['required', 'boolean',],
+            'hours.*.open_time' => ['nullable', 'date_format:H:i',],
+            'hours.*.close_time' => ['nullable', 'date_format:H:i',],
         ];
     }
 }

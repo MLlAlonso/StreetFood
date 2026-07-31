@@ -17,6 +17,14 @@ class Business extends Model
         'description',
         'latitude',
         'longitude',
+        'schedule_enabled',
+        'manual_override',
+        'manual_override_until',
+    ];
+
+    protected $casts = [
+        'schedule_enabled' => 'boolean',
+        'manual_override_until' => 'datetime',
     ];
 
     public function user()
@@ -42,5 +50,11 @@ class Business extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function hours()
+    {
+        return $this->hasMany(BusinessHour::class)
+            ->orderBy('day_of_week');
     }
 }

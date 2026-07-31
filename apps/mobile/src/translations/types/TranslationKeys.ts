@@ -73,4 +73,12 @@ export type TranslationKeys =
     | "delete"
     | "deleteBusiness"
     | "deleteBusinessConfirmation"
+    | "manageBusinessesDescription"
+    | "open"
+    | "closed"
+    | "openNow"
+    | "closeTemporarily"
+    | "businessStatusUpdated"
+    | "businessStatusUpdateError"
     ;
+;

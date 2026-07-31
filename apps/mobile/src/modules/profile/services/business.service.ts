@@ -1,6 +1,6 @@
 import api from "@/services/api/api";
-
 import { Business } from "@/modules/customer/types/Business";
+import { BusinessDetail } from "@/modules/business/types/BusinessDetail";
 
 interface ApiResponse<T> {
     success: boolean;
@@ -25,4 +25,14 @@ export async function updateBusiness(id: number, data: any) {
 
 export async function deleteBusiness(id: number) {
     await api.delete(`/businesses/${id}`);
+}
+
+export async function getBusiness(id: number): Promise<BusinessDetail> {
+    const response = await api.get<ApiResponse<BusinessDetail>>(`/businesses/${id}`);
+    return response.data.data;
+}
+
+export async function updateBusinessStatus(id: number, status: "open" | "closed") {
+    const response = await api.patch(`/businesses/${id}/status`, { status, });
+    return response.data.data;
 }

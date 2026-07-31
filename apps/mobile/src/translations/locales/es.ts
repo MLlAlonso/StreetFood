@@ -74,6 +74,13 @@ const es: Record<TranslationKeys, string> = {
     delete: "Eliminar",
     deleteBusiness: "Eliminar negocio",
     deleteBusinessConfirmation: "¿Estás seguro de eliminar este negocio?",
+    manageBusinessesDescription: "Administra los negocios registrados en tu cuenta.",
+    open: "Abierto",
+    closed: "Cerrado",
+    openNow: "Abrir ahora",
+    closeTemporarily: "Cerrar temporalmente",
+    businessStatusUpdated: "Estado del negocio actualizado.",
+    businessStatusUpdateError: "No se pudo actualizar el estado del negocio.",
 };
 
 export default es;

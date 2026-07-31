@@ -7,6 +7,7 @@ use App\Modules\Business\Services\BusinessService;
 use Illuminate\Http\Request;
 use App\Modules\Business\Requests\CreateBusinessRequest;
 use App\Modules\Business\Requests\UpdateBusinessRequest;
+use App\Modules\Business\Requests\UpdateBusinessStatusRequest;
 
 class BusinessController extends Controller
 {
@@ -56,6 +57,15 @@ class BusinessController extends Controller
         return $this->service->destroy(
             $request->user(),
             $id
+        );
+    }
+
+    public function updateStatus(UpdateBusinessStatusRequest $request, int $id)
+    {
+        return $this->service->updateStatus(
+            $request->user(),
+            $id,
+            $request->validated()
         );
     }
 }

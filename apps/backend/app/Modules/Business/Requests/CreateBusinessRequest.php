@@ -26,6 +26,12 @@ class CreateBusinessRequest extends FormRequest
             'menu.*.name' => ['required', 'string',],
             'menu.*.description' => ['nullable', 'string',],
             'menu.*.image' => ['nullable', 'string',],
+            'schedule_enabled' => ['required', 'boolean',],
+            'hours' => ['required', 'array', 'size:7',],
+            'hours.*.day_of_week' => ['required', 'integer', 'between:0,6',],
+            'hours.*.enabled' => ['required', 'boolean',],
+            'hours.*.open_time' => ['nullable', 'date_format:H:i',],
+            'hours.*.close_time' => ['nullable', 'date_format:H:i',],
         ];
     }
 }

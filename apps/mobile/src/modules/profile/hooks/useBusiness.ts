@@ -1,6 +1,15 @@
 import { useCallback, useEffect, useState, } from "react";
-import { getMyBusinesses, createBusiness, updateBusiness, deleteBusiness, } from "../services/business.service";
 import { Business } from "@/modules/customer/types/Business";
+import { BusinessDetail } from "@/modules/business/types/BusinessDetail";
+
+import {
+    getMyBusinesses,
+    getBusiness,
+    createBusiness,
+    updateBusiness,
+    deleteBusiness,
+    updateBusinessStatus,
+} from "../services/business.service";
 
 export function useBusiness() {
     const [business, setBusiness,] = useState<Business[]>([]);
@@ -21,6 +30,10 @@ export function useBusiness() {
 
     useEffect(() => { reload(); }, [reload]);
 
+    const find = async (id: number): Promise<BusinessDetail> => {
+        return await getBusiness(id);
+    };
+
     const create = async (data: any) => {
         const created = await createBusiness(data);
         await reload();
@@ -33,9 +46,21 @@ export function useBusiness() {
         return updated;
     };
 
-    const remove = async (id: number) => {
-        await deleteBusiness(id);
+    const updateStatus = async (id: number, status: "open" | "closed") => {
+        const updated = await updateBusinessStatus(id, status);
         await reload();
+        return updated;
+    };
+
+    const remove = async (id: number) => {
+        try {
+            console.log("Deleting business:", id);
+            await deleteBusiness(id);
+            console.log("Delete successful");
+            await reload();
+        } catch (error) {
+            console.log("Delete error:", error);
+        }
     };
 
     return {
@@ -44,6 +69,8 @@ export function useBusiness() {
         reload,
         create,
         update,
+        updateStatus,
         remove,
+        find,
     };
 }

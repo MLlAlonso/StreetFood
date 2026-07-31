@@ -302,4 +302,56 @@ export const styles = StyleSheet.create({
         width: 35,
         height: 35,
     },
+
+
+
+
+    ownerActions: {
+        flexDirection: "row",
+        gap: 10,
+        marginTop: 20,
+    },
+
+    statusBadge: {
+        alignSelf: "flex-start",
+        marginTop: 10,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 50,
+    },
+
+    statusOpen: {
+        backgroundColor: "#22C55E",
+    },
+
+    statusClosed: {
+        backgroundColor: "#EF4444",
+    },
+
+    statusBadgeText: {
+        color: "#FFF",
+        fontWeight: "700",
+        fontSize: 12,
+    },
+
+    statusButton: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 14,
+    },
+
+    openButton: {
+        backgroundColor: "#16A34A",
+    },
+
+    closeButton: {
+        backgroundColor: "#DC2626",
+    },
+
+    statusButtonText: {
+        color: "#FFF",
+        fontWeight: "700",
+        fontSize: 14,
+    },
 });

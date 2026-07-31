@@ -14,6 +14,7 @@ Route::prefix('businesses')->group(function () {
         Route::post('/', [BusinessController::class, 'store']);
         Route::put('/{id}', [BusinessController::class, 'update']);
         Route::delete('/{id}', [BusinessController::class, 'destroy']);
+        Route::patch('/{id}/status', [BusinessController::class, 'updateStatus']);
     });
 
     /*

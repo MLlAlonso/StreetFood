@@ -21,6 +21,7 @@ import MenuItemCard from "@/components/cards/MenuItemCard";
 import { MenuItem } from "../types/MenuItem";
 import { pickImage, uploadToCloudinary, } from "../services/cloudinary.service";
 import EmailVerificationModal from "@/components/ui/EmailVerificationModal";
+import BusinessForm from "@/modules/business/components/BusinessForm";
 
 export default function RegisterScreen() {
     const router = useRouter();
@@ -44,9 +45,11 @@ export default function RegisterScreen() {
     const trashIcon = require("@/assets/icons/trash.png");
     const [showModal, setShowModal] = useState(false);
     const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const [sendingVerificationCode, setSendingVerificationCode] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [modalTitle, setModalTitle] = useState("");
     const [modalMessage, setModalMessage] = useState("");
+    const [verifyingCode, setVerifyingCode] = useState(false);
 
     const [location, setLocation] = useState<{
         latitude: number;
@@ -80,10 +83,7 @@ export default function RegisterScreen() {
         }
 
         if (categories.length >= 3) {
-            openModal(
-                "Limit reached",
-                "You can select a maximum of 3 categories"
-            );
+            openModal( "Limit reached", "You can select a maximum of 3 categories" );
             return;
         }
 
@@ -154,25 +154,40 @@ export default function RegisterScreen() {
 
     const sendVerificationCode = async () => {
         try {
-            await api.post(
-                "/auth/send-verification-code",
-                {
-                    email: form.email,
-                }
-            );
+            setSendingVerificationCode(true);
+
+            await api.post("/auth/send-verification-code", {
+                email: form.email,
+            });
 
             setShowVerificationModal(true);
         } catch {
-            openModal("Error", "Could not send verification code");
+            openModal( "Error", "Could not send verification code" );
+        } finally {
+            setSendingVerificationCode(false);
+        }
+    };
+
+    const verifyCodeAndRegister = async () => {
+        try {
+            setVerifyingCode(true);
+
+            await api.post("/auth/verify-code", {
+                email: form.email,
+                code: verificationCode,
+            });
+
+            setShowVerificationModal(false);
+            await handleRegister();
+        } catch {
+            openModal("Error", "Invalid verification code");
+        } finally {
+            setVerifyingCode(false);
         }
     };
 
     const handleContinue = async () => {
-        if (
-            !form.name.trim() ||
-            !form.email.trim() ||
-            !form.password.trim()
-        ) {
+        if ( !form.name.trim() || !form.email.trim() || !form.password.trim() ) {
             openModal("Missing fields", "Please complete required fields");
             return;
         }
@@ -188,11 +203,7 @@ export default function RegisterScreen() {
         }
 
         if (!PASSWORD_REGEX.test(form.password)) {
-            openModal(
-                "Invalid password",
-                "Password must contain at least 8 characters, 1 uppercase letter and 1 number"
-            );
-
+            openModal( "Invalid password", "Password must contain at least 8 characters, 1 uppercase letter and 1 number" );
             return;
         }
 
@@ -205,24 +216,6 @@ export default function RegisterScreen() {
         // VENDOR
         setStep(2);
         setTimeout(() => { console.log("STEP UPDATED"); }, 100);
-    };
-
-    const verifyCodeAndRegister = async () => {
-        try {
-            await api.post(
-                "/auth/verify-code",
-                {
-                    email: form.email,
-                    code: verificationCode,
-                }
-            );
-
-            setShowVerificationModal(false);
-            await handleRegister();
-
-        } catch {
-            openModal("Error", "Invalid verification code");
-        }
     };
 
     const handleVendorSubmit = async () => {
@@ -293,7 +286,7 @@ export default function RegisterScreen() {
 
             const response = await api.post("/auth/register", payload);
             openModal("Success", response.data.message);
-            router.replace("/main");
+            router.replace("/login");
 
         } catch (error: any) {
             console.log("FULL ERROR", error);
@@ -312,6 +305,39 @@ export default function RegisterScreen() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const businessState = {
+        businessType,
+        form: {
+            business_name: form.business_name,
+            description: form.description,
+        },
+        location,
+        logo,
+        categories,
+        menuItems,
+        selectedDish,
+        showMenuModal,
+    };
+
+    const businessActions = {
+        setBusinessType,
+        setForm: (updatedForm: any) =>
+            setForm(prev => ({
+                ...prev,
+                ...updatedForm,
+            })),
+
+        toggleCategory,
+        handleLocation,
+        handlePickLogo,
+        setLogo,
+        setShowMenuModal,
+        setSelectedDish,
+        handleAddDish,
+        handleUpdateDish,
+        setMenuItems,
     };
 
     return (
@@ -440,14 +466,16 @@ export default function RegisterScreen() {
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleContinue} >
-                                {loading ? (
+                            <TouchableOpacity
+                                style={styles.primaryButton}
+                                onPress={handleContinue}
+                                disabled={loading || sendingVerificationCode}
+                            >
+                                {(loading || sendingVerificationCode) ? (
                                     <ActivityIndicator color="#FFF" />
                                 ) : (
-                                    <Text
-                                        style={styles.primaryButtonText} >
-                                        {role ===
-                                            "customer"
+                                    <Text style={styles.primaryButtonText}>
+                                        {role === "customer"
                                             ? "Create Account"
                                             : "Continue"}
                                     </Text>
@@ -465,171 +493,14 @@ export default function RegisterScreen() {
                             </TouchableOpacity>
                         </>
                     ) : (
-                        <>
-                            <TouchableOpacity onPress={() => setStep(1)} style={styles.backButton} >
-                                <Text style={styles.backText}>
-                                    ← Back
-                                </Text>
-                            </TouchableOpacity>
-
-                            <Text style={styles.label}>
-                                Description
-                            </Text>
-
-                            <View style={[styles.row, !isMobile && styles.desktopRow,]} >
-                                <SelectorCard
-                                    icon={foodTruckIcon}
-                                    title="Food Truck"
-                                    active={businessType === "food_truck"}
-                                    onPress={() => setBusinessType("food_truck")}
-                                />
-
-                                <SelectorCard
-                                    icon={restaurantIcon}
-                                    title="Restaurant"
-                                    active={businessType === "restaurant"}
-                                    onPress={() => setBusinessType("restaurant")}
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Business Name
-                                </Text>
-
-                                <Input
-                                    value={form.business_name}
-                                    onChangeText={text => setForm({ ...form, business_name: text, })}
-                                    placeholder="Business name"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Description
-                                </Text>
-
-                                <TextInput
-                                    multiline
-                                    value={form.description}
-                                    onChangeText={text => setForm({ ...form, description: text, })}
-                                    placeholder="Describe your business"
-                                    placeholderTextColor="rgba(38,39,48,0.5)"
-                                    style={styles.textArea}
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Location
-                                </Text>
-
-                                <TouchableOpacity style={styles.inputButton} onPress={handleLocation} >
-                                    <Text style={styles.inputButtonText} >
-                                        {location ? "Location selected" : "Select location"}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Logo
-                                </Text>
-
-                                {!logo ? (
-                                    <TouchableOpacity style={styles.inputButton} onPress={handlePickLogo}>
-                                        <Text style={styles.inputButtonText}>
-                                            Upload Logo
-                                        </Text>
-                                    </TouchableOpacity>
-                                ) : (
-                                    <View>
-                                        <TouchableOpacity onPress={() => setShowLogoModal(true)} >
-                                            <Image source={{ uri: logo }} style={styles.logoPreview} />
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity style={styles.removeLogoButton} onPress={() => setLogo(null)} >
-                                            <Text style={styles.removeLogoText} >
-                                                Remove Logo
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                )}
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Food Categories
-                                </Text>
-
-                                <Text style={{ marginBottom: 10, color: colors.textMuted, }} >
-                                    {categories.length}/3 selected
-                                </Text>
-
-                                <View style={styles.chipsContainer} >
-                                    {FOOD_CATEGORIES.map(
-                                        category => (
-                                            <Chip
-                                                key={category}
-                                                label={category}
-                                                selected={categories.includes(category)}
-                                                onPress={() => toggleCategory(category)}
-                                            />
-                                        )
-                                    )}
-                                </View>
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Menu
-                                </Text>
-
-                                {
-                                    menuItems.map(
-                                        item => (
-                                            <MenuItemCard
-                                                key={item.id}
-                                                image={item.image || ""}
-                                                title={item.name}
-                                                description={item.description}
-                                                editIcon={pencilIcon}
-                                                deleteIcon={trashIcon}
-                                                onEdit={() => {
-                                                    setSelectedDish(item);
-                                                    setShowMenuModal(true);
-                                                }}
-                                                onDelete={() => setMenuItems(prev => prev.filter(x => x.id !== item.id))}
-                                            />
-                                        )
-                                    )
-                                }
-
-                                <TouchableOpacity
-                                    style={styles.menuButton}
-                                    onPress={() => {
-                                        setSelectedDish(null);
-                                        setShowMenuModal(true);
-                                    }}
-                                >
-                                    <View style={styles.plusCircle} >
-                                        <Text style={styles.plusText} >
-                                            +
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleVendorSubmit}>
-                                {loading ? (
-                                    <ActivityIndicator color="#FFF" />
-                                ) : (
-                                    <Text style={styles.primaryButtonText} >
-                                        Create Account
-                                    </Text>
-                                )}
-                            </TouchableOpacity>
-                        </>
+                        <BusinessForm
+                            loading={loading || sendingVerificationCode}
+                            state={businessState}
+                            actions={businessActions}
+                            onSubmit={handleVendorSubmit}
+                            onBack={() => setStep(1)}
+                            submitLabel="Create Account"
+                        />
                     )}
                 </AuthContainer>
             </ScrollView>
@@ -657,19 +528,9 @@ export default function RegisterScreen() {
                 visible={showVerificationModal}
                 code={verificationCode}
                 setCode={setVerificationCode}
+                loading={verifyingCode}
                 onCancel={() => setShowVerificationModal(false)}
                 onAccept={verifyCodeAndRegister}
-            />
-
-            <MenuItemModal
-                visible={showMenuModal}
-                dish={selectedDish}
-                onClose={() => {
-                    setShowMenuModal(false);
-                    setSelectedDish(null);
-                }}
-                onSave={handleAddDish}
-                onUpdate={handleUpdateDish}
             />
         </View>
     );

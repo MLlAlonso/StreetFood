@@ -83,10 +83,6 @@ export default function MenuItemModal({ visible, onClose, onSave, onUpdate, dish
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} >
             <View style={styles.overlay}>
                 <View style={styles.modal}>
-                    <Text style={styles.title}>
-                        Add a dish to the menu
-                    </Text>
-
                     <View style={styles.formGroup}>
                         <Text style={styles.title}>
                             {
