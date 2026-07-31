@@ -34,8 +34,9 @@ export default function BusinessScheduleSection({ enabled, hours, onToggleEnable
                         Business Hours
                     </Text>
 
+
                     <Text style={styles.subtitle}>
-                        Configure when customers can find your business open.
+                        Set your business hours.
                     </Text>
                 </View>
 

@@ -29,17 +29,13 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
     return (
         <>
-            {onBack && (
+{/*             {onBack && (
                 <TouchableOpacity onPress={onBack} style={styles.backButton} >
                     <Text style={styles.backText}>
                         ← Back
                     </Text>
                 </TouchableOpacity>
-            )}
-
-            <Text style={styles.label}>
-                Description
-            </Text>
+            )} */}
 
             <View style={styles.row}>
                 <SelectorCard
@@ -96,18 +92,6 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
             <View style={styles.formGroup}>
                 <Text style={styles.label}>
-                    Location
-                </Text>
-
-                <TouchableOpacity style={styles.inputButton} onPress={actions.handleLocation} >
-                    <Text style={styles.inputButtonText}>
-                        {state.location ? "Location selected" : "Select location"}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.formGroup}>
-                <Text style={styles.label}>
                     Logo
                 </Text>
 
@@ -129,6 +113,25 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                     </>
                 )}
             </View>
+
+            <View style={styles.formGroup}>
+                <Text style={styles.label}>
+                    Location
+                </Text>
+
+                <TouchableOpacity style={styles.inputButton} onPress={actions.handleLocation} >
+                    <Text style={styles.inputButtonText}>
+                        {state.location ? "Location selected" : "Select location"}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+
+            <BusinessScheduleSection
+                enabled={state.scheduleEnabled}
+                hours={state.hours}
+                onToggleEnabled={actions.setScheduleEnabled}
+                onHoursChange={actions.setHours}
+            />
 
             <View style={styles.formGroup}>
                 <Text style={styles.label}>
@@ -177,13 +180,6 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                     </View>
                 </TouchableOpacity>
             </View>
-
-            <BusinessScheduleSection
-                enabled={state.scheduleEnabled}
-                hours={state.hours}
-                onToggleEnabled={actions.setScheduleEnabled}
-                onHoursChange={actions.setHours}
-            />
 
             <TouchableOpacity style={styles.primaryButton} onPress={onSubmit} >
                 {loading ? (

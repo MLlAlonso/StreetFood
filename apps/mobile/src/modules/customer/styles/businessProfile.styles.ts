@@ -101,9 +101,9 @@ export const styles = StyleSheet.create({
     /* ------------------------- */
     editButton: {
         marginHorizontal: 20,
-        marginTop: 22,
         height: 58,
         borderRadius: 15,
+        padding: 10,
         backgroundColor: colors.primary,
         flexDirection: "row",
         justifyContent: "center",
@@ -111,15 +111,15 @@ export const styles = StyleSheet.create({
     },
 
     editIcon: {
-        width: 22,
-        height: 22,
+        width: 20,
+        height: 20,
         resizeMode: "contain",
         marginRight: 10,
     },
 
     editText: {
         color: "#FFF",
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: typography.weight.bold as any,
     },
 
@@ -314,7 +314,8 @@ export const styles = StyleSheet.create({
 
     statusBadge: {
         alignSelf: "flex-start",
-        marginTop: 10,
+        marginTop: 5,
+        marginBottom: 5,
         paddingHorizontal: 12,
         paddingVertical: 4,
         borderRadius: 50,
@@ -335,10 +336,11 @@ export const styles = StyleSheet.create({
     },
 
     statusButton: {
-        flex: 1,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 14,
+        padding: 10,
+        height: "auto",
     },
 
     openButton: {
@@ -352,6 +354,6 @@ export const styles = StyleSheet.create({
     statusButtonText: {
         color: "#FFF",
         fontWeight: "700",
-        fontSize: 14,
+        fontSize: 20,
     },
 });

@@ -55,8 +55,6 @@ export default function BusinessProfileScreen() {
         toggleFavorite();
     };
 
-
-
     const handleToggleStatus = async () => {
         if (!business) return;
 
@@ -65,13 +63,10 @@ export default function BusinessProfileScreen() {
 
             await updateStatus(
                 business.id,
-                business.status === "open"
-                    ? "closed"
-                    : "open"
+                business.status === "open" ? "closed" : "open"
             );
 
             await loadBusiness();
-
         } catch (error) {
             console.log(error);
 
@@ -83,10 +78,6 @@ export default function BusinessProfileScreen() {
             setLoading(false);
         }
     };
-
-
-
-
 
     const [rating, setRating] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -201,27 +192,18 @@ export default function BusinessProfileScreen() {
                             {business.business_name}
                         </Text>
 
-
-
-
                         <View
                             style={[
                                 styles.statusBadge,
-                                business.status === "open"
-                                    ? styles.statusOpen
-                                    : styles.statusClosed,
+                                business.status === "open" ? styles.statusOpen : styles.statusClosed,
                             ]}
                         >
                             <Text style={styles.statusBadgeText}>
                                 {
-                                    business.status === "open"
-                                        ? t("open")
-                                        : t("closed")
+                                    business.status === "open" ? t("open") : t("closed")
                                 }
                             </Text>
                         </View>
-
-
 
                         {
                             authenticated && !favoriteLoading && (
@@ -288,27 +270,9 @@ export default function BusinessProfileScreen() {
                 {/* OWNER / VISITOR ACTIONS */}
                 {
                     isOwner ? (
-
-
-
-
-
-
-
-
-
-
-
-
                         <View style={styles.ownerActions}>
-                            <TouchableOpacity
-                                activeOpacity={0.9}
-                                style={styles.editButton}
-                            >
-                                <Image
-                                    source={editIcon}
-                                    style={styles.editIcon}
-                                />
+                            <TouchableOpacity activeOpacity={0.9} style={styles.editButton} >
+                                <Image source={editIcon} style={styles.editIcon} />
 
                                 <Text style={styles.editText}>
                                     {t("editProfile")}
@@ -320,30 +284,16 @@ export default function BusinessProfileScreen() {
                                 onPress={handleToggleStatus}
                                 style={[
                                     styles.statusButton,
-                                    business.status === "open"
-                                        ? styles.closeButton
-                                        : styles.openButton,
+                                    business.status === "open" ? styles.closeButton : styles.openButton,
                                 ]}
                             >
                                 <Text style={styles.statusButtonText}>
                                     {
-                                        business.status === "open"
-                                            ? t("closeTemporarily")
-                                            : t("openNow")
+                                        business.status === "open" ? t("closeTemporarily") : t("openNow")
                                     }
                                 </Text>
                             </TouchableOpacity>
                         </View>
-
-
-
-
-
-
-
-
-
-
                     ) : (
                         <Animated.View style={styles.profileButtonsRow}>
                             <TouchableOpacity activeOpacity={0.85} style={styles.directionButton} >

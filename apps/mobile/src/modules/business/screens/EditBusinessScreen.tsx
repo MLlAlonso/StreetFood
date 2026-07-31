@@ -3,6 +3,7 @@ import { ScrollView, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import AppModal from "@/components/ui/AppModal";
+import BottomTabs from "@/components/layout/BottomTabs";
 import BusinessForm from "../components/BusinessForm";
 import { styles } from "@/modules/auth/styles/register.styles";
 import { MenuItem } from "@/modules/auth/types/MenuItem";
@@ -249,6 +250,8 @@ export default function EditBusinessScreen() {
                 message={modalMessage}
                 onClose={() => setModalVisible(false)}
             />
+
+            <BottomTabs />
         </View>
     );
 }
