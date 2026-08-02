@@ -356,4 +356,43 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
         fontSize: 20,
     },
+
+    scheduleCard: {
+        backgroundColor: colors.background,
+        borderRadius: 16,
+        padding: 20,
+    },
+
+    scheduleRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: "#EEE",
+    },
+
+    scheduleDay: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#222",
+    },
+
+    scheduleTime: {
+        fontSize: 15,
+        color: "#666",
+    },
+
+    editScheduleButton: {
+        marginTop: 18,
+        backgroundColor: "#121212",
+        borderRadius: 10,
+        paddingVertical: 12,
+        alignItems: "center",
+    },
+
+    editScheduleText: {
+        color: "#FFF",
+        fontWeight: "700",
+    },
 });

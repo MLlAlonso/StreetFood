@@ -29,6 +29,13 @@ export interface BusinessProfile {
 
     categories: string[];
 
+    hours: {
+        day_of_week: number;
+        enabled: boolean;
+        open_time: string | null;
+        close_time: string | null;
+    }[];
+
     menu: {
         id: number;
         name: string;

@@ -271,7 +271,11 @@ export default function BusinessProfileScreen() {
                 {
                     isOwner ? (
                         <View style={styles.ownerActions}>
-                            <TouchableOpacity activeOpacity={0.9} style={styles.editButton} >
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                style={styles.editButton}
+                                onPress={() => router.push(`/my-business/edit/${business.id}`)}
+                            >
                                 <Image source={editIcon} style={styles.editIcon} />
 
                                 <Text style={styles.editText}>
@@ -343,6 +347,45 @@ export default function BusinessProfileScreen() {
                         </>
                     ) : null
                 }
+
+                {/* SCHEDULE */}
+                <Text style={styles.sectionTitle}>
+                    {t("businessHours")}
+                </Text>
+
+                <View style={styles.scheduleCard}>
+
+                    {
+                        business.hours.map(day => (
+                            <View
+                                key={day.day_of_week}
+                                style={styles.scheduleRow}
+                            >
+                                <Text style={styles.scheduleDay}>
+                                    {
+                                        [
+                                            t("sunday"),
+                                            t("monday"),
+                                            t("tuesday"),
+                                            t("wednesday"),
+                                            t("thursday"),
+                                            t("friday"),
+                                            t("saturday"),
+                                        ][day.day_of_week]
+                                    }
+                                </Text>
+
+                                <Text style={styles.scheduleTime}>
+                                    {
+                                        day.enabled
+                                            ? `${day.open_time?.substring(0, 5)} - ${day.close_time?.substring(0, 5)}`
+                                            : t("closed")
+                                    }
+                                </Text>
+                            </View>
+                        ))
+                    }
+                </View>
 
                 {/* MENU */}
                 <Text style={styles.sectionTitle} >

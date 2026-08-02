@@ -166,6 +166,26 @@ export default function EditBusinessScreen() {
         setLoading(true);
 
         try {
+            const payload = {
+                business_type: businessType,
+                business_name: form.business_name,
+                description: form.description,
+                logo,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                categories,
+                schedule_enabled: scheduleEnabled,
+                hours,
+
+                menu: menuItems.map(item => ({
+                    name: item.name,
+                    description: item.description,
+                    image: item.image,
+                })),
+            };
+
+            console.log(payload);
+
             await update(Number(id), {
                 business_type: businessType,
                 business_name: form.business_name,
@@ -184,7 +204,15 @@ export default function EditBusinessScreen() {
                 })),
             });
 
-            router.back();
+            if (router.canGoBack()) {
+                if (router.canGoBack()) {
+                    router.back();
+                } else {
+                    router.replace("/profile");
+                }
+            } else {
+                router.replace("/profile");
+            }
 
         } catch (error) {
             console.log(error);
@@ -240,7 +268,13 @@ export default function EditBusinessScreen() {
                     actions={actions}
                     submitLabel="Save Changes"
                     onSubmit={handleSubmit}
-                    onBack={() => router.back()}
+                    onBack={() => {
+                        if (router.canGoBack()) {
+                            router.back();
+                        } else {
+                            router.replace("/profile");
+                        }
+                    }}
                 />
             </ScrollView>
 

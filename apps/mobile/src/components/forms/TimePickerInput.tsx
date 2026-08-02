@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { TouchableOpacity, Text, Platform, } from "react-native";
+import React, { useEffect, useState } from "react";
+import { TextInput } from "react-native";
 
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from "./TimePickerInput.styles";
 
 interface Props {
@@ -10,45 +9,79 @@ interface Props {
     onChange(value: string): void;
 }
 
-export default function TimePickerInput({ value, placeholder = "--:--", onChange, }: Props) {
-    const [visible, setVisible] = useState(false);
+export default function TimePickerInput({ value, placeholder = "08:00", onChange, }: Props) {
+    const [text, setText] = useState(value?.substring(0, 5) ?? "");
 
-    const date = value
-        ? new Date(`1970-01-01T${value}:00`)
-        : new Date();
+    useEffect(() => {
+        const formatted = value?.substring(0, 5) ?? "";
 
-    const handleConfirm = (selected: Date) => {
-        setVisible(false);
+        if (formatted !== text) {
+            setText(formatted);
+        }
+    }, [value]);
 
-        const hours = selected
-            .getHours()
+    const handleChange = (input: string) => {
+        let digits = input.replace(/\D/g, "");
+
+        if (digits.length > 4) {
+            digits = digits.slice(0, 4);
+        }
+
+        if (digits.length <= 2) {
+            setText(digits);
+        } else {
+            setText(
+                `${digits.slice(0, 2)}:${digits.slice(2)}`
+            );
+        }
+    };
+
+    const handleBlur = () => {
+        const digits = text.replace(/\D/g, "");
+
+        if (digits.length !== 4) {
+            setText(value?.substring(0, 5) ?? "");
+            return;
+        }
+
+        let hours = parseInt(digits.slice(0, 2), 10);
+        let minutes = parseInt(digits.slice(2, 4), 10);
+
+        if (isNaN(hours) || isNaN(minutes)) {
+            setText(value?.substring(0, 5) ?? "");
+            return;
+        }
+
+        if (hours < 4) {
+            hours = 4;
+            minutes = 0;
+        }
+
+        if (hours > 23) {
+            hours = 23;
+        }
+
+        if (minutes > 59) {
+            minutes = 59;
+        }
+
+        const finalValue = `${hours.toString().padStart(2, "0")}:${minutes
             .toString()
-            .padStart(2, "0");
+            .padStart(2, "0")}`;
 
-        const minutes = selected
-            .getMinutes()
-            .toString()
-            .padStart(2, "0");
-
-        onChange(`${hours}:${minutes}`);
+        setText(finalValue);
+        onChange(finalValue);
     };
 
     return (
-        <>
-            <TouchableOpacity style={styles.input} onPress={() => setVisible(true)} >
-                <Text style={styles.text}>
-                    {value ?? placeholder}
-                </Text>
-            </TouchableOpacity>
-
-            <DateTimePickerModal
-                isVisible={visible}
-                mode="time"
-                date={date}
-                onConfirm={handleConfirm}
-                onCancel={() => setVisible(false)}
-                is24Hour
-            />
-        </>
+        <TextInput
+            style={styles.input}
+            keyboardType="number-pad"
+            placeholder={placeholder}
+            value={text}
+            maxLength={5}
+            onChangeText={handleChange}
+            onBlur={handleBlur}
+        />
     );
 }

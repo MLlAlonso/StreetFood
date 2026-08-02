@@ -73,7 +73,21 @@ class BusinessService
                 'opens_at' => optional($status['opens_at'])->format('H:i'),
                 'closes_at' => optional($status['closes_at'])->format('H:i'),
                 'schedule_enabled' => $business->schedule_enabled,
-                'hours' => $business->hours->sortBy('day_of_week')->values(),
+                'hours' => $business->hours
+                    ->sortBy('day_of_week')
+                    ->values()
+                    ->map(function ($hour) {
+                        return [
+                            'day_of_week' => $hour->day_of_week,
+                            'enabled' => (bool) $hour->enabled,
+                            'open_time' => $hour->open_time
+                                ? substr($hour->open_time, 0, 5)
+                                : null,
+                            'close_time' => $hour->close_time
+                                ? substr($hour->close_time, 0, 5)
+                                : null,
+                        ];
+                    }),
 
                 'owner' => [
                     'id' => $business->user->id,
@@ -280,7 +294,8 @@ class BusinessService
             ]);
 
             return ApiResponse::success(
-                'Business status updated.', [ 'status' => $data['status'], ]
+                'Business status updated.',
+                ['status' => $data['status'],]
             );
         }
 
@@ -290,11 +305,13 @@ class BusinessService
         |--------------------------------------------------------------------------
         */
         $today = now()->dayOfWeek;
-        $hours = $business->hours->firstWhere( 'day_of_week', $today );
+        $hours = $business->hours->firstWhere('day_of_week', $today);
 
         if (!$hours || !$hours->enabled) {
             return ApiResponse::error(
-                'Business is closed today.', null, 422
+                'Business is closed today.',
+                null,
+                422
             );
         }
 
@@ -310,7 +327,9 @@ class BusinessService
         if ($data['status'] === 'open') {
             if ($now->gte($close)) {
                 return ApiResponse::error(
-                    'Business cannot be opened after closing time.', null, 422
+                    'Business cannot be opened after closing time.',
+                    null,
+                    422
                 );
             }
 
@@ -320,7 +339,8 @@ class BusinessService
             ]);
 
             return ApiResponse::success(
-                'Business opened.', [ 'status' => 'open', ]
+                'Business opened.',
+                ['status' => 'open',]
             );
         }
 
@@ -334,7 +354,7 @@ class BusinessService
             'manual_override_until' => $close,
         ]);
 
-        return ApiResponse::success( 'Business closed.', [ 'status' => 'closed', ] );
+        return ApiResponse::success('Business closed.', ['status' => 'closed',]);
     }
     public function destroy(User $user, int $id)
     {
@@ -344,9 +364,7 @@ class BusinessService
         return ApiResponse::success('Business deleted.');
     }
 
-    public function __construct(
-        protected BusinessStatusService $statusService,
-    ) {}
+    public function __construct(protected BusinessStatusService $statusService,) {}
 
     private function syncBusinessHours(Business $business, array $hours): void
     {

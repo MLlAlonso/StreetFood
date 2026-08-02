@@ -81,6 +81,15 @@ const en: Record<TranslationKeys, string> = {
     closeTemporarily: "Close Temporarily",
     businessStatusUpdated: "Business status updated.",
     businessStatusUpdateError: "Could not update business status.",
+    businessHours: "Horario",
+    editBusinessHours: "Editar horario",
+    sunday: "Domingo",
+    monday: "Lunes",
+    tuesday: "Martes",
+    wednesday: "Miércoles",
+    thursday: "Jueves",
+    friday: "Viernes",
+    saturday: "Sábado",
 };
 
 export default en;

@@ -80,5 +80,14 @@ export type TranslationKeys =
     | "closeTemporarily"
     | "businessStatusUpdated"
     | "businessStatusUpdateError"
+    | "businessHours"
+    | "editBusinessHours"
+    | "sunday"
+    | "monday"
+    | "tuesday"
+    | "wednesday"
+    | "thursday"
+    | "friday"
+    | "saturday"
     ;
 ;

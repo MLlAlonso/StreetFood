@@ -81,6 +81,15 @@ const es: Record<TranslationKeys, string> = {
     closeTemporarily: "Cerrar hoy",
     businessStatusUpdated: "Estado del negocio actualizado.",
     businessStatusUpdateError: "No se pudo actualizar el estado del negocio.",
+    businessHours: "Business Hours",
+    editBusinessHours: "Edit Business Hours",
+    sunday: "Sunday",
+    monday: "Monday",
+    tuesday: "Tuesday",
+    wednesday: "Wednesday",
+    thursday: "Thursday",
+    friday: "Friday",
+    saturday: "Saturday",
 };
 
 export default es;
