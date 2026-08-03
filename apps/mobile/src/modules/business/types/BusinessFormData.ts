@@ -1,5 +1,6 @@
 import { MenuItem } from "@/modules/auth/types/MenuItem";
 import { BusinessHour } from "./BusinessHour";
+import { BusinessSocialLink } from "./BusinessSocialLink";
 
 export interface BusinessFormData {
     business_name: string;
@@ -11,4 +12,5 @@ export interface BusinessFormData {
     menuItems: MenuItem[];
     scheduleEnabled: boolean;
     hours: BusinessHour[];
+    socialLinks: BusinessSocialLink[];
 }

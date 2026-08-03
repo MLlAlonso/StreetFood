@@ -89,5 +89,6 @@ export type TranslationKeys =
     | "thursday"
     | "friday"
     | "saturday"
+    | "followUs"
     ;
 ;

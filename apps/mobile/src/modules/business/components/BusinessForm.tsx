@@ -1,16 +1,17 @@
 import { View, Text, TouchableOpacity, TextInput, Image, ActivityIndicator, } from "react-native";
 
-import { styles } from "@/modules/auth/styles/register.styles";
-import { colors } from "@/styles/theme/colors";
-import { FOOD_CATEGORIES } from "@/modules/auth/constants/foodCategories";
-import SelectorCard from "@/components/ui/SelectorCard";
-import Input from "@/components/ui/Input";
-import Chip from "@/components/ui/Chip";
-import MenuItemCard from "@/components/cards/MenuItemCard";
-import MenuItemModal from "@/modules/auth/components/MenuItemModal";
 import { BusinessFormState } from "../types/BusinessFormState";
 import { BusinessFormActions } from "../types/BusinessFormActions";
+import { colors } from "@/styles/theme/colors";
+import { styles } from "@/modules/auth/styles/register.styles";
+import { FOOD_CATEGORIES } from "@/modules/auth/constants/foodCategories";
+import Chip from "@/components/ui/Chip";
+import Input from "@/components/ui/Input";
+import SelectorCard from "@/components/ui/SelectorCard";
+import MenuItemCard from "@/components/cards/MenuItemCard";
+import MenuItemModal from "@/modules/auth/components/MenuItemModal";
 import BusinessScheduleSection from "./BusinessScheduleSection";
+import BusinessSocialLinksSection from "./BusinessSocialLinksSection";
 
 interface Props {
     loading: boolean;
@@ -29,7 +30,7 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
     return (
         <>
-{/*             {onBack && (
+            {/*             {onBack && (
                 <TouchableOpacity onPress={onBack} style={styles.backButton} >
                     <Text style={styles.backText}>
                         ← Back
@@ -132,6 +133,8 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 onToggleEnabled={actions.setScheduleEnabled}
                 onHoursChange={actions.setHours}
             />
+
+            <BusinessSocialLinksSection links={state.socialLinks} onChange={actions.setSocialLinks} />
 
             <View style={styles.formGroup}>
                 <Text style={styles.label}>

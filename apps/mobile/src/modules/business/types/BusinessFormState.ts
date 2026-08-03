@@ -1,5 +1,6 @@
 import { MenuItem } from "@/modules/auth/types/MenuItem";
 import { BusinessHour } from "./BusinessHour";
+import { BusinessSocialLink } from "./BusinessSocialLink";
 
 export interface BusinessFormState {
     businessType: "food_truck" | "restaurant";
@@ -12,4 +13,5 @@ export interface BusinessFormState {
     showMenuModal: boolean;
     scheduleEnabled: boolean;
     hours: BusinessHour[];
+    socialLinks: BusinessSocialLink[];
 }

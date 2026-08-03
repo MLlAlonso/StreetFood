@@ -11,6 +11,8 @@ import { styles } from "@/modules/auth/styles/register.styles";
 import AppHeader from "@/components/layout/AppHeader";
 import AppModal from "@/components/ui/AppModal";
 import { DEFAULT_BUSINESS_WEEK } from "../constants/businessWeek";
+import { BusinessSocialLink } from "../types/BusinessSocialLink";
+
 
 export default function CreateBusinessScreen() {
     const router = useRouter();
@@ -29,6 +31,7 @@ export default function CreateBusinessScreen() {
     const [modalMessage, setModalMessage] = useState("");
     const [scheduleEnabled, setScheduleEnabled] = useState(false);
     const [hours, setHours] = useState(DEFAULT_BUSINESS_WEEK);
+    const [socialLinks, setSocialLinks] = useState<BusinessSocialLink[]>([]);
 
     function openModal(title: string, message: string) {
         setModalTitle(title);
@@ -135,6 +138,7 @@ export default function CreateBusinessScreen() {
                 categories,
                 schedule_enabled: scheduleEnabled,
                 hours,
+                social_links: socialLinks,
 
                 menu: menuItems.map(item => ({
                     name: item.name,
@@ -159,6 +163,7 @@ export default function CreateBusinessScreen() {
         showMenuModal,
         scheduleEnabled,
         hours,
+        socialLinks,
     };
 
     const actions = {
@@ -180,6 +185,7 @@ export default function CreateBusinessScreen() {
         setMenuItems,
         setScheduleEnabled,
         setHours,
+        setSocialLinks,
     };
 
     return (

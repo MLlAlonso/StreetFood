@@ -14,7 +14,7 @@ class BusinessService
 {
     public function index()
     {
-        $businesses = Business::with(['categories', 'menuItems', 'reviews', 'hours',])->get();
+        $businesses = Business::with(['categories', 'menuItems', 'reviews', 'hours', 'socialLinks',])->get();
 
         $data = $businesses->map(
             function ($business) {
@@ -28,6 +28,11 @@ class BusinessService
                     'logo' => $business->logo,
                     'image' => $business->menuItems->first()?->image ?? $business->logo,
                     'categories' => $business->categories->pluck('name')->values(),
+                    'social_links' => $business->socialLinks
+                        ->map(function ($link) {
+                            return ['type' => $link->type, 'url' => $link->url,];
+                        })
+                        ->values(),
                     'rating' => $rating,
                     'reviews_count' => $business->reviews->count(),
                     'distance' => 0,
@@ -44,7 +49,7 @@ class BusinessService
 
     public function show(int $id)
     {
-        $business = Business::with(['user', 'categories', 'menuItems', 'reviews.user', 'hours',])->findOrFail($id);
+        $business = Business::with(['user', 'categories', 'menuItems', 'reviews.user', 'hours', 'socialLinks'])->findOrFail($id);
 
         $status = $this->statusService->resolve($business);
         $rating = round($business->reviews->avg('rating') ?? 0, 1);
@@ -88,7 +93,15 @@ class BusinessService
                                 : null,
                         ];
                     }),
-
+                
+                    'social_links' => $business->socialLinks->map(function ($link) {
+                    return [
+                        'type' => $link->type,
+                        'url' => $link->url,
+                    ];
+                })
+                    ->values(),
+                    
                 'owner' => [
                     'id' => $business->user->id,
                     'name' => $business->user->name,
@@ -165,7 +178,7 @@ class BusinessService
     {
         $businesses = $user
             ->business()
-            ->with(['categories', 'menuItems', 'reviews', 'hours',])
+            ->with(['categories', 'menuItems', 'reviews', 'hours', 'socialLinks'])
             ->get();
 
         return ApiResponse::success(
@@ -189,6 +202,11 @@ class BusinessService
                         'status_reason' => $status['reason'],
                         'opens_at' => optional($status['opens_at'])->format('H:i'),
                         'closes_at' => optional($status['closes_at'])->format('H:i'),
+                        'social_links' => $business->socialLinks
+                            ->map(function ($link) {
+                                return ['type' => $link->type, 'url' => $link->url,];
+                            })
+                            ->values(),
                     ];
                 }
             )
@@ -219,11 +237,35 @@ class BusinessService
                 'manual_override' => 'none',
             ]);
 
+            /*
+            |--------------------------------------------------------------------------
+            | Categories
+            |--------------------------------------------------------------------------
+            */
             if (!empty($data['categories'])) {
                 $ids = Category::whereIn('name', $data['categories'])->pluck('id');
                 $business->categories()->sync($ids);
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Social Links
+            |--------------------------------------------------------------------------
+            */
+            if (!empty($data['social_links'])) {
+                foreach ($data['social_links'] as $link) {
+                    $business->socialLinks()->create([
+                        'type' => $link['type'],
+                        'url'  => $link['url'],
+                    ]);
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Menu
+            |--------------------------------------------------------------------------
+            */
             if (!empty($data['menu'])) {
                 foreach ($data['menu'] as $dish) {
                     $business->menuItems()->create([
@@ -234,8 +276,23 @@ class BusinessService
                 }
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Business Hours
+            |--------------------------------------------------------------------------
+            */
             $this->syncBusinessHours($business, $data['hours']);
         });
+
+        return ApiResponse::success(
+            'Business created.',
+            $business->load([
+                'categories',
+                'menuItems',
+                'socialLinks',
+                'hours',
+            ])
+        );
     }
 
     public function update(User $user, int $id, array $data)
@@ -259,6 +316,15 @@ class BusinessService
 
             $ids = Category::whereIn('name', $data['categories'])->pluck('id');
             $business->categories()->sync($ids);
+            $business->socialLinks()->delete();
+
+            foreach ($data['social_links'] ?? [] as $link) {
+                $business->socialLinks()->create([
+                    'type' => $link['type'],
+                    'url' => $link['url'],
+                ]);
+            }
+
             $business->menuItems()->delete();
 
             foreach ($data['menu'] ?? [] as $dish) {
@@ -274,7 +340,7 @@ class BusinessService
 
         return ApiResponse::success(
             'Business updated.',
-            $business->load('categories', 'menuItems')
+            $business->load('categories', 'menuItems', 'socialLinks', 'hours')
         );
     }
 

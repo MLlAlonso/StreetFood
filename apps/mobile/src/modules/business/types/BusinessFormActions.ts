@@ -1,5 +1,6 @@
 import { MenuItem } from "@/modules/auth/types/MenuItem";
 import { BusinessHour } from "./BusinessHour";
+import { BusinessSocialLink } from "./BusinessSocialLink";
 
 export interface BusinessFormActions {
     setBusinessType(value: "food_truck" | "restaurant"): void;
@@ -15,4 +16,5 @@ export interface BusinessFormActions {
     setMenuItems: React.Dispatch<React.SetStateAction<MenuItem[]>>;
     setScheduleEnabled(value: boolean): void;
     setHours: React.Dispatch<React.SetStateAction<BusinessHour[]>>;
+    setSocialLinks: React.Dispatch<React.SetStateAction<BusinessSocialLink[]>>;
 }

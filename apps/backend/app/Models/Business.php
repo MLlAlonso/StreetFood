@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Review;
 use App\Models\MenuItem;
 use App\Models\Favorite;
-use App\Models\Review;
+use App\Models\BusinessSocialLink;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
 {
@@ -56,5 +58,10 @@ class Business extends Model
     {
         return $this->hasMany(BusinessHour::class)
             ->orderBy('day_of_week');
+    }
+
+    public function socialLinks(): HasMany
+    {
+        return $this->hasMany(BusinessSocialLink::class);
     }
 }

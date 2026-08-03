@@ -1,4 +1,5 @@
 import { Review } from "./Review";
+import { BusinessSocialLink } from "@/modules/business/types/BusinessSocialLink";
 
 export interface BusinessProfile {
     id: number;
@@ -42,4 +43,6 @@ export interface BusinessProfile {
         description: string;
         image: string;
     }[];
+
+    social_links: BusinessSocialLink[];
 }

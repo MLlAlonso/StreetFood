@@ -90,6 +90,7 @@ const es: Record<TranslationKeys, string> = {
     thursday: "Thursday",
     friday: "Friday",
     saturday: "Saturday",
+    followUs: "Síguenos",
 };
 
 export default es;

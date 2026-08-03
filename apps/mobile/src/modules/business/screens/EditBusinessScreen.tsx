@@ -30,6 +30,7 @@ export default function EditBusinessScreen() {
     const [modalMessage, setModalMessage] = useState("");
     const [scheduleEnabled, setScheduleEnabled] = useState(false);
     const [hours, setHours] = useState(DEFAULT_BUSINESS_WEEK);
+    const [socialLinks, setSocialLinks] = useState([]);
 
     function openModal(title: string, message: string) {
         setModalTitle(title);
@@ -54,12 +55,8 @@ export default function EditBusinessScreen() {
             setLogo(data.logo ?? null);
             setCategories(data.categories ?? []);
             setScheduleEnabled(data.schedule_enabled ?? false);
-
-            setHours(
-                data.hours?.length
-                    ? data.hours
-                    : DEFAULT_BUSINESS_WEEK
-            );
+            setHours(data.hours?.length ? data.hours : DEFAULT_BUSINESS_WEEK);
+            setSocialLinks(data.social_links ?? []);
 
             if (data.latitude && data.longitude) {
                 setLocation({
@@ -196,6 +193,7 @@ export default function EditBusinessScreen() {
                 categories,
                 schedule_enabled: scheduleEnabled,
                 hours,
+                social_links: socialLinks,
 
                 menu: menuItems.map(item => ({
                     name: item.name,
@@ -233,6 +231,7 @@ export default function EditBusinessScreen() {
         showMenuModal,
         scheduleEnabled,
         hours,
+        socialLinks,
     };
 
     const actions = {
@@ -255,6 +254,7 @@ export default function EditBusinessScreen() {
         setMenuItems,
         setScheduleEnabled,
         setHours,
+        setSocialLinks,
     };
 
     return (

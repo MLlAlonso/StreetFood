@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Alert, } from "react-native";
+import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Alert, Linking, } from "react-native";
 
 import { useEffect, useState, } from "react";
 import { useLocalSearchParams, } from "expo-router";
@@ -55,6 +55,22 @@ export default function BusinessProfileScreen() {
         toggleFavorite();
     };
 
+    const openLink = async (url: string) => {
+        try {
+
+            const supported = await Linking.canOpenURL(url);
+
+            if (!supported) {
+                return;
+            }
+
+            await Linking.openURL(url);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleToggleStatus = async () => {
         if (!business) return;
 
@@ -93,8 +109,55 @@ export default function BusinessProfileScreen() {
     const websiteIcon = require("@/assets/icons/website.png");
     const whatsappIcon = require("@/assets/icons/whatsapp.png");
     const instagramIcon = require("@/assets/icons/instagram.png");
+    const facebookIcon = require("@/assets/icons/facebook.png");
+    const uberEatsIcon = require("@/assets/icons/uber-eats.png");
+    const rappiIcon = require("@/assets/icons/rappi.png");
+    const didiFoodIcon = require("@/assets/icons/didi-food.png");
     const heartOutlineIcon = require("@/assets/icons/heart-outline.png");
     const heartFilledIcon = require("@/assets/icons/heart-filled.png");
+
+    const SOCIAL_CONFIG: Record<
+        BusinessProfile["social_links"][number]["type"],
+        {
+            icon: any;
+            backgroundColor: string;
+        }
+    > = {
+        website: {
+            icon: websiteIcon,
+            backgroundColor: "#262730",
+        },
+
+        whatsapp: {
+            icon: whatsappIcon,
+            backgroundColor: "#25D366",
+        },
+
+        instagram: {
+            icon: instagramIcon,
+            backgroundColor: "#C13584",
+        },
+
+        facebook: {
+            icon: facebookIcon,
+            backgroundColor: "#1877F2",
+        },
+
+        uber_eats: {
+            icon: uberEatsIcon,
+            backgroundColor: "#06C167",
+        },
+
+        rappi: {
+            icon: rappiIcon,
+            backgroundColor: "#FF4040",
+        },
+
+        didi_food: {
+            icon: didiFoodIcon,
+            backgroundColor: "#FF6A00",
+        },
+    };
 
     useEffect(() => { loadBusiness(); }, []);
     useEffect(() => {
@@ -445,20 +508,43 @@ export default function BusinessProfileScreen() {
                     )
                 }
 
-                {/* ACTIONS */}
-                <View style={styles.actionsContainer} >
-                    <TouchableOpacity activeOpacity={0.8} style={styles.actionButton} >
-                        <Image source={websiteIcon} style={styles.actionIcon} />
-                    </TouchableOpacity>
+                {
+                    business.social_links.length > 0 && (
+                        <>
+                            <Text style={styles.sectionTitle}>
+                                {t("followUs")}
+                            </Text>
 
-                    <TouchableOpacity activeOpacity={0.8} style={[styles.actionButton, styles.whatsappButton,]} >
-                        <Image source={whatsappIcon} style={styles.actionIcon} />
-                    </TouchableOpacity>
+                            <View style={styles.actionsContainer}>
+                                {
+                                    business.social_links.map((link, index) => {
+                                        const config = SOCIAL_CONFIG[link.type];
 
-                    <TouchableOpacity activeOpacity={0.8} style={styles.actionButton} >
-                        <Image source={instagramIcon} style={styles.actionIcon} />
-                    </TouchableOpacity>
-                </View>
+                                        if (!config) {
+                                            return null;
+                                        }
+
+                                        return (
+                                            <TouchableOpacity
+                                                key={`${link.type}-${index}`}
+                                                activeOpacity={0.85}
+                                                style={[
+                                                    styles.actionButton,
+                                                    {
+                                                        backgroundColor: config.backgroundColor,
+                                                    },
+                                                ]}
+                                                onPress={() => openLink(link.url)}
+                                            >
+                                                <Image source={config.icon} style={styles.actionIcon} />
+                                            </TouchableOpacity>
+                                        );
+                                    })
+                                }
+                            </View>
+                        </>
+                    )
+                }
             </ScrollView>
 
             <BottomTabs />

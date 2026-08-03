@@ -1,4 +1,5 @@
 import { MenuItem } from "@/modules/auth/types/MenuItem";
+import { BusinessSocialLink } from "./BusinessSocialLink";
 
 export interface BusinessDetail {
     id: number;
@@ -21,4 +22,5 @@ export interface BusinessDetail {
         open_time: string | null;
         close_time: string | null;
     }[];
+    social_links: BusinessSocialLink[];
 }
