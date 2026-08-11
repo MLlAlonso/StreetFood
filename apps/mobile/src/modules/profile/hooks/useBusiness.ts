@@ -2,14 +2,7 @@ import { useCallback, useEffect, useState, } from "react";
 import { Business } from "@/modules/customer/types/Business";
 import { BusinessDetail } from "@/modules/business/types/BusinessDetail";
 
-import {
-    getMyBusinesses,
-    getBusiness,
-    createBusiness,
-    updateBusiness,
-    deleteBusiness,
-    updateBusinessStatus,
-} from "../services/business.service";
+import { getMyBusinesses, getBusiness, createBusiness, updateBusiness, deleteBusiness, updateBusinessStatus,} from "../services/business.service";
 
 export function useBusiness() {
     const [business, setBusiness,] = useState<Business[]>([]);

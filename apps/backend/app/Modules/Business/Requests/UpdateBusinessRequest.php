@@ -33,15 +33,8 @@ class UpdateBusinessRequest extends FormRequest
             'hours.*.open_time' => ['nullable', 'date_format:H:i',],
             'hours.*.close_time' => ['nullable', 'date_format:H:i',],
             'social_links' => ['nullable', 'array', 'max:3'],
-            'social_links.*.type' => [
-                'required_with:social_links',
-                'in:website,instagram,whatsapp,uber_eats,rappi,didi_food,facebook',
-            ],
-            'social_links.*.url' => [
-                'required_with:social_links',
-                'string',
-                'max:255',
-            ],
+            'social_links.*.type' => ['required_with:social_links', 'in:website,instagram,whatsapp,uber_eats,rappi,didi_food,facebook',],
+            'social_links.*.url' => ['required_with:social_links', 'string', 'max:255',],
         ];
     }
 }

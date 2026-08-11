@@ -466,18 +466,12 @@ export default function RegisterScreen() {
                                 </View>
                             </View>
 
-                            <TouchableOpacity
-                                style={styles.primaryButton}
-                                onPress={handleContinue}
-                                disabled={loading || sendingVerificationCode}
-                            >
+                            <TouchableOpacity style={styles.primaryButton} onPress={handleContinue} disabled={loading || sendingVerificationCode} >
                                 {(loading || sendingVerificationCode) ? (
                                     <ActivityIndicator color="#FFF" />
                                 ) : (
                                     <Text style={styles.primaryButtonText}>
-                                        {role === "customer"
-                                            ? "Create Account"
-                                            : "Continue"}
+                                        {role === "customer" ? "Create Account" : "Continue"}
                                     </Text>
                                 )}
                             </TouchableOpacity>

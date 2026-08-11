@@ -54,10 +54,7 @@ class BusinessService
         $status = $this->statusService->resolve($business);
         $rating = round($business->reviews->avg('rating') ?? 0, 1);
         $totalReviews = $business->reviews->count();
-        $latestReviews = $business->reviews
-            ->sortByDesc('created_at')
-            ->take(3)
-            ->values();
+        $latestReviews = $business->reviews->sortByDesc('created_at')->take(3)->values();
 
         return ApiResponse::success(
             'Business retrieved',
@@ -85,23 +82,19 @@ class BusinessService
                         return [
                             'day_of_week' => $hour->day_of_week,
                             'enabled' => (bool) $hour->enabled,
-                            'open_time' => $hour->open_time
-                                ? substr($hour->open_time, 0, 5)
-                                : null,
-                            'close_time' => $hour->close_time
-                                ? substr($hour->close_time, 0, 5)
-                                : null,
+                            'open_time' => $hour->open_time ? substr($hour->open_time, 0, 5) : null,
+                            'close_time' => $hour->close_time ? substr($hour->close_time, 0, 5) : null,
                         ];
                     }),
-                
-                    'social_links' => $business->socialLinks->map(function ($link) {
+
+                'social_links' => $business->socialLinks->map(function ($link) {
                     return [
                         'type' => $link->type,
                         'url' => $link->url,
                     ];
                 })
                     ->values(),
-                    
+
                 'owner' => [
                     'id' => $business->user->id,
                     'name' => $business->user->name,
@@ -145,11 +138,7 @@ class BusinessService
     {
 
         $business = Business::findOrFail($id);
-        $reviews = $business
-            ->reviews()
-            ->with('user')
-            ->latest()
-            ->paginate(10);
+        $reviews = $business->reviews()->with('user')->latest()->paginate(10);
 
         $reviews = $reviews->through(
             function ($review) {
@@ -168,16 +157,12 @@ class BusinessService
             }
         );
 
-        return ApiResponse::success(
-            'Reviews retrieved.',
-            $reviews
-        );
+        return ApiResponse::success('Reviews retrieved.', $reviews);
     }
 
     public function my(User $user)
     {
-        $businesses = $user
-            ->business()
+        $businesses = $user->business()
             ->with(['categories', 'menuItems', 'reviews', 'hours', 'socialLinks'])
             ->get();
 
@@ -216,11 +201,7 @@ class BusinessService
     public function store(User $user, array $data)
     {
         if ($user->business()->count() >= 5) {
-            return ApiResponse::error(
-                'Maximum number of businesses reached.',
-                null,
-                422
-            );
+            return ApiResponse::error('Maximum number of businesses reached.', null, 422);
         }
 
         $business = null;
@@ -286,12 +267,7 @@ class BusinessService
 
         return ApiResponse::success(
             'Business created.',
-            $business->load([
-                'categories',
-                'menuItems',
-                'socialLinks',
-                'hours',
-            ])
+            $business->load(['categories', 'menuItems', 'socialLinks', 'hours',])
         );
     }
 
@@ -374,11 +350,7 @@ class BusinessService
         $hours = $business->hours->firstWhere('day_of_week', $today);
 
         if (!$hours || !$hours->enabled) {
-            return ApiResponse::error(
-                'Business is closed today.',
-                null,
-                422
-            );
+            return ApiResponse::error('Business is closed today.', null, 422);
         }
 
         $open = Carbon::parse($hours->open_time);
@@ -392,11 +364,7 @@ class BusinessService
         */
         if ($data['status'] === 'open') {
             if ($now->gte($close)) {
-                return ApiResponse::error(
-                    'Business cannot be opened after closing time.',
-                    null,
-                    422
-                );
+                return ApiResponse::error('Business cannot be opened after closing time.', null, 422);
             }
 
             $business->update([
@@ -426,7 +394,6 @@ class BusinessService
     {
         $business = $user->business()->findOrFail($id);
         $business->delete();
-
         return ApiResponse::success('Business deleted.');
     }
 

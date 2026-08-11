@@ -30,9 +30,7 @@ class BusinessController extends Controller
 
     public function my(Request $request)
     {
-        return $this->service->my(
-            $request->user()
-        );
+        return $this->service->my($request->user());
     }
 
     public function store(CreateBusinessRequest $request)

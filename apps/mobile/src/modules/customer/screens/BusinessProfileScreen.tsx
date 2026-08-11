@@ -25,13 +25,7 @@ export default function BusinessProfileScreen() {
     const { t } = useTranslation();
     const { authenticated, user, } = useAuth();
     const { updateStatus } = useBusiness();
-
-    const {
-        favorite,
-        loading: favoriteLoading,
-        toggleFavorite,
-    } = useFavorite(Number(id));
-
+    const { favorite, loading: favoriteLoading, toggleFavorite, } = useFavorite(Number(id));
     const directionScale = useRef(new Animated.Value(1)).current;
     const rateScale = useRef(new Animated.Value(1)).current;
 

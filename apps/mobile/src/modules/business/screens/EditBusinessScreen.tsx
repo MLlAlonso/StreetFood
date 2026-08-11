@@ -128,14 +128,7 @@ export default function EditBusinessScreen() {
     }
 
     function handleUpdateDish(updated: MenuItem) {
-        setMenuItems(prev =>
-            prev.map(item =>
-                item.id === updated.id
-                    ? updated
-                    : item
-            )
-        );
-
+        setMenuItems(prev => prev.map(item => item.id === updated.id ? updated : item));
         setSelectedDish(null);
     }
 
@@ -236,7 +229,6 @@ export default function EditBusinessScreen() {
 
     const actions = {
         setBusinessType,
-
         setForm: (updatedForm: any) =>
             setForm(prev => ({
                 ...prev,

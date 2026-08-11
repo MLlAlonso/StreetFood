@@ -1,17 +1,6 @@
 import React, { useState } from "react";
-
-import {
-    Modal,
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-} from "react-native";
-
-import MapView, {
-    Marker,
-    MapPressEvent,
-} from "react-native-maps";
+import { Modal, View, Text, TouchableOpacity, StyleSheet, } from "react-native";
+import MapView, { Marker, MapPressEvent, } from "react-native-maps";
 
 import { colors } from "@/styles/theme/colors";
 import { useEffect } from "react";
@@ -26,19 +15,10 @@ interface Props {
     };
 
     onClose: () => void;
-
-    onSelect: (
-        latitude: number,
-        longitude: number
-    ) => void;
+    onSelect: (latitude: number, longitude: number) => void;
 }
 
-export default function MapPickerMobile({
-    visible,
-    initialLocation,
-    onClose,
-    onSelect,
-}: Props) {
+export default function MapPickerMobile({ visible, initialLocation, onClose, onSelect, }: Props) {
     const [marker, setMarker] = useState({
         latitude: 19.4326,
         longitude: -99.1332,
@@ -47,27 +27,17 @@ export default function MapPickerMobile({
     useEffect(() => {
         const loadLocation = async () => {
             try {
-                const permission =
-                    await Location.requestForegroundPermissionsAsync();
+                const permission = await Location.requestForegroundPermissionsAsync();
 
-                if (
-                    permission.status !==
-                    "granted"
-                ) {
+                if (permission.status !== "granted") {
                     return;
                 }
 
-                const current =
-                    await Location.getCurrentPositionAsync(
-                        {}
-                    );
+                const current = await Location.getCurrentPositionAsync({});
 
                 setMarker({
-                    latitude:
-                        current.coords.latitude,
-
-                    longitude:
-                        current.coords.longitude,
+                    latitude: current.coords.latitude,
+                    longitude: current.coords.longitude,
                 });
             } catch (error) {
                 console.log(error);
@@ -79,41 +49,26 @@ export default function MapPickerMobile({
         }
     }, [visible]);
 
-    const handlePress = (
-        event: MapPressEvent
-    ) => {
-        const coords =
-            event.nativeEvent.coordinate;
-
+    const handlePress = (event: MapPressEvent) => {
+        const coords = event.nativeEvent.coordinate;
         setMarker(coords);
     };
 
     const handleConfirm = () => {
-        onSelect(
-            marker.latitude,
-            marker.longitude
-        );
-
+        onSelect(marker.latitude, marker.longitude);
         onClose();
     };
 
     return (
-        <Modal
-            visible={visible}
-            animationType="slide"
-        >
+        <Modal visible={visible} animationType="slide" >
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>
                         Select Location
                     </Text>
 
-                    <TouchableOpacity
-                        onPress={onClose}
-                    >
-                        <Text
-                            style={styles.close}
-                        >
+                    <TouchableOpacity onPress={onClose} >
+                        <Text style={styles.close} >
                             ✕
                         </Text>
                     </TouchableOpacity>
@@ -129,18 +84,11 @@ export default function MapPickerMobile({
                     }}
                     onPress={handlePress}
                 >
-                    <Marker
-                        coordinate={marker}
-                    />
+                    <Marker coordinate={marker} />
                 </MapView>
 
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleConfirm}
-                >
-                    <Text
-                        style={styles.buttonText}
-                    >
+                <TouchableOpacity style={styles.button} onPress={handleConfirm} >
+                    <Text style={styles.buttonText} >
                         Confirm Location
                     </Text>
                 </TouchableOpacity>
@@ -156,31 +104,21 @@ const styles = StyleSheet.create({
 
     header: {
         height: 70,
-
-        backgroundColor:
-            colors.primary,
-
+        backgroundColor: colors.primary,
         flexDirection: "row",
-
-        justifyContent:
-            "space-between",
-
+        justifyContent: "space-between",
         alignItems: "center",
-
         paddingHorizontal: 20,
     },
 
     title: {
         color: "#FFF",
-
         fontSize: 20,
-
         fontWeight: "700",
     },
 
     close: {
         color: "#FFF",
-
         fontSize: 28,
     },
 
@@ -190,21 +128,14 @@ const styles = StyleSheet.create({
 
     button: {
         height: 60,
-
-        backgroundColor:
-            colors.secondary,
-
-        justifyContent:
-            "center",
-
+        backgroundColor: colors.secondary,
+        justifyContent: "center",
         alignItems: "center",
     },
 
     buttonText: {
         color: "#FFF",
-
         fontSize: 18,
-
         fontWeight: "700",
     },
 });

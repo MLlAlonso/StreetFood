@@ -93,14 +93,7 @@ export default function CreateBusinessScreen() {
     }
 
     function handleUpdateDish(updated: MenuItem) {
-        setMenuItems(prev =>
-            prev.map(item =>
-                item.id === updated.id
-                    ? updated
-                    : item
-            )
-        );
-
+        setMenuItems(prev => prev.map(item => item.id === updated.id ? updated : item));
         setSelectedDish(null);
     }
 
