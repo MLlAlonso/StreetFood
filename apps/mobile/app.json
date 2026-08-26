@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "StreetFood",
+    "name": "Buska",
     "slug": "streetfood",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "streetfood",
+    "scheme": "Buska",
     "userInterfaceStyle": "light",
     "experiments": {
       "typedRoutes": true
@@ -13,14 +13,17 @@
       "expo-router",
       "expo-font",
       "expo-image",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-splash-screen",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "predictiveBackGestureEnabled": false,
-      "package": "com.mllalonsosteam.streetfood"
+      "package": "com.mllalonsosteam.Buska"
     },
     "web": {
       "bundler": "metro"

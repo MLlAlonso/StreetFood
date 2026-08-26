@@ -30,14 +30,6 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
     return (
         <>
-            {/*             {onBack && (
-                <TouchableOpacity onPress={onBack} style={styles.backButton} >
-                    <Text style={styles.backText}>
-                        ← Back
-                    </Text>
-                </TouchableOpacity>
-            )} */}
-
             <View style={styles.row}>
                 <SelectorCard
                     icon={foodTruckIcon}
@@ -134,7 +126,10 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 onHoursChange={actions.setHours}
             />
 
-            <BusinessSocialLinksSection links={state.socialLinks} onChange={actions.setSocialLinks} />
+            <BusinessSocialLinksSection
+                links={state.socialLinks ?? []}
+                onChange={actions.setSocialLinks}
+            />
 
             <View style={styles.formGroup}>
                 <Text style={styles.label}>

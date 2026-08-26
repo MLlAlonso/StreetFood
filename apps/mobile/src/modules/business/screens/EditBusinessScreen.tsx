@@ -11,6 +11,7 @@ import { pickImage, uploadToCloudinary } from "@/modules/auth/services/cloudinar
 import * as Location from "expo-location";
 import { useBusiness } from "@/modules/profile/hooks/useBusiness";
 import { DEFAULT_BUSINESS_WEEK } from "../constants/businessWeek";
+import { BusinessSocialLink } from "../types/BusinessSocialLink";
 
 export default function EditBusinessScreen() {
     const router = useRouter();
@@ -30,7 +31,7 @@ export default function EditBusinessScreen() {
     const [modalMessage, setModalMessage] = useState("");
     const [scheduleEnabled, setScheduleEnabled] = useState(false);
     const [hours, setHours] = useState(DEFAULT_BUSINESS_WEEK);
-    const [socialLinks, setSocialLinks] = useState([]);
+    const [socialLinks, setSocialLinks] = useState<BusinessSocialLink[]>([]);
 
     function openModal(title: string, message: string) {
         setModalTitle(title);

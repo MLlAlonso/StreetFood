@@ -4,42 +4,48 @@ import { BusinessSocialLink, BusinessSocialType, } from "../types/BusinessSocial
 import styles from "../styles/BusinessSocialLinksSection.styles";
 
 interface Props {
-    links: BusinessSocialLink[];
+    links?: BusinessSocialLink[];
     onChange(value: BusinessSocialLink[]): void;
 }
 
-const OPTIONS: { label: string; value: BusinessSocialType; }[] = [
-    {
-        label: "Website",
-        value: "website",
-    },
-    {
-        label: "Instagram",
-        value: "instagram",
-    },
-    {
-        label: "WhatsApp",
-        value: "whatsapp",
-    },
-    {
-        label: "Facebook",
-        value: "facebook",
-    },
-    {
-        label: "Uber Eats",
-        value: "uber_eats",
-    },
-    {
-        label: "Rappi",
-        value: "rappi",
-    },
-    {
-        label: "DiDi Food",
-        value: "didi_food",
-    },
-];
+const OPTIONS: {
+    label: string;
+    value: BusinessSocialType;
+}[] = [
+        {
+            label: "Website",
+            value: "website",
+        },
+        {
+            label: "Instagram",
+            value: "instagram",
+        },
+        {
+            label: "WhatsApp",
+            value: "whatsapp",
+        },
+        {
+            label: "Facebook",
+            value: "facebook",
+        },
+        {
+            label: "Uber Eats",
+            value: "uber_eats",
+        },
+        {
+            label: "Rappi",
+            value: "rappi",
+        },
+        {
+            label: "DiDi Food",
+            value: "didi_food",
+        },
+    ];
 
-export default function BusinessSocialLinksSection({ links, onChange, }: Props) {
+export default function BusinessSocialLinksSection({
+    links = [],
+    onChange,
+}: Props) {
     const [opened, setOpened] = useState<number | null>(null);
 
     function addLink() {
@@ -64,17 +70,12 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
 
     function updateUrl(index: number, url: string) {
         const copy = [...links];
-        copy[index].url = url;
+        copy[index] = { ...copy[index], url, };
         onChange(copy);
     }
 
     function updateType(index: number, type: BusinessSocialType) {
-        // Evitar duplicados
-        const exists = links.some(
-            (item, i) =>
-                i !== index &&
-                item.type === type
-        );
+        const exists = links.some((item, i) => i !== index && item.type === type);
 
         if (exists) {
             setOpened(null);
@@ -82,7 +83,7 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
         }
 
         const copy = [...links];
-        copy[index].type = type;
+        copy[index] = { ...copy[index], type, };
         onChange(copy);
         setOpened(null);
     }
@@ -117,6 +118,7 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
 
     function normalizeUrl(type: BusinessSocialType, value: string) {
         value = value.trim();
+
         switch (type) {
             case "instagram":
                 value = value.replace("@", "");
@@ -126,7 +128,8 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
                 }
 
                 return value;
-            case "whatsapp":
+
+            case "whatsapp": {
                 let phone = value.replace(/\D/g, "");
 
                 if (!phone.startsWith("52")) {
@@ -134,6 +137,8 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
                 }
 
                 return `https://wa.me/${phone}`;
+            }
+
             default:
                 return value;
         }
@@ -149,108 +154,85 @@ export default function BusinessSocialLinksSection({ links, onChange, }: Props) 
                 Add up to 3 social links.
             </Text>
 
-            {
-                links.map((link, index) => (
-                    <View key={index} style={styles.card} >
+            {links.map((link, index) => (
+                <View key={index} style={styles.card} >
+                    <Text style={styles.label}>
+                        Platform
+                    </Text>
 
-                        <Text style={styles.label}>
-                            Platform
-                        </Text>
-
-                        <TouchableOpacity
-                            style={styles.dropdown}
-                            activeOpacity={0.8}
-                            onPress={() => setOpened(
-                                opened === index
-                                    ? null
-                                    : index
-                            )
+                    <TouchableOpacity
+                        style={styles.dropdown}
+                        activeOpacity={0.8}
+                        onPress={() => setOpened(opened === index ? null : index)}
+                    >
+                        <Text style={styles.dropdownText}>
+                            {
+                                OPTIONS.find(x => x.value === link.type)?.label
                             }
-                        >
-
-                            <Text style={styles.dropdownText}>
-                                {
-                                    OPTIONS.find(x => x.value === link.type)?.label
-                                }
-                            </Text>
-
-                            <Text style={styles.arrow}>
-                                ▼
-                            </Text>
-                        </TouchableOpacity>
-
-                        {
-                            opened === index && (
-                                <View style={styles.dropdownMenu}>
-                                    {
-                                        OPTIONS.map(option => {
-                                            const selected = links.some(
-                                                (item, i) => i !== index && item.type === option.value
-                                            );
-
-                                            return (
-                                                <TouchableOpacity
-                                                    key={option.value}
-                                                    disabled={selected}
-                                                    style={[styles.option, selected && styles.optionDisabled,]}
-                                                    onPress={() => updateType(index, option.value)}
-                                                >
-
-                                                    <Text style={[ styles.optionText, selected && styles.optionTextDisabled, ]} >
-                                                        {option.label}
-                                                    </Text>
-                                                </TouchableOpacity>
-                                            );
-                                        })
-                                    }
-                                </View>
-                            )
-                        }
-
-                        <Text style={styles.label}>
-                            Link
                         </Text>
 
-                        <TextInput
-                            style={styles.input}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            placeholder={getPlaceholder(link.type)}
-                            value={link.url}
-                            onChangeText={(text) => updateUrl(index, text) }
-                            onBlur={() => {
-                                const updated = [...links];
-
-                                updated[index] = {
-                                    ...updated[index],
-                                    url: normalizeUrl(
-                                        updated[index].type,
-                                        updated[index].url
-                                    ),
-                                };
-
-                                onChange(updated);
-                            }}
-                        />
-
-                        <TouchableOpacity style={styles.removeButton} onPress={() => remove(index) } >
-                            <Text style={styles.removeText}>
-                                Remove
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                ))
-            }
-
-            {
-                links.length < 3 && (
-                    <TouchableOpacity style={styles.addButton} onPress={addLink} >
-                        <Text style={styles.addText}>
-                            + Add Link
+                        <Text style={styles.arrow}>
+                            ▼
                         </Text>
                     </TouchableOpacity>
-                )
-            }
+
+                    {opened === index && (
+                        <View style={styles.dropdownMenu} >
+                            {OPTIONS.map(option => {
+                                const selected = links.some((item, i) => i !== index && item.type === option.value);
+
+                                return (
+                                    <TouchableOpacity
+                                        key={option.value}
+                                        disabled={selected}
+                                        style={[styles.option, selected && styles.optionDisabled,]}
+                                        onPress={() => updateType(index, option.value)}
+                                    >
+                                        <Text style={[styles.optionText, selected && styles.optionTextDisabled,]} >
+                                            {option.label}
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
+                    )}
+
+                    <Text style={styles.label}>
+                        Link
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder={getPlaceholder(link.type)}
+                        value={link.url}
+                        onChangeText={text => updateUrl(index, text)}
+                        onBlur={() => {
+                            const updated = [...links,];
+                            updated[index] = {
+                                ...updated[index],
+                                url: normalizeUrl(updated[index].type, updated[index].url),
+                            };
+                            onChange(updated);
+                        }}
+                    />
+
+                    <TouchableOpacity style={styles.removeButton} onPress={() => remove(index)} >
+                        <Text style={styles.removeText}>
+                            Remove
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            ))}
+
+            {links.length < 3 && (
+                <TouchableOpacity style={styles.addButton} onPress={addLink} >
+                    <Text style={styles.addText}>
+                        + Add Link
+                    </Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
 }
