@@ -23,6 +23,7 @@
     },
     "android": {
       "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true,
       "package": "com.mllalonsosteam.Buska"
     },
     "web": {
