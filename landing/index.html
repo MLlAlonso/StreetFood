@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buska — Discover something delicious</title>
+
+    <meta name="description" content="Buska helps you discover local food businesses, explore menus, find nearby places, save favorites and share your experience.">
+    <meta name="keywords" content="Buska, local food, food trucks, restaurants, food discovery, local restaurants, food near me">
+    <meta name="author" content="Buska">
+    <meta property="og:title" content="Buska — Discover something delicious">
+    <meta property="og:description" content="Discover local food businesses, explore menus, find nearby places and discover your next favorite spot with Buska.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0A0F23">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"  rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="#top" class="logo" aria-label="Buska home">
+                <span class="logo__mark">B</span>
+                <span class="logo__text">Buska</span>
+            </a>
+
+            <nav class="nav" aria-label="Main navigation">
+                <a href="#features" data-i18n="navFeatures">
+                    Features
+                </a>
+
+                <a href="#businesses" data-i18n="navBusinesses">
+                    For businesses
+                </a>
+
+                <a href="#about" data-i18n="navAbout">
+                    About
+                </a>
+            </nav>
+
+            <div class="header__actions">
+                <div class="language" role="group" aria-label="Language selector">
+                    <button class="language__button is-active" data-language="en" type="button">
+                        EN
+                    </button>
+
+                    <span>/</span>
+
+                    <button class="language__button" data-language="es" type="button">
+                        ES
+                    </button>
+                </div>
+
+                <a href="#businesses" class="button button--small button--dark" data-i18n="headerCta">
+                    Get started
+                </a>
+
+            </div>
+
+            <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="hero__glow hero__glow--one"></div>
+            <div class="hero__glow hero__glow--two"></div>
+
+            <div class="container hero__grid">
+                <div class="hero__content">
+
+                    <span class="eyebrow" data-i18n="heroEyebrow">
+                        FIND YOUR NEXT FAVORITE
+                    </span>
+
+                    <h1 data-i18n="heroTitle">
+                        Good food is closer than you think.
+                    </h1>
+
+                    <p class="hero__description" data-i18n="heroDescription">
+                        Discover local restaurants, food trucks and food spots,
+                        all in one place. Explore what's nearby, see what's on
+                        the menu and find your next favorite.
+                    </p>
+
+                    <div class="hero__actions">
+                        <a href="#features" class="button button--primary" data-i18n="heroPrimary">
+                            Explore Buska
+                        </a>
+
+                        <a href="#businesses" class="button button--outline" data-i18n="heroSecondary">
+                            I'm a business
+                        </a>
+                    </div>
+
+                    <div class="hero__trust">
+                        <div class="hero__avatars">
+                            <span>F</span>
+                            <span>B</span>
+                            <span>R</span>
+                            <span>+</span>
+                        </div>
+
+                        <div>
+                            <strong data-i18n="heroTrustTitle">
+                                Built for local discovery
+                            </strong>
+
+                            <span data-i18n="heroTrustText">
+                                Simple. Local. Delicious.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero__visual">
+                    <div class="hero-card">
+                        <div class="hero-card__top">
+                            <div>
+                                <span class="hero-card__greeting" data-i18n="mockGreeting">
+                                    Discover
+                                </span>
+
+                                <strong data-i18n="mockQuestion">
+                                    What's good today?
+                                </strong>
+                            </div>
+
+                            <div class="hero-card__profile">
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="search">
+                            <span class="search__icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="7"></circle>
+                                    <path d="m16.5 16.5 4 4"></path>
+                                </svg>
+                            </span>
+
+                            <span data-i18n="mockSearch">
+                                Search food or places
+                            </span>
+                        </div>
+
+                        <div class="categories">
+                            <span class="category category--active" data-i18n="categoryPopular">
+                                Popular
+                            </span>
+
+                            <span class="category" data-i18n="categoryBurgers">
+                                Burgers
+                            </span>
+
+                            <span class="category" data-i18n="categoryMexican">
+                                Mexican
+                            </span>
+
+                            <span class="category" data-i18n="categoryPizza">
+                                Pizza
+                            </span>
+                        </div>
+
+                        <div class="nearby-heading">
+                            <div>
+                                <span data-i18n="nearbyLabel">
+                                    NEARBY
+                                </span>
+
+                                <strong data-i18n="nearbyTitle">
+                                    Places you'll love
+                                </strong>
+                            </div>
+
+                            <span class="nearby-heading__arrow">
+                                →
+                            </span>
+                        </div>
+
+                        <div class="food-list">
+                            <article class="food-card">
+                                <div class="food-card__image food-card__image--one">
+                                    <span>01</span>
+                                </div>
+
+                                <div class="food-card__info">
+                                    <div class="food-card__title">
+                                        <strong>
+                                            Local Kitchen
+                                        </strong>
+
+                                        <span class="rating">
+                                            ★ 4.9
+                                        </span>
+                                    </div>
+
+                                    <span data-i18n="mockRestaurant">
+                                        Restaurant · 0.8 mi
+                                    </span>
+
+                                    <small data-i18n="mockOpen">
+                                        Open now
+                                    </small>
+                                </div>
+                            </article>
+
+                            <article class="food-card">
+                                <div class="food-card__image food-card__image--two">
+                                    <span>02</span>
+                                </div>
+
+                                <div class="food-card__info">
+                                    <div class="food-card__title">
+                                        <strong>
+                                            Street Bites
+                                        </strong>
+
+                                        <span class="rating">
+                                            ★ 4.8
+                                        </span>
+                                    </div>
+
+                                    <span data-i18n="mockFoodTruck">
+                                        Food truck · 1.2 mi
+                                    </span>
+
+                                    <small data-i18n="mockOpen">
+                                        Open now
+                                    </small>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="floating-card floating-card--rating">
+                        <span class="floating-card__icon">
+                            ★
+                        </span>
+
+                        <div>
+                            <strong>4.9</strong>
+                            <span data-i18n="floatingRating">
+                                community rating
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card floating-card--location">
+                        <span class="floating-card__pin">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+
+                                <circle cx="12" cy="10" r="2.5"></circle>
+                            </svg>
+                        </span>
+
+                        <div>
+                            <strong data-i18n="floatingNearby">
+                                Nearby
+                            </strong>
+
+                            <span data-i18n="floatingLocation">
+                                Find places around you
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="intro section" id="about">
+            <div class="container intro__grid">
+                <div class="section-heading">
+                    <span class="eyebrow" data-i18n="introEyebrow">
+                        ONE PLACE FOR LOCAL FOOD
+                    </span>
+
+                    <h2 data-i18n="introTitle">
+                        Stop searching.<br>
+                        Start discovering.
+                    </h2>
+                </div>
+
+                <div class="intro__text">
+                    <p data-i18n="introText">
+                        Buska makes it easier to discover the food around you.
+                        Browse local businesses, explore menus, check hours,
+                        read reviews and find the places worth trying.
+                    </p>
+
+                    <a href="#features" class="text-link" data-i18n="introLink">
+                        See what you can do
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features section section--light" id="features">
+            <div class="container">
+                <div class="section-heading section-heading--center">
+                    <span class="eyebrow" data-i18n="featuresEyebrow">
+                        DISCOVER MORE
+                    </span>
+
+                    <h2 data-i18n="featuresTitle">
+                        Everything you need<br>
+                        to find good food.
+                    </h2>
+
+                    <p data-i18n="featuresDescription">
+                        From the first search to your next favorite spot,
+                        Buska keeps the experience simple.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            01
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7"></circle>
+                                <path d="m16.5 16.5 4 4"></path>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureSearchTitle">
+                            Search & explore
+                        </h3>
+
+                        <p data-i18n="featureSearchText">
+                            Find restaurants, food trucks and local food
+                            businesses by name, category or what's nearby.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            02
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+
+                                <circle cx="12" cy="10" r="2.5"></circle>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureLocationTitle">
+                            Find nearby
+                        </h3>
+
+                        <p data-i18n="featureLocationText">
+                            Use location-based discovery to see businesses
+                            around you and get directions when you're ready
+                            to go.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            03
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 5h16v14H4z"></path>
+                                <path d="M8 9h8M8 13h5"></path>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureMenuTitle">
+                            Explore menus
+                        </h3>
+
+                        <p data-i18n="featureMenuText">
+                            Check menus, discover dishes and get a better idea
+                            of what a place offers before you visit.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            04
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3.5 14.6 9l5.9.7-4.3 4 1.2 5.8L12 16.5l-5.4 3 1.2-5.8-4.3-4L9.4 9 12 3.5Z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureReviewsTitle">
+                            Ratings & reviews
+                        </h3>
+
+                        <p data-i18n="featureReviewsText">
+                            See what the community thinks and share your own
+                            experience with the places you visit.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            05
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20.8 8.8c0 5.2-8.8 10.1-8.8 10.1S3.2 14 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureFavoritesTitle">
+                            Save favorites
+                        </h3>
+
+                        <p data-i18n="featureFavoritesText">
+                            Keep the places you love close so you can come
+                            back whenever you're ready.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-card__number">
+                            06
+                        </div>
+
+                        <div class="feature-card__icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                                <path d="M8 9h8M8 13h5"></path>
+                            </svg>
+                        </div>
+
+                        <h3 data-i18n="featureBusinessTitle">
+                            Built for local businesses
+                        </h3>
+
+                        <p data-i18n="featureBusinessText">
+                            Businesses can create their profile, showcase
+                            their menu, manage information and connect with
+                            new customers.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="business section" id="businesses">
+            <div class="container business__grid">
+                <div class="business__visual">
+                    <div class="business-window">
+                        <div class="business-window__bar">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="business-window__content">
+                            <div class="business-profile">
+                                <div class="business-profile__image">
+                                    BK
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Your Business
+                                    </strong>
+
+                                    <span data-i18n="businessMockType">
+                                        Local food business
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="business-stats">
+                                <div>
+                                    <strong>4.9</strong>
+                                    <span data-i18n="businessMockRating">
+                                        Rating
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <strong>128</strong>
+                                    <span data-i18n="businessMockViews">
+                                        Views
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <strong>24</strong>
+                                    <span data-i18n="businessMockFavorites">
+                                        Favorites
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="business-lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="business__content">
+                    <span class="eyebrow" data-i18n="businessEyebrow">
+                        FOR LOCAL BUSINESSES
+                    </span>
+
+                    <h2 data-i18n="businessTitle">
+                        Put your business<br>
+                        where people are looking.
+                    </h2>
+
+                    <p data-i18n="businessDescription">
+                        Create a profile that helps customers discover
+                        what makes your business worth visiting. Showcase
+                        your menu, hours, photos, social links and more.
+                    </p>
+
+                    <ul class="check-list">
+                        <li>
+                            <span>✓</span>
+                            <span data-i18n="businessFeatureOne">
+                                Create and manage your business profile
+                            </span>
+                        </li>
+
+                        <li>
+                            <span>✓</span>
+                            <span data-i18n="businessFeatureTwo">
+                                Showcase your menu and food
+                            </span>
+                        </li>
+
+                        <li>
+                            <span>✓</span>
+                            <span data-i18n="businessFeatureThree">
+                                Share your hours, location and social links
+                            </span>
+                        </li>
+
+                        <li>
+                            <span>✓</span>
+                            <span data-i18n="businessFeatureFour">
+                                Connect with people looking for local food
+                            </span>
+                        </li>
+                    </ul>
+
+                    <a href="#cta" class="button button--primary" data-i18n="businessCta">
+                        List your business
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps section section--light">
+            <div class="container">
+                <div class="section-heading section-heading--center">
+                    <span class="eyebrow" data-i18n="stepsEyebrow">
+                        HOW IT WORKS
+                    </span>
+
+                    <h2 data-i18n="stepsTitle">
+                        Find it. Try it.<br>
+                        Make it a favorite.
+                    </h2>
+                </div>
+
+                <div class="steps__grid">
+                    <div class="step">
+                        <span class="step__number">
+                            01
+                        </span>
+
+                        <h3 data-i18n="stepOneTitle">
+                            Discover
+                        </h3>
+
+                        <p data-i18n="stepOneText">
+                            Search or browse local food businesses that match what you're craving.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <span class="step__number">
+                            02
+                        </span>
+
+                        <h3 data-i18n="stepTwoTitle">
+                            Explore
+                        </h3>
+
+                        <p data-i18n="stepTwoText">
+                            Check the menu, photos, hours, ratings and details before you decide.
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <span class="step__number">
+                            03
+                        </span>
+
+                        <h3 data-i18n="stepThreeTitle">
+                            Go & share
+                        </h3>
+
+                        <p data-i18n="stepThreeText">
+                            Visit the place, save it to your favorites and share your experience.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta section" id="cta">
+            <div class="cta__shape cta__shape--one"></div>
+            <div class="cta__shape cta__shape--two"></div>
+
+            <div class="container cta__content">
+                <span class="eyebrow eyebrow--light" data-i18n="ctaEyebrow">
+                    SOMETHING GOOD IS WAITING
+                </span>
+
+                <h2 data-i18n="ctaTitle">
+                    Your next favorite<br>
+                    place starts here.
+                </h2>
+
+                <p data-i18n="ctaDescription">
+                    Discover local food. Support local businesses.
+                    Find something worth coming back to.
+                </p>
+
+                <div class="cta__actions">
+                    <a href="#features" class="button button--white" data-i18n="ctaPrimary">
+                        Discover Buska
+                    </a>
+
+                    <a href="#businesses" class="button button--light-outline" data-i18n="ctaSecondary">
+                        For businesses
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__top">
+            <div class="footer__brand">
+                <a href="#top" class="logo logo--footer">
+                    <span class="logo__mark">B</span>
+                    <span class="logo__text">Buska</span>
+                </a>
+
+                <p data-i18n="footerDescription">
+                    Discover local food. Find your next favorite.
+                </p>
+            </div>
+
+            <div class="footer__links">
+                <div>
+                    <strong data-i18n="footerExplore">
+                        Explore
+                    </strong>
+
+                    <a href="#features" data-i18n="navFeatures">
+                        Features
+                    </a>
+
+                    <a href="#about" data-i18n="navAbout">
+                        About
+                    </a>
+                </div>
+
+                <div>
+                    <strong data-i18n="footerBusiness">
+                        Businesses
+                    </strong>
+
+                    <a href="#businesses" data-i18n="navBusinesses">
+                        For businesses
+                    </a>
+
+                    <a href="#cta" data-i18n="businessCta">
+                        List your business
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container footer__bottom">
+
+            <span>
+                © <span id="year"></span> Buska.
+                <span data-i18n="footerRights">
+                    All rights reserved.
+                </span>
+            </span>
+
+            <div class="footer__language">
+                <button class="language__button is-active" data-language="en" type="button">
+                    English
+                </button>
+
+                <span>·</span>
+
+                <button class="language__button" data-language="es" type="button">
+                    Español
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+    <script>
+        const translations = {
+            en: {
+                navFeatures: "Features",
+                navBusinesses: "For businesses",
+                navAbout: "About",
+                headerCta: "Get started",
+                heroEyebrow: "FIND YOUR NEXT FAVORITE",
+                heroTitle: "Good food is closer than you think.",
+                heroDescription:
+                    "Discover local restaurants, food trucks and food spots, all in one place. Explore what's nearby, see what's on the menu and find your next favorite.",
+                heroPrimary: "Explore Buska",
+                heroSecondary: "I'm a business",
+                heroTrustTitle: "Built for local discovery",
+                heroTrustText: "Simple. Local. Delicious.",
+                mockGreeting: "Discover",
+                mockQuestion: "What's good today?",
+                mockSearch: "Search food or places",
+                categoryPopular: "Popular",
+                categoryBurgers: "Burgers",
+                categoryMexican: "Mexican",
+                categoryPizza: "Pizza",
+                nearbyLabel: "NEARBY",
+                nearbyTitle: "Places you'll love",
+                mockRestaurant: "Restaurant · 0.8 mi",
+                mockFoodTruck: "Food truck · 1.2 mi",
+                mockOpen: "Open now",
+                floatingRating: "community rating",
+                floatingNearby: "Nearby",
+                floatingLocation: "Find places around you",
+                introEyebrow: "ONE PLACE FOR LOCAL FOOD",
+                introTitle: "Stop searching.<br>Start discovering.",
+                introText:
+                    "Buska makes it easier to discover the food around you. Browse local businesses, explore menus, check hours, read reviews and find the places worth trying.",
+                introLink: "See what you can do",
+                featuresEyebrow: "DISCOVER MORE",
+                featuresTitle: "Everything you need<br>to find good food.",
+                featuresDescription: "From the first search to your next favorite spot, Buska keeps the experience simple.",
+                featureSearchTitle: "Search & explore",
+                featureSearchText: "Find restaurants, food trucks and local food businesses by name, category or what's nearby.",
+                featureLocationTitle: "Find nearby",
+                featureLocationText: "Use location-based discovery to see businesses around you and get directions when you're ready to go.",
+                featureMenuTitle: "Explore menus",
+                featureMenuText: "Check menus, discover dishes and get a better idea of what a place offers before you visit.",
+                featureReviewsTitle: "Ratings & reviews",
+                featureReviewsText: "See what the community thinks and share your own experience with the places you visit.",
+                featureFavoritesTitle: "Save favorites",
+                featureFavoritesText: "Keep the places you love close so you can come back whenever you're ready.",
+                featureBusinessTitle: "Built for local businesses",
+                featureBusinessText: "Businesses can create their profile, showcase their menu, manage information and connect with new customers.",
+                businessEyebrow: "FOR LOCAL BUSINESSES",
+                businessTitle: "Put your business<br>where people are looking.",
+                businessDescription:
+                    "Create a profile that helps customers discover what makes your business worth visiting. Showcase your menu, hours, photos, social links and more.",
+                businessFeatureOne: "Create and manage your business profile",
+                businessFeatureTwo: "Showcase your menu and food",
+                businessFeatureThree: "Share your hours, location and social links",
+                businessFeatureFour: "Connect with people looking for local food",
+                businessCta: "List your business",
+                businessMockType: "Local food business",
+                businessMockRating: "Rating",
+                businessMockViews: "Views",
+                businessMockFavorites: "Favorites",
+                stepsEyebrow: "HOW IT WORKS",
+                stepsTitle: "Find it. Try it.<br>Make it a favorite.",
+                stepOneTitle: "Discover",
+                stepOneText: "Search or browse local food businesses that match what you're craving.",
+                stepTwoTitle: "Explore",
+                stepTwoText: "Check the menu, photos, hours, ratings and details before you decide.",
+                stepThreeTitle: "Go & share",
+                stepThreeText: "Visit the place, save it to your favorites and share your experience.",
+                ctaEyebrow: "SOMETHING GOOD IS WAITING",
+                ctaTitle: "Your next favorite<br>place starts here.",
+                ctaDescription: "Discover local food. Support local businesses. Find something worth coming back to.",
+                ctaPrimary: "Discover Buska",
+                ctaSecondary: "For businesses",
+                footerDescription: "Discover local food. Find your next favorite.",
+                footerExplore: "Explore",
+                footerBusiness: "Businesses",
+                footerRights: "All rights reserved."
+            },
+
+
+            es: {
+                navFeatures: "Funciones",
+                navBusinesses: "Para negocios",
+                navAbout: "Acerca de",
+                headerCta: "Comenzar",
+                heroEyebrow: "ENCUENTRA TU PRÓXIMO FAVORITO",
+                heroTitle: "La buena comida está más cerca de lo que crees.",
+                heroDescription:
+                    "Descubre restaurantes, food trucks y negocios locales de comida en un solo lugar. Explora lo que tienes cerca, consulta sus menús y encuentra tu próximo favorito.",
+                heroPrimary: "Explorar Buska",
+                heroSecondary: "Tengo un negocio",
+                heroTrustTitle: "Creado para descubrir lo local",
+                heroTrustText: "Simple. Local. Delicioso.",
+                mockGreeting: "Descubre",
+                mockQuestion: "¿Qué se te antoja hoy?",
+                mockSearch: "Busca comida o lugares",
+                categoryPopular: "Popular",
+                categoryBurgers: "Hamburguesas",
+                categoryMexican: "Mexicana",
+                categoryPizza: "Pizza",
+                nearbyLabel: "CERCA DE TI",
+                nearbyTitle: "Lugares que te encantarán",
+                mockRestaurant: "Restaurante · 0.8 mi",
+                mockFoodTruck: "Food truck · 1.2 mi",
+                mockOpen: "Abierto ahora",
+                floatingRating: "calificación de la comunidad",
+                floatingNearby: "Cerca de ti",
+                floatingLocation: "Encuentra lugares a tu alrededor",
+                introEyebrow: "UN SOLO LUGAR PARA LA COMIDA LOCAL",
+                introTitle: "Deja de buscar.<br>Empieza a descubrir.",
+                introText:
+                    "Buska hace más fácil descubrir la comida que tienes a tu alrededor. Explora negocios locales, consulta menús y horarios, lee reseñas y encuentra lugares que vale la pena probar.",
+                introLink: "Descubre todo lo que puedes hacer",
+                featuresEyebrow: "DESCUBRE MÁS",
+                featuresTitle: "Todo lo que necesitas<br>para encontrar buena comida.",
+                featuresDescription: "Desde la primera búsqueda hasta tu próximo lugar favorito, Buska mantiene todo simple.",
+                featureSearchTitle: "Busca y explora",
+                featureSearchText: "Encuentra restaurantes, food trucks y negocios locales por nombre, categoría o cercanía.",
+                featureLocationTitle: "Encuentra lugares cerca",
+                featureLocationText: "Utiliza la ubicación para descubrir negocios a tu alrededor y obtener indicaciones cuando quieras ir.",
+                featureMenuTitle: "Explora menús",
+                featureMenuText: "Consulta menús, descubre platillos y conoce mejor lo que ofrece un lugar antes de visitarlo.",
+                featureReviewsTitle: "Calificaciones y reseñas",
+                featureReviewsText: "Conoce lo que piensa la comunidad y comparte tu propia experiencia con los lugares que visitas.",
+                featureFavoritesTitle: "Guarda favoritos",
+                featureFavoritesText: "Mantén cerca los lugares que te encantan para volver cuando quieras.",
+                featureBusinessTitle: "Creado para negocios locales",
+                featureBusinessText: "Los negocios pueden crear su perfil, mostrar su menú, administrar su información y conectar con nuevos clientes.",
+                businessEyebrow: "PARA NEGOCIOS LOCALES",
+                businessTitle: "Pon tu negocio<br>donde la gente está buscando.",
+                businessDescription:
+                    "Crea un perfil que ayude a los clientes a descubrir por qué vale la pena visitar tu negocio. Muestra tu menú, horarios, fotos, redes sociales y más.",
+                businessFeatureOne: "Crea y administra el perfil de tu negocio",
+                businessFeatureTwo: "Muestra tu menú y tu comida",
+                businessFeatureThree: "Comparte tus horarios, ubicación y redes sociales",
+                businessFeatureFour: "Conecta con personas que buscan comida local",
+                businessCta: "Registra tu negocio",
+                businessMockType: "Negocio local de comida",
+                businessMockRating: "Calificación",
+                businessMockViews: "Visitas",
+                businessMockFavorites: "Favoritos",
+                stepsEyebrow: "CÓMO FUNCIONA",
+                stepsTitle: "Encuéntralo. Pruébalo.<br>Hazlo tu favorito.",
+                stepOneTitle: "Descubre",
+                stepOneText: "Busca o explora negocios locales que coincidan con lo que se te antoja.",
+                stepTwoTitle: "Explora",
+                stepTwoText: "Consulta el menú, fotos, horarios, calificaciones y detalles antes de decidir.",
+                stepThreeTitle: "Ve y comparte",
+                stepThreeText: "Visita el lugar, guárdalo en tus favoritos y comparte tu experiencia.",
+                ctaEyebrow: "ALGO BUENO TE ESTÁ ESPERANDO",
+                ctaTitle: "Tu próximo lugar favorito<br>empieza aquí.",
+                ctaDescription: "Descubre comida local. Apoya negocios locales. Encuentra algo a lo que quieras volver.",
+                ctaPrimary: "Descubre Buska",
+                ctaSecondary: "Para negocios",
+                footerDescription: "Descubre comida local. Encuentra tu próximo favorito.",
+                footerExplore: "Explorar",
+                footerBusiness: "Negocios",
+                footerRights: "Todos los derechos reservados."
+            }
+
+        };
+
+        /* =========================
+           LANGUAGE
+        ========================== */
+        const languageButtons = document.querySelectorAll("[data-language]");
+        const translatedElements = document.querySelectorAll("[data-i18n]");
+
+        function setLanguage(language) {
+            const dictionary = translations[language];
+
+            if (!dictionary) {
+                return;
+            }
+
+            translatedElements.forEach((element) => {
+                const key = element.dataset.i18n;
+
+                if (!dictionary[key]) {
+                    return;
+                }
+
+                element.innerHTML = dictionary[key];
+            });
+
+            languageButtons.forEach((button) => {
+                button.classList.toggle( "is-active", button.dataset.language === language );
+            });
+
+            document.documentElement.lang = language;
+            localStorage.setItem( "buska-language", language );
+        }
+
+        languageButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                setLanguage(button.dataset.language);
+            });
+        });
+
+        /* =========================
+           MOBILE MENU
+        ========================== */
+        const menuButton = document.querySelector(".menu-button");
+        const navigation = document.querySelector(".nav");
+
+        menuButton.addEventListener("click", () => {
+            const isOpen = navigation.classList.toggle("is-open");
+            menuButton.setAttribute("aria-expanded", isOpen);
+            menuButton.classList.toggle("is-active", isOpen);
+        }
+        );
+
+        navigation
+            .querySelectorAll("a")
+            .forEach((link) => {
+                link.addEventListener(
+                    "click",
+                    () => {
+                        navigation.classList.remove("is-open");
+                        menuButton.classList.remove("is-active");
+                        menuButton.setAttribute("aria-expanded", "false");
+                    }
+                );
+            });
+
+        /* =========================
+           YEAR
+        ========================== */
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        /* =========================
+           INITIAL LANGUAGE
+        ========================== */
+        const savedLanguage = localStorage.getItem("buska-language") || "en";
+        setLanguage(savedLanguage);
+    </script>
+</body>
+
+</html>
