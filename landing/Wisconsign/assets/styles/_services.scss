@@ -1,0 +1,271 @@
+@use "variables" as *;
+
+.services {
+    position: relative;
+    padding: 60px 0;
+    background: $color-background-soft;
+    overflow: visible;
+
+    &__container {
+        width: min(calc(100% - (#{$container-padding-desktop} * 2)), $container-width );
+        margin: 0 auto;
+    }
+
+    &__intro {
+        max-width: 760px;
+        margin: 0 auto 70px;
+        text-align: center;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 7px 14px;
+        border: 1px solid rgba($color-secondary, 0.25);
+        border-radius: $radius-pill;
+        background: rgba($color-secondary, 0.06);
+        color: $color-secondary;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin: 0;
+        color: $color-primary;
+        font-family: $font-display;
+        font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+        font-weight: 600;
+        line-height: 1.08;
+        letter-spacing: -0.035em;
+
+        span {
+            color: $color-secondary;
+        }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        padding: 10px;
+        margin: -10px;
+    }
+
+    &__card {
+        position: relative;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        padding: 30px 30px;
+        border: 1px solid rgba($color-black, 0.08);
+        border-radius: $radius-medium;
+        background: $color-white;
+        box-shadow: 0 2px 8px rgba($color-black, 0.025);
+        isolation: isolate;
+        transition:
+            transform $transition-normal,
+            box-shadow $transition-normal,
+            border-color $transition-normal;
+        z-index: 1;
+    }
+
+    &__card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        border-radius: $radius-medium $radius-medium 0 0;
+        background: $color-secondary;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform $transition-normal;
+        z-index: 2;
+    }
+
+    &__icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        border-radius: 50%;
+        background: rgba($color-secondary, 0.07);
+        color: $color-secondary;
+        transition:
+            background $transition-normal,
+            color $transition-normal,
+            transform $transition-normal;
+
+        svg {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    &__card-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    &__number {
+        margin-bottom: 4px;
+        color: $color-text-muted;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+    }
+
+    &__card-title {
+        margin: 0 0 10px;
+        color: $color-primary;
+        font-family: $font-display;
+        font-size: 1.60rem;
+        font-weight: 600;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        transition: color $transition-fast;
+    }
+
+    &__card-text {
+        margin: 0;
+        color: $color-text-muted;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.75;
+    }
+}
+
+.services__card:hover,
+.services__card:focus-within {
+    z-index: 20;
+    transform: translateY(-12px);
+    border-color: rgba($color-secondary, 0.22);
+    box-shadow:
+        0 24px 55px rgba($color-black, 0.13),
+        0 8px 20px rgba($color-black, 0.07);
+}
+
+.services__card:hover::before,
+.services__card:focus-within::before {
+    transform: scaleX(1);
+}
+
+.services__card:hover .services__icon,
+.services__card:focus-within .services__icon {
+    background: $color-secondary;
+    color: $color-white;
+    transform: scale(1.05);
+}
+
+.services__card:hover .services__card-title,
+.services__card:focus-within .services__card-title {
+    color: $color-secondary;
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .services {
+        padding: 100px 0;
+    }
+
+    .services__container {
+        width: min(calc(100% - (#{$container-padding-tablet} * 2)),
+            $container-width );
+    }
+
+    .services__intro {
+        margin-bottom: 55px;
+    }
+
+    .services__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .services__card {
+        min-height: 290px;
+        padding: 30px 28px;
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .services {
+        padding: 80px 0;
+    }
+
+    .services__container {
+        width: calc(100% - (#{$container-padding-mobile} * 2));
+    }
+
+    .services__intro {
+        margin-bottom: 42px;
+    }
+
+    .services__badge {
+        margin-bottom: 16px;
+        font-size: 10px;
+    }
+
+    .services__title {
+        font-size: clamp(2.25rem, 10vw, 3rem);
+    }
+
+    .services__grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 6px;
+        margin: -6px;
+    }
+
+    .services__card {
+        min-height: auto;
+        padding: 28px 24px;
+    }
+
+    .services__card:hover,
+    .services__card:focus-within {
+        transform: translateY(-6px);
+    }
+
+    .services__icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 20px;
+    }
+
+    .services__icon svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .services__card-title {
+        font-size: 1.4rem;
+    }
+
+    .services__card-text {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .services__card,
+    .services__card::before,
+    .services__icon,
+    .services__card-title {
+        transition: none;
+    }
+
+    .services__card:hover,
+    .services__card:focus-within {
+        transform: none;
+    }
+}

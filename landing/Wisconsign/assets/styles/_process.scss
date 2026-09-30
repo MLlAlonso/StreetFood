@@ -1,0 +1,284 @@
+@use "variables" as *;
+
+.process {
+    position: relative;
+    width: 100%;
+    padding: 60px 0 80px;
+    background: $color-primary;
+    color: $color-white;
+    overflow: hidden;
+
+    &__container {
+        width: 100%;
+        max-width: $container-width;
+        margin: 0 auto;
+        padding: 0 $container-padding-desktop;
+    }
+
+    &__intro {
+        max-width: 700px;
+        margin: 0 auto 80px;
+        text-align: center;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid rgba(253, 15, 12, 0.45);
+        border-radius: $radius-pill;
+        color: $color-secondary;
+        font-family: $font-primary;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin: 20px 0 0;
+        color: $color-white;
+        font-family: $font-display;
+        font-size: clamp(2.7rem, 4.5vw, 4.5rem);
+        font-weight: 600;
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+
+        span {
+            color: $color-secondary;
+        }
+    }
+
+    &__timeline {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0;
+    }
+
+    &__timeline::before {
+        content: "";
+        position: absolute;
+        top: 30px;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(90deg,
+                rgba(253, 15, 12, 0.75),
+                rgba(255, 255, 255, 0.22),
+                rgba(253, 15, 12, 0.75));
+        z-index: 0;
+    }
+
+    &__step {
+        position: relative;
+        min-width: 0;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        z-index: 1;
+    }
+
+    &__icon {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(253, 15, 12, 0.75);
+        border-radius: 50%;
+        background: $color-primary;
+        color: $color-secondary;
+        box-shadow: 0 0 0 8px $color-primary;
+        transition:
+            background-color $transition-normal,
+            color $transition-normal,
+            border-color $transition-normal,
+            transform $transition-normal;
+
+        svg {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    &__number {
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.38);
+        font-family: $font-primary;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.12em;
+    }
+
+    &__step-title {
+        max-width: 190px;
+        margin: 10px auto 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-family: $font-primary;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+}
+
+.process__step:hover .process__icon {
+    background: $color-secondary;
+    border-color: $color-secondary;
+    color: $color-white;
+    transform: translateY(-4px);
+}
+
+.process__step:hover .process__number {
+    color: $color-secondary;
+}
+
+.process__step:hover .process__step-title {
+    color: $color-white;
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .process {
+        padding: 50px 0 60px;
+    }
+
+    .process__container {
+        padding: 0 $container-padding-tablet;
+    }
+
+    .process__intro {
+        margin-bottom: 65px;
+    }
+
+    .process__timeline {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+    .process__step {
+        padding: 0 10px;
+    }
+
+    .process__timeline::before {
+        top: 28px;
+        left: 8%;
+        right: 8%;
+    }
+
+    .process__step-title {
+        max-width: 150px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+
+    .process {
+        padding: 60px 0 80px;
+    }
+
+    .process__container {
+        padding: 0 $container-padding-mobile;
+    }
+
+    .process__intro {
+        margin-bottom: 50px;
+    }
+
+    .process__title {
+        font-size: clamp(2.5rem, 11vw, 3.5rem);
+    }
+
+    .process__timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-left: 8px;
+    }
+
+    .process__timeline::before {
+        top: 32px;
+        bottom: 32px;
+        left: 31px;
+        right: auto;
+        width: 1px;
+        height: auto;
+        background:
+            linear-gradient(180deg,
+                rgba(253, 15, 12, 0.75),
+                rgba(255, 255, 255, 0.22),
+                rgba(253, 15, 12, 0.75));
+    }
+
+    .process__step {
+        min-height: 125px;
+        padding: 0 0 30px;
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        grid-template-rows: auto auto;
+        column-gap: 20px;
+        align-items: center;
+        text-align: left;
+    }
+
+    .process__step:last-child {
+        min-height: auto;
+        padding-bottom: 0;
+    }
+
+    .process__icon {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        width: 64px;
+        height: 64px;
+        box-shadow: 0 0 0 7px $color-primary;
+    }
+
+    .process__number {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .process__step-title {
+        grid-column: 2;
+        grid-row: 2;
+        max-width: none;
+        margin: 0;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 420px) {
+    .process__step {
+        grid-template-columns: 58px 1fr;
+        column-gap: 20px;
+    }
+
+    .process__timeline::before {
+        left: 28px;
+    }
+
+    .process__icon {
+        width: 58px;
+        height: 58px;
+    }
+
+    .process__icon svg {
+        width: 23px;
+        height: 23px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .process__icon {
+        transition: none;
+    }
+}

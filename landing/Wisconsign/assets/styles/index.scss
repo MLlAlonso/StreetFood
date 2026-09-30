@@ -1,0 +1,62 @@
+@use "variables" as *;
+@use "navBar";
+@use "hero";
+@use "about";
+@use "services";
+@use "process";
+@use "faq";
+@use "certifications";
+@use "footer";
+
+// ============================================================
+// BASE / RESET
+// ============================================================
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: $navbar-height;
+}
+
+body {
+    margin: 0;
+    background: $color-background;
+    color: $color-text;
+    font-family: $font-primary;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+}
+
+section {
+    scroll-margin-top: $navbar-height;
+}
+
+::selection {
+    background: $color-secondary;
+    color: $color-white;
+}

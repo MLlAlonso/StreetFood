@@ -1,0 +1,66 @@
+// ============================================================
+// COLORS
+// ============================================================
+$color-primary: #000000;
+$color-secondary: #FD0F0C;
+$color-blue: #164F84;
+$color-dark: #1A1A1A;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-text: #1A1A1A;
+$color-text-muted: #6F7276;
+$color-background: #FFFFFF;
+$color-background-soft: #F5F6F8;
+
+// ============================================================
+// NAVBAR
+// ============================================================
+$navbar-height: 82px;
+$navbar-background: $color-primary;
+$navbar-background-scrolled: rgba( 0, 0, 0, 0.90);
+
+// ============================================================
+// TYPOGRAPHY
+// ============================================================
+$font-primary:
+    "DM Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+$font-display:
+"Playfair Display", Georgia, "Times New Roman", serif;
+
+// ============================================================
+// TRANSITIONS
+// ============================================================
+$transition-fast: 180ms ease;
+$transition-normal: 300ms ease;
+$transition-slow: 450ms ease;
+
+// ============================================================
+// LAYOUT
+// ============================================================
+$container-width: 1300px;
+$container-padding-desktop: 30px;
+$container-padding-tablet: 20px;
+$container-padding-mobile: 10px;
+
+// ============================================================
+// BORDER RADIUS
+// ============================================================
+$radius-small: 6px;
+$radius-medium: 10px;
+$radius-large: 16px;
+$radius-pill: 999px;
+
+// ============================================================
+// BREAKPOINTS
+// ============================================================
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1200px;

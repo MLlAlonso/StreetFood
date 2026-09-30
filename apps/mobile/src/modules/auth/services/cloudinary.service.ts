@@ -1,16 +1,16 @@
 import * as ImagePicker from "expo-image-picker";
 import { Platform } from "react-native";
 
-const CLOUD_NAME = "dhzmsgmq2";
-const UPLOAD_PRESET = "streeteats_unsigned";
+const CLOUD_NAME = "bcyzogrf";
+const UPLOAD_PRESET = "buska_unsigned";
+const MAX_FILE_SIZE = 7 * 1024 * 1024;
 
 export const pickImage = async () => {
-  const result =
-    await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      quality: 0.7,
-    });
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ["images"],
+    allowsEditing: true,
+    quality: 0.7,
+  });
 
   if (result.canceled) {
     return null;
@@ -18,23 +18,22 @@ export const pickImage = async () => {
 
   const asset = result.assets[0];
 
-  if (asset.fileSize && asset.fileSize > 5 * 1024 * 1024) {
-    throw new Error(
-      "Image must be smaller than 5MB"
-    );
+  if (asset.fileSize && asset.fileSize > MAX_FILE_SIZE) {
+    throw new Error("Image must be smaller than 7MB");
   }
 
   return asset;
 };
 
-export const uploadToCloudinary = async ( asset: any ) => {
+export const uploadToCloudinary = async (asset: any) => {
   const formData = new FormData();
 
   if (Platform.OS === "web") {
     const responseFile = await fetch(asset.uri);
     const blob = await responseFile.blob();
-    formData.append( "file", blob );
-} else {
+
+    formData.append("file", blob);
+  } else {
     formData.append(
       "file",
       {
@@ -45,8 +44,7 @@ export const uploadToCloudinary = async ( asset: any ) => {
     );
   }
 
-  formData.append( "upload_preset", UPLOAD_PRESET );
-  formData.append( "folder", "streetfood" );
+  formData.append("upload_preset", UPLOAD_PRESET);
 
   const response = await fetch(
     `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
@@ -59,15 +57,9 @@ export const uploadToCloudinary = async ( asset: any ) => {
   const data = await response.json();
 
   if (!response.ok) {
-    console.log(
-      "CLOUDINARY ERROR:",
-      data
-    );
+    console.log("CLOUDINARY ERROR:", data);
 
-    throw new Error(
-      data?.error?.message ||
-        "Upload failed"
-    );
+    throw new Error(data?.error?.message || "Upload failed");
   }
 
   return data.secure_url;

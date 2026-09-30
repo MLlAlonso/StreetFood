@@ -1,0 +1,206 @@
+@use "variables" as *;
+@use "sass:color";
+
+.why-us {
+    position: relative;
+    width: 100%;
+    padding: 60px 0 60px;
+    background: #F3F6F9;
+    color: $color-primary;
+
+    &__container {
+        width: 100%;
+        max-width: $container-width;
+        margin: 0 auto;
+        padding: 0 $container-padding-desktop;
+    }
+
+    &__intro {
+        max-width: 1000px;
+        margin: 0 auto 60px;
+        text-align: center;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 14px;
+        border: 1px solid rgba(215, 49, 42, 0.28);
+        border-radius: $radius-pill;
+        color: $color-secondary;
+        font-family: $font-primary;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        max-width: 900px;
+        margin: 22px auto 0;
+        color: $color-primary;
+        font-family: $font-primary;
+        font-size: clamp(2.5rem, 4.5vw, 4.4rem);
+        font-weight: 700;
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+
+        span {
+            display: block;
+            color: $color-secondary;
+        }
+    }
+
+    &__description {
+        max-width: 700px;
+        margin: 30px auto 0;
+        color: $color-text-light;
+        font-family: $font-primary;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.7;
+    }
+
+    &__benefits {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 1px solid rgba(11, 12, 11, 0.12);
+        border-left: 1px solid rgba(11, 12, 11, 0.12);
+    }
+
+    &__benefit {
+        min-height: 100px;
+        padding: 40px 30px;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        border-right: 1px solid rgba(11, 12, 11, 0.12);
+        border-bottom: 1px solid rgba(11, 12, 11, 0.12);
+        transition:
+            background-color $transition-normal,
+            transform $transition-normal,
+            box-shadow $transition-normal;
+    }
+
+    &__benefit:hover {
+        background: $color-white;
+        transform: translateY(-5px);
+        box-shadow: 0 18px 40px rgba(11, 12, 11, 0.08);
+    }
+
+    &__icon {
+        flex: 0 0 52px;
+        width: 60px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(215, 49, 42, 0.35);
+        border-radius: $radius-small;
+        background: rgba(215, 49, 42, 0.06);
+        color: $color-secondary;
+
+        svg {
+            width: 35px;
+            height: 35px;
+        }
+    }
+
+    &__benefit-content {
+        flex: 1;
+        padding-top: 3px;
+
+        h3 {
+            margin: 0;
+            color: $color-primary;
+            font-family: $font-primary;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .why-us {
+        padding: 90px 0 100px;
+    }
+
+    .why-us__container {
+        padding: 0 $container-padding-tablet;
+    }
+
+    .why-us__intro {
+        margin-bottom: 60px;
+    }
+
+    .why-us__benefit {
+        min-height: 220px;
+        padding: 32px 28px;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .why-us__icon {
+        flex-basis: 46px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .why-us__icon svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .why-us__benefit-content h3 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .why-us {
+        padding: 75px 0 80px;
+    }
+
+    .why-us__container {
+        padding: 0 $container-padding-mobile;
+    }
+
+    .why-us__intro {
+        margin-bottom: 40px;
+    }
+
+    .why-us__title {
+        font-size: clamp(2.3rem, 10vw, 3.2rem);
+    }
+
+    .why-us__description {
+        margin-top: 22px;
+        font-size: 16px;
+    }
+
+    .why-us__benefits {
+        grid-template-columns: 1fr;
+    }
+
+    .why-us__benefit {
+        min-height: auto;
+        padding: 28px 24px;
+        gap: 18px;
+    }
+
+    .why-us__benefit:hover {
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .why-us__benefit {
+        transition: none;
+    }
+}
