@@ -142,6 +142,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================
+    // CLIENTS CAROUSEL
+    // ============================================================
+    const clientsCarousel = document.querySelector(".clients__carousel");
+
+    if (clientsCarousel) {
+        const track = clientsCarousel.querySelector(".clients__track");
+        const slides = clientsCarousel.querySelectorAll(".clients__slide");
+        const prevButton = clientsCarousel.querySelector(".clients__arrow--prev");
+        const nextButton = clientsCarousel.querySelector(".clients__arrow--next");
+        const dots = clientsCarousel.querySelectorAll(".clients__dot");
+        let currentSlide = 0;
+
+        const updateCarousel = () => {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            dots.forEach((dot, index) => {
+                const isActive = index === currentSlide;
+                dot.classList.toggle("is-active", isActive);
+                dot.setAttribute("aria-current", String(isActive));
+            });
+        };
+
+        const goToSlide = (index) => {
+            if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+
+            updateCarousel();
+        };
+
+        prevButton?.addEventListener("click", () => {
+            goToSlide(currentSlide - 1);
+        });
+
+        nextButton?.addEventListener("click", () => {
+            goToSlide(currentSlide + 1);
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener("click", () => {
+                goToSlide(index);
+            });
+        });
+
+        // --------------------------------------------------------
+        // AUTO PLAY
+        // --------------------------------------------------------
+        const autoPlayInterval = 30000; // 30 segundos
+        
+        setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, autoPlayInterval);
+
+        updateCarousel();
+    }
+
+    // ============================================================
     // OPEN LOCATION IN MAPS
     // ============================================================
     const openMapButton = document.getElementById("open-map");

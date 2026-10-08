@@ -63,6 +63,22 @@
         "benefit3": "Promover el acceso equitativo para personas con dominio limitado del inglés"
     },
 
+
+
+"clients": {
+    "badge": "Nuestros clientes y comunidad",
+    "title": "Creando conexiones",
+    "titleHighlight": "más allá del idioma",
+    "description": "Nos enorgullece apoyar a organizaciones, profesionales y comunidades en todo Wisconsin mediante una comunicación significativa y acceso a servicios lingüísticos.",
+    "featuredLabel": "Colaboración con la comunidad",
+    "featuredText": "Apoyando el Jackson Chourio Youth Sports Camp en Oak Creek, Wisconsin."
+},
+
+
+
+
+
+
     "location": {
         "visitUs": "Visítanos",
         "title": "Nuestra ubicación",
