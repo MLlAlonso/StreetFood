@@ -1,0 +1,113 @@
+{
+    "nav": {
+        "about": "Nosotros",
+        "services": "Servicios",
+        "process": "Proceso",
+        "faq": "Preguntas frecuentes",
+        "certifications": "Certificaciones",
+        "scheduleAppointment": "Contáctanos"
+    },
+
+    "hero": {
+        "eyebrow": "Servicios Notariales y de Firma de Préstamos",
+        "brand": "WisconSign",
+        "title": "Servicios Profesionales de Notaría y Firma de Préstamos en Wisconsin",
+        "description": "Servicios confiables de notaría y firma de préstamos en todo Wisconsin. Atención bilingüe, profesional y conveniente, siempre de su lado.",
+        "scheduleAppointment": "Programar una cita",
+        "ourServices": "Nuestros servicios"
+    },
+
+    "about": {
+        "badge": "Sobre WisconSign",
+        "title": "Tu socio de confianza",
+        "titleHighlight": "para cada firma",
+        "paragraph1": "En WisconSign, hacemos que el proceso de firma de préstamos sea sencillo, seguro y sin estrés. Fundada en 2024, somos un servicio bilingüe (inglés–español) de firma de préstamos y notaría que presta sus servicios con orgullo en todo el estado de Wisconsin.",
+        "paragraph2": "Contamos con certificación de Loan Signing System, una verificación de antecedentes de la NNA y más de 20 años de experiencia en servicio al cliente. Aportamos precisión, profesionalismo y confiabilidad a cada cita. Entendemos que los documentos de un préstamo pueden resultar abrumadores, por lo que nos enfocamos en brindar orientación clara, puntualidad y una experiencia fluida de principio a fin.",
+        "paragraph3": "Lo que nos distingue es nuestro compromiso con la excelencia en el servicio. No solo notarizamos documentos; nos aseguramos de que cada cliente se sienta seguro y respaldado durante el proceso de firma. Ya sea que sea un prestamista, una compañía de títulos, un agente inmobiliario o un cliente particular, WisconSign es su socio de confianza para servicios confiables de firma de préstamos en todo Wisconsin.",
+        "stat1": {
+            "value": "Bilingüe",
+            "label": "Inglés y español"
+        },
+        "stat2": {
+            "value": "Todo el estado",
+            "label": "Al servicio de Wisconsin"
+        },
+        "stat3": {
+            "value": "El cliente primero",
+            "label": "Cada firma importa"
+        }
+    },
+
+    "process": {
+        "badge": "Nuestro proceso",
+        "title": "Nuestro proceso notarial",
+        "titleHighlight": "paso a paso",
+        "step1": "Consulta inicial y diagnóstico",
+        "step2": "Recopilación y verificación de documentos",
+        "step3": "Preparación y revisión del instrumento",
+        "step4": "Firma y certificación notarial",
+        "step5": "Entrega del expediente y aviso legal"
+    },
+
+    "services": {
+        "badge": "Nuestros servicios",
+        "title": "Servicios notariales:",
+        "titleHighlight": "asesoría y trámites",
+        "jurats": {
+            "title": "Juramentos",
+            "text": "Verificación de identidad y firma voluntaria. El firmante jura o afirma que la información contenida en el documento es verdadera."
+        },
+        "oaths": {
+            "title": "Juramentos y afirmaciones",
+            "text": "Administración de promesas formales — mediante juramento o afirmación no religiosa — para fines legales u oficiales."
+        },
+        "wills": {
+            "title": "Testamentos y fideicomisos",
+            "text": "Notarización profesional de documentos de planificación patrimonial para brindar claridad, protección y seguridad jurídica sobre sus bienes."
+        },
+        "medical": {
+            "title": "Documentos médicos",
+            "text": "Certificación de directivas médicas, formularios de consentimiento y documentación relacionada con la salud para garantizar que cumplan con los requisitos legales."
+        },
+        "dmv": {
+            "title": "Formularios del DMV",
+            "text": "Notarización de documentos relacionados con vehículos requeridos por el Departamento de Vehículos Motorizados para transferencias, liberaciones y verificación de propiedad."
+        },
+        "general": {
+            "title": "Notarizaciones generales",
+            "text": "Notarización rápida y confiable para una amplia variedad de documentos legales, personales y empresariales."
+        }
+    },
+
+    "faq": {
+        "badge": "Preguntas frecuentes",
+        "title": "Todos los detalles",
+        "titleHighlight": "explicados",
+        "description": "¿Tienes preguntas? Aquí encontrarás algunas de las consultas más frecuentes. Si necesitas más información, no dudes en contactarnos.",
+        "contact": "Contáctanos",
+        "question1": "¿Qué necesito llevar para una notarización?",
+        "answer1": {
+            "paragraph1": "Solo necesitas una identificación oficial vigente con fotografía, como una licencia de conducir, pasaporte o identificación estatal.",
+            "paragraph2": "Asegúrate de que tu documento esté completo, pero sin firmar; debes firmarlo frente al Notario."
+        },
+        "question2": "¿Ofrecen servicios de notaría móvil?",
+        "answer2": "Sí. Puedo trasladarme a tu hogar, oficina, hospital o cualquier lugar que sea conveniente para ti. Este servicio es ideal para documentos urgentes o que requieren atención inmediata.",
+        "question3": "¿Puedo obtener una cita fuera del horario laboral o los fines de semana?",
+        "answer3": "Por supuesto. Ofrezco disponibilidad fuera del horario laboral y los fines de semana para adaptarme a horarios ocupados y necesidades de último momento.",
+        "question4": "¿Qué tipos de documentos pueden notarizar?",
+        "answer4": "Notarizo una amplia variedad de documentos legales, médicos, financieros y personales, incluyendo poderes notariales, testamentos y fideicomisos, formularios del DMV, documentos médicos, paquetes de préstamos y notarizaciones generales."
+    },
+
+    "certifications": {
+        "badge": "Certificaciones y membresías",
+        "title": "Confianza. Certificación. Compromiso"
+    },
+    
+    "footer": {
+        "contact": "Contacto",
+        "role": "AGENTE CERTIFICADO DE FIRMA DE PRÉSTAMOS / NOTARIO PÚBLICO",
+        "certifications": "Certificaciones y membresías",
+        "scheduleAppointment": "Programar una llamada",
+        "copyright": "WisconSign. Todos los derechos reservados."
+    }
+}

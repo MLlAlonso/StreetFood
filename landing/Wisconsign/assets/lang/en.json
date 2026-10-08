@@ -1,0 +1,113 @@
+{
+    "nav": {
+        "about": "About Us",
+        "services": "Services",
+        "process": "Process",
+        "faq": "FAQ",
+        "certifications": "Certifications",
+        "scheduleAppointment": "Get in touch"
+    },
+
+    "hero": {
+        "eyebrow": "Notary & Loan Signing Services",
+        "brand": "WisconSign",
+        "title": "Professional Notary & Loan Signing Services in Wisconsin",
+        "description": "Reliable notary and loan signing services across Wisconsin. Bilingual support, professional, convenient, always on your side.",
+        "scheduleAppointment": "Schedule an Appointment",
+        "ourServices": "Our Services"
+    },
+
+    "about": {
+        "badge": "About WisconSign",
+        "title": "Your trusted partner",
+        "titleHighlight": "for every signing",
+        "paragraph1": "At WisconSign, we make the loan signing process simple, secure, and stress-free. Founded in 2024, we are a bilingual (English–Spanish) loan signing and notary service proudly serving the state of Wisconsin.",
+        "paragraph2": "With Loan Signing System certification, an NNA background check, and over 20 years of customer service experience, we bring accuracy, professionalism, and reliability to every appointment. We understand that loan documents can feel overwhelming, so we focus on clear guidance, punctuality, and a smooth client experience from start to finish.",
+        "paragraph3": "What sets us apart is our commitment to service excellence. We don’t just notarize — we ensure every client feels confident and supported during the signing process. Whether you’re a lender, title company, real estate agent, or individual client, WisconSign is your trusted partner for reliable loan signings across Wisconsin.",
+        "stat1": {
+            "value": "Bilingual",
+            "label": "English & Spanish"
+        },
+        "stat2": {
+            "value": "Statewide",
+            "label": "Serving Wisconsin"
+        },
+        "stat3": {
+            "value": "Client First",
+            "label": "Every signing matters"
+        }
+    },
+
+    "process": {
+        "badge": "Our Process",
+        "title": "Our notarial process",
+        "titleHighlight": "step by step",
+        "step1": "Initial Consultation and Diagnosis",
+        "step2": "Document Collection and Verification",
+        "step3": "Preparation and Review of the Instrument",
+        "step4": "Signature and Public Certification",
+        "step5": "Delivery of File and Legal Notice"
+    },
+
+    "services": {
+        "badge": "Our Services",
+        "title": "Notary services:",
+        "titleHighlight": "advice and procedures",
+        "jurats": {
+            "title": "Jurats",
+            "text": "Verification of identity and voluntary signing. The signer swears or affirms that the information in the document is true."
+        },
+        "oaths": {
+            "title": "Oaths & Affirmations",
+            "text": "Administration of formal promises — sworn (oaths) or non-religious (affirmations) — for legal or official purposes."
+        },
+        "wills": {
+            "title": "Wills & Trusts",
+            "text": "Professional notarization of estate planning documents to provide clarity, protection, and legal certainty for your assets."
+        },
+        "medical": {
+            "title": "Medical Documents",
+            "text": "Certification of medical directives, consent forms, and health-related paperwork to ensure they meet legal standards."
+        },
+        "dmv": {
+            "title": "DMV Forms",
+            "text": "Notarization of vehicle-related documents required by the Department of Motor Vehicles for transfers, releases, and ownership verification."
+        },
+        "general": {
+            "title": "General Notarizations",
+            "text": "Fast and reliable notarization for a wide variety of legal, personal, and business documents."
+        }
+    },
+
+    "faq": {
+        "badge": "FAQ",
+        "title": "All the details",
+        "titleHighlight": "explained",
+        "description": "Have questions? Here are some of the most common inquiries. If you need more information, feel free to reach out.",
+        "contact": "Contact Us",
+        "question1": "What do I need to bring for a notarization?",
+        "answer1": {
+            "paragraph1": "You only need a valid government-issued photo ID (such as a driver’s license, passport, or state ID).",
+            "paragraph2": "Make sure your document is complete but not signed—you must sign it in front of the Notary."
+        },
+        "question2": "Do you offer mobile notary services?",
+        "answer2": "Yes. I can travel to your home, office, hospital, or any location that is convenient for you. This service is ideal for urgent or time-sensitive documents.",
+        "question3": "Can I get an appointment after business hours or on weekends?",
+        "answer3": "Absolutely. I offer after-hours and weekend availability to accommodate busy schedules and last-minute needs.",
+        "question4": "What types of documents can you notarize?",
+        "answer4": "I notarize a wide variety of legal, medical, financial, and personal documents, including Power of Attorney, Wills & Trusts, DMV forms, medical documents, loan packages, and general notarizations."
+    },
+
+    "certifications": {
+        "badge": "Certifications & Memberships",
+        "title": "Trusted. Certified. Committed"
+    },
+    
+    "footer": {
+        "contact": "Contact",
+        "role": "CERTIFIED LOAN SIGNING AGENT / NOTARY PUBLIC",
+        "certifications": "Certifications & Memberships",
+        "scheduleAppointment": "Schedule a call",
+        "copyright": "WisconSign. All rights reserved."
+    }
+}

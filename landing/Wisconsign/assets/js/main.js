@@ -1,4 +1,11 @@
 // ============================================================
+// INTERNATIONALIZATION
+// ============================================================
+if (typeof I18n !== "undefined") {
+    I18n.init();
+}
+
+// ============================================================
 // NAVBAR
 // ============================================================
 const navbar = document.querySelector(".navbar");
@@ -86,7 +93,7 @@ window.addEventListener("resize", () => {
 // ============================================================
 // HERO CONTACT
 // ============================================================
-const heroContactButton = document.getElementById("hero-contact-button");
+const heroContactButton = document.getElementById("nav-contact-button");
 
 if (heroContactButton) {
     heroContactButton.addEventListener(
@@ -152,12 +159,12 @@ faqItems.forEach((item) => {
         // Toggle current item
         if (isOpen) {
             item.classList.remove("is-open");
-            question.setAttribute( "aria-expanded", "false" );
-            answer.setAttribute( "aria-hidden", "true" );
+            question.setAttribute("aria-expanded", "false");
+            answer.setAttribute("aria-hidden", "true");
         } else {
             item.classList.add("is-open");
-            question.setAttribute( "aria-expanded", "true" );
-            answer.setAttribute( "aria-hidden", "false" );
+            question.setAttribute("aria-expanded", "true");
+            answer.setAttribute("aria-hidden", "false");
         }
     });
 });

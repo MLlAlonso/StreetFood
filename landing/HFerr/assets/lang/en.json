@@ -13,7 +13,7 @@
         "title": "Interpretation & Translation Services",
         "brand": "H.Ferr Consulting",
         "description": "H.Ferr Consulting is a leading provider of foreign language interpretation services. Our professional, experienced foreign language interpreters have demonstrated expertise in translating and interpreting. We will help you communicate in an effective and sensitive manner with your Limited English Proficiency patients and clients.",
-        "requestService": "Request a Service",
+        "requestService": "Schedule an Appointment",
         "learnMore": "Learn More"
     },
 
@@ -148,7 +148,9 @@
         "phone": "Phone",
         "email": "Email",
         "followUs": "Follow us",
+        "talk": "Let’s Talk",
+        "schedule": "Schedule a Call",
         "ctaText": "Need interpretation or translation services?",
-        "ctaButton": "Request a service"
+        "ctaButton": "Schedule a Call"
     }
 }

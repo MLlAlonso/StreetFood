@@ -13,7 +13,7 @@
         "title": "Servicios de Interpretación y Traducción",
         "brand": "H.Ferr Consulting",
         "description": "H.Ferr Consulting es un proveedor líder de servicios de interpretación de idiomas extranjeros. Nuestros intérpretes profesionales y experimentados cuentan con amplia experiencia en traducción e interpretación. Le ayudamos a comunicarse de manera efectiva y respetuosa con sus pacientes y clientes con dominio limitado del inglés.",
-        "requestService": "Solicitar un servicio",
+        "requestService": "Programar una cita",
         "learnMore": "Conocer más"
     },
 
@@ -148,7 +148,9 @@
         "phone": "Teléfono",
         "email": "Correo electrónico",
         "followUs": "Síguenos",
+        "talk": "Conversemos",
+        "schedule": "Agendar una llamada",
         "ctaText": "¿Necesitas servicios de interpretación o traducción?",
-        "ctaButton": "Solicitar un servicio"
+        "ctaButton": "Agendar una llamada"
     }
 }
