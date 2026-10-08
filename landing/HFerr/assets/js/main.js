@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    I18n.init();
+
     // ========================================================
     // ELEMENTS
     // ========================================================
@@ -229,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "END:VCARD"
             ].join("\r\n");
 
-            const blob = new Blob( [vCard], { type: "text/vcard;charset=utf-8" } );
+            const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;

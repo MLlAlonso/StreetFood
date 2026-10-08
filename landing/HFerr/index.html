@@ -80,21 +80,51 @@
                 </a>
 
                 <div class="navbar__navigation" id="main-navigation">
-                    <a href="#about" class="navbar__link"> About Us </a>
-                    <a href="#services" class="navbar__link"> Services </a>
-                    <a href="#why-us" class="navbar__link"> Why Us </a>
-                    <a href="#faq" class="navbar__link"> FAQ </a>
-                    <a href="#footer" class="navbar__link"> Contact </a>
+                    <a href="#about" class="navbar__link" data-i18n="nav.about">
+                        About Us
+                    </a>
+
+                    <a href="#services" class="navbar__link" data-i18n="nav.services">
+                        Services
+                    </a>
+
+                    <a href="#why-us" class="navbar__link" data-i18n="nav.whyUs">
+                        Why Us
+                    </a>
+
+                    <a href="#faq" class="navbar__link" data-i18n="nav.faq">
+                        FAQ
+                    </a>
+
+                    <a href="#footer" class="navbar__link" data-i18n="nav.contact">
+                        Contact
+                    </a>
+                </div>
+
+                <div class="navbar__language" aria-label="Language selector">
+                    <button type="button" class="navbar__language-button is-active" data-language="en" aria-label="Switch to English" aria-pressed="true">
+                        <img src="assets/img/en.png" alt="English">
+                    </button>
+
+                    <span class="navbar__language-divider" aria-hidden="true">
+                        /
+                    </span>
+
+                    <button type="button" class="navbar__language-button" data-language="es" aria-label="Cambiar a español" aria-pressed="false">
+                        <img src="assets/img/es.png" alt="Español">
+                    </button>
                 </div>
 
                 <a href="#" class="navbar__cta" id="download-contact">
-                    <span>Get in touch</span>
-                    <span class="navbar__cta-arrow" aria-hidden="true">→</span>
+                    <span data-i18n="nav.getInTouch">
+                        Get in touch
+                    </span>
+
+                    <span class="navbar__cta-arrow" aria-hidden="true">
+                        →
+                    </span>
                 </a>
 
-                <!-- =================================================
-                     MOBILE MENU BUTTON
-                ================================================== -->
                 <button class="navbar__toggle" id="navbar-toggle" type="button" aria-label="Open navigation menu"
                     aria-expanded="false" aria-controls="main-navigation">
                     <span></span>
@@ -110,28 +140,27 @@
             <div class="hero__overlay"></div>
             <div class="hero__container">
                 <div class="hero__content">
-                    <p class="hero__eyebrow">
+                    <p class="hero__eyebrow" data-i18n="hero.eyebrow">
                         Language &amp; Interpretation Services
                     </p>
 
                     <h1 class="hero__title">
-                        Interpretation & Translation Services
+                        Interpretation &amp; Translation Services
                         <span>H.Ferr Consulting</span>
                     </h1>
 
-                    <p class="hero__description">
+                    <p class="hero__description" data-i18n="hero.description">
                         H.Ferr Consulting is a leading provider of foreign language interpretation services. Our
                         professional,
                         experienced foreign language interpreters have demonstrated expertise in translating and
                         interpreting.
                         We will help you communicate in an effective and sensitive manner with your Limited English
-                        Proficiency
-                        patients and clients.
+                        Proficiency patients and clients.
                     </p>
 
                     <div class="hero__actions">
                         <a href="#contact" class="hero__button hero__button--primary">
-                            <span>Request a Service</span>
+                            <span data-i18n="hero.requestService">Request a Service</span>
 
                             <span class="hero__button-arrow" aria-hidden="true">
                                 →
@@ -139,7 +168,7 @@
                         </a>
 
                         <a href="#about" class="hero__button hero__button--secondary">
-                            <span>Learn More</span>
+                            <span data-i18n="hero.learnMore">Learn More</span>
                         </a>
                     </div>
                 </div>
@@ -148,20 +177,25 @@
 
         <section id="services" class="services">
             <div class="services__container">
-
                 <div class="services__intro">
                     <div class="services__intro-content">
-                        <span class="services__badge">
+                        <span class="services__badge" data-i18n="services.badge">
                             Our Services
                         </span>
 
                         <h2 class="services__title">
-                            Language Services for a <span>More Inclusive World</span>
+                            <div data-i18n="services.title">
+                                Language Services for a
+                            </div>
+
+                            <span data-i18n="services.titleHighlight">
+                                More Inclusive World
+                            </span>
                         </h2>
                     </div>
 
                     <div class="services__intro-description">
-                        <p>
+                        <p data-i18n="services.description">
                             We provide professional interpretation and
                             translation services tailored to your industry and community needs.
                         </p>
@@ -180,15 +214,15 @@
                         </div>
 
                         <div class="service-card__content">
-                            <h3 class="service-card__title">
+                            <h3 class="service-card__title" data-i18n="services.interpretation.title">
                                 Interpretation
                             </h3>
 
-                            <p class="service-card__short">
+                            <p class="service-card__short" data-i18n="services.interpretation.short">
                                 Clear, professional communication between people who speak different languages.
                             </p>
 
-                            <p class="service-card__long">
+                            <p class="service-card__long" data-i18n="services.interpretation.long">
                                 Our interpreters help organizations and individuals communicate effectively across
                                 language barriers. Services can be provided in person or by phone, depending on your
                                 needs.
@@ -208,15 +242,15 @@
                         </div>
 
                         <div class="service-card__content">
-                            <h3 class="service-card__title">
+                            <h3 class="service-card__title" data-i18n="services.legal.title">
                                 Legal
                             </h3>
 
-                            <p class="service-card__short">
+                            <p class="service-card__short" data-i18n="services.legal.short">
                                 Accurate interpretation for legal professionals and their clients.
                             </p>
 
-                            <p class="service-card__long">
+                            <p class="service-card__long" data-i18n="services.legal.long">
                                 Our interpreters support communication in legal settings where accuracy, clarity and
                                 professionalism are essential for building understanding between providers and clients.
                             </p>
@@ -236,15 +270,15 @@
                         </div>
 
                         <div class="service-card__content">
-                            <h3 class="service-card__title">
+                            <h3 class="service-card__title" data-i18n="services.financial.title">
                                 Financial Translation
                             </h3>
 
-                            <p class="service-card__short">
+                            <p class="service-card__short" data-i18n="services.financial.short">
                                 Professional translation for financial documents and information.
                             </p>
 
-                            <p class="service-card__long">
+                            <p class="service-card__long" data-i18n="services.financial.long">
                                 We provide language support for financial content where accuracy and clear communication
                                 are essential to understanding important information.
                             </p>
@@ -261,15 +295,15 @@
                         </div>
 
                         <div class="service-card__content">
-                            <h3 class="service-card__title">
+                            <h3 class="service-card__title" data-i18n="services.academic.title">
                                 Academic Translation
                             </h3>
 
-                            <p class="service-card__short">
+                            <p class="service-card__short" data-i18n="services.academic.short">
                                 Clear language support for educational documents and academic communication.
                             </p>
 
-                            <p class="service-card__long">
+                            <p class="service-card__long" data-i18n="services.academic.long">
                                 Professional translation helps educational organizations communicate information clearly
                                 across languages while respecting the context and purpose of each document.
                             </p>
@@ -287,16 +321,16 @@
 
                 <div class="about__content">
                     <div class="about__content-inner">
-                        <span class="about__badge">
+                        <span class="about__badge" data-i18n="about.badge">
                             About Us
                         </span>
 
-                        <h2 class="about__title">
+                        <h2 class="about__title" data-i18n="about.title">
                             H.FERR Consulting
                         </h2>
 
                         <div class="about__text">
-                            <p>
+                            <p data-i18n="about.paragraph1">
                                 Started in 2007, H.Ferr Consulting, LLC is a minority-owned interpretation agency based
                                 in Milwaukee Wisconsin.
                                 We curate experienced, honest and passionate interpreters with the highest level of
@@ -307,15 +341,16 @@
                                 Wisconsin.
                             </p>
 
-                            <p>
+                            <p data-i18n="about.paragraph2">
                                 We strive to offer fully customizable language services to clients that go beyond words
-                                and
-                                build bridges across cultures. Our language professionals have been trained and tested
-                                for both language and cultural competency. We also conduct random observations of
-                                interpreters to ensure the highest quality standards.
+                                and build bridges across cultures.
+                                Our language professionals have been trained and tested for both language and cultural
+                                competency.
+                                We also conduct random observations of interpreters to ensure the highest quality
+                                standards.
                             </p>
 
-                            <p>
+                            <p data-i18n="about.paragraph3">
                                 Our clients include both government agencies and private companies across industries.
                             </p>
                         </div>
@@ -327,7 +362,7 @@
                         “
                     </span>
 
-                    <p>
+                    <p data-i18n="about.quote">
                         Language has the power to open doors, create opportunities and bring people together.
                     </p>
 
@@ -341,15 +376,15 @@
         <section id="why-us" class="why-us">
             <div class="why-us__container">
                 <div class="why-us__intro">
-                    <span class="why-us__badge">
+                    <span class="why-us__badge" data-i18n="whyUs.badge">
                         The impact
                     </span>
 
                     <h2 class="why-us__title">
-                        Clear Communication Creates <span>Stronger Communities</span>
+                        Clear Communication Creates <span data-i18n="whyUs.titleHighlight">Stronger Communities</span>
                     </h2>
 
-                    <p class="why-us__description">
+                    <p class="why-us__description" data-i18n="whyUs.description">
                         By working with H.Ferr Consulting, you’ll receive efficient, effective interpreting in order to…
                     </p>
                 </div>
@@ -368,7 +403,7 @@
                         </div>
 
                         <div class="why-us__benefit-content">
-                            <h3>
+                            <h3 data-i18n="whyUs.benefit1">
                                 Establish a clear line of communication
                             </h3>
                         </div>
@@ -386,7 +421,7 @@
                         </div>
 
                         <div class="why-us__benefit-content">
-                            <h3>
+                            <h3 data-i18n="whyUs.benefit2">
                                 Empower patients and clients to participate
                             </h3>
                         </div>
@@ -404,7 +439,7 @@
                         </div>
 
                         <div class="why-us__benefit-content">
-                            <h3>
+                            <h3 data-i18n="whyUs.benefit3">
                                 Promote equal access for limited English speakers
                             </h3>
                         </div>
@@ -415,20 +450,18 @@
 
         <section id="location" class="location">
             <div class="location__layout">
-
                 <div class="location__map">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d364.5055061592939!2d-87.90536702399321!3d43.04050468550066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1790177061643!5m2!1sen!2sus"
-                        title="H.Ferr Consulting location" width="600" height="450" style="border:0;" allowfullscreen=""
-                        loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
-                    </iframe>
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d364.5052232633597!2d-87.9056587051791!3d43.04055230377752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1791421804711!5m2!1ses!2smx"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
                     <div class="location__overlay">
-                        <span class="location__badge">
+                        <span class="location__badge" data-i18n="location.visitUs">
                             Visit us
                         </span>
 
-                        <h2 class="location__title">
+                        <h2 class="location__title" data-i18n="location.title">
                             Our location
                         </h2>
 
@@ -437,7 +470,7 @@
                         </p>
 
                         <button type="button" class="location__map-button" id="open-map">
-                            <span>Open in Maps</span>
+                            <span data-i18n="location.openMaps">Open in Maps</span>
                             <span aria-hidden="true">→</span>
                         </button>
                     </div>
@@ -445,11 +478,11 @@
 
                 <div class="location__contact">
                     <div class="location__contact-inner">
-                        <span class="location__contact-badge">
+                        <span class="location__contact-badge" data-i18n="location.contactBadge">
                             Get in touch
                         </span>
 
-                        <h2 class="location__contact-title">
+                        <h2 class="location__contact-title" data-i18n="location.contactTitle">
                             Send Us a Message
                         </h2>
 
@@ -460,53 +493,72 @@
                             <input type="hidden" name="_template" value="table">
 
                             <div class="location__field">
-                                <label for="contact-name">
+                                <label for="contact-name" data-i18n="location.name">
                                     Name
                                 </label>
 
                                 <input type="text" id="contact-name" name="name" placeholder="Your name"
-                                    autocomplete="name" required>
+                                    data-i18n-placeholder="location.namePlaceholder" autocomplete="name" required>
                             </div>
 
                             <div class="location__field">
-                                <label for="contact-email">
+                                <label for="contact-email" data-i18n="location.email">
                                     Email
                                 </label>
 
                                 <input type="email" id="contact-email" name="email"
-                                    placeholder="Enter your email address" autocomplete="email" required>
+                                    placeholder="Enter your email address"
+                                    data-i18n-placeholder="location.emailPlaceholder" autocomplete="email" required>
 
-                                <span class="location__field-help">
+                                <span class="location__field-help" data-i18n="location.emailHelp">
                                     Please enter a valid email address so we can get back to you.
                                 </span>
                             </div>
 
                             <div class="location__field">
-                                <label for="contact-help">
+                                <label for="contact-help" data-i18n="location.helpLabel">
                                     How can we help you?
                                 </label>
 
                                 <select id="contact-help" name="service" required>
-                                    <option value="" selected disabled> Select an option </option>
-                                    <option value="Interpretation Services"> Interpretation Services </option>
-                                    <option value="Legal Interpretation"> Legal Interpretation </option>
-                                    <option value="Medical Services"> Medical Interpretation </option>
-                                    <option value="Business Services"> Business Services </option>
-                                    <option value="Other"> Other </option>
+                                    <option value="" selected disabled data-i18n="location.selectOption">
+                                        Select an option
+                                    </option>
+
+                                    <option value="Interpretation Services" data-i18n="location.interpretationServices">
+                                        Interpretation Services
+                                    </option>
+
+                                    <option value="Legal Interpretation" data-i18n="location.legalInterpretation">
+                                        Legal Interpretation
+                                    </option>
+
+                                    <option value="Medical Services" data-i18n="location.medicalServices">
+                                        Medical Interpretation
+                                    </option>
+
+                                    <option value="Business Services" data-i18n="location.businessServices">
+                                        Business Services
+                                    </option>
+
+                                    <option value="Other" data-i18n="location.other">
+                                        Other
+                                    </option>
                                 </select>
                             </div>
 
                             <div class="location__field">
-                                <label for="contact-message">
+                                <label for="contact-message" data-i18n="location.message">
                                     Message
                                 </label>
 
                                 <textarea id="contact-message" name="message" rows="5"
-                                    placeholder="Tell us how we can help..." required></textarea>
+                                    placeholder="Tell us how we can help..."
+                                    data-i18n-placeholder="location.messagePlaceholder" required></textarea>
                             </div>
 
                             <button type="submit" class="location__submit">
-                                <span>Send Message</span>
+                                <span data-i18n="location.sendMessage">Send Message</span>
 
                                 <span class="location__submit-arrow" aria-hidden="true">
                                     →
@@ -525,15 +577,16 @@
         <section id="faq" class="faq">
             <div class="faq__container">
                 <div class="faq__intro">
-                    <span class="faq__badge">
+                    <span class="faq__badge" data-i18n="faq.badge">
                         FAQ
                     </span>
 
                     <h2 class="faq__title">
-                        Frequently Asked <span>Questions</span>
+                        <div data-i18n="faq.title">Frequently Asked</div>
+                        <span data-i18n="faq.titleHighlight">Questions</span>
                     </h2>
 
-                    <p class="faq__description">
+                    <p class="faq__description" data-i18n="faq.description">
                         Find answers to some of the most common questions about our interpretation and translation
                         services.
                     </p>
@@ -542,7 +595,7 @@
                 <div class="faq__grid">
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span>
+                            <span data-i18n="faq.question1">
                                 Why use a professional language interpretation and translation service?
                             </span>
 
@@ -552,36 +605,41 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer1.intro">
                                 Working with a professional interpreter or translator brings significant benefits,
                                 especially in industries sensitive to liability issues.
                             </p>
 
                             <div class="faq__category">
-                                <h3>Medical</h3>
+                                <h3 data-i18n="faq.answer1.medical.title">Medical</h3>
 
                                 <ul>
-                                    <li> Assures effective communication between patients and providers. </li>
-                                    <li> Prevents negative results caused by working with unqualified interpreters.
+                                    <li data-i18n="faq.answer1.medical.item1">Assures effective communication between
+                                        patients and providers.</li>
+                                    <li data-i18n="faq.answer1.medical.item2">Prevents negative results caused by
+                                        working with unqualified interpreters.</li>
+                                    <li data-i18n="faq.answer1.medical.item3">Reduces liability due to incompetent
+                                        interpreting.</li>
+                                    <li data-i18n="faq.answer1.medical.item4">Helps providers gain the trust and respect
+                                        of their LEP patients.</li>
+                                </ul>
+                            </div>
+
+                            <div class="faq__category">
+                                <h3 data-i18n="faq.answer1.legal.title">Legal</h3>
+
+                                <ul>
+                                    <li data-i18n="faq.answer1.legal.item1">Ensures rapport between legal providers and
+                                        their clients.</li>
+                                    <li data-i18n="faq.answer1.legal.item2">Minimizes confusion and misunderstandings.
                                     </li>
-                                    <li> Reduces liability due to incompetent interpreting. </li>
-                                    <li> Helps providers gain the trust and respect of their LEP patients. </li>
                                 </ul>
                             </div>
 
                             <div class="faq__category">
-                                <h3>Legal</h3>
+                                <h3 data-i18n="faq.answer1.business.title">Business</h3>
 
-                                <ul>
-                                    <li> Ensures rapport between legal providers and their clients. </li>
-                                    <li> Minimizes confusion and misunderstandings. </li>
-                                </ul>
-                            </div>
-
-                            <div class="faq__category">
-                                <h3>Business</h3>
-
-                                <p>
+                                <p data-i18n="faq.answer1.business.text">
                                     If your company has a large number of limited English-speaking employees,
                                     H.Ferr Consulting can help ensure all employees understand company policies,
                                     procedures, and benefits.
@@ -592,7 +650,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> What qualifications do your interpreters have? </span>
+                            <span data-i18n="faq.question2">
+                                What qualifications do your interpreters have?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -600,29 +660,30 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer2.paragraph1">
                                 H.Ferr interpreters must either be native speakers of the foreign language or have
-                                native fluency in the foreign language. They must also display native fluency in
-                                English.
+                                native fluency in the foreign language.
+                                They must also display native fluency in English.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer2.paragraph2">
                                 In addition to fluency in at least two languages, our interpreters are specially
                                 trained to interpret both medical and legal terminology. They also receive training on
                                 HIPAA regulations and all sign a Code of Ethics.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer2.paragraph3">
                                 If your industry requires unique interpretation skills, let us know. We will work with
-                                you to
-                                make sure our interpreters have additional preparation specific to your needs.
+                                you to make sure our interpreters have additional preparation specific to your needs.
                             </p>
                         </div>
                     </details>
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> How far ahead do I need to schedule an appointment? </span>
+                            <span data-i18n="faq.question3">
+                                How far ahead do I need to schedule an appointment?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -630,18 +691,18 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer3.paragraph1">
                                 While we appreciate as much advance notice as you can give us, we do our best to get an
                                 interpreter to you promptly no matter when you need one.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer3.paragraph2">
                                 We recognize that many appointments are scheduled at the last minute.
                                 Because of our large staff and experienced scheduling team, we welcome the opportunity
                                 to send an interpreter even for short-notice appointments.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer3.paragraph3">
                                 We can generally have an interpreter to your location in as little as 30 minutes.
                                 We are available 24 hours a day, 7 days a week.
                             </p>
@@ -650,7 +711,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> To what locations does H.Ferr Consulting provide services? </span>
+                            <span data-i18n="faq.question4">
+                                To what locations does H.Ferr Consulting provide services?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -658,17 +721,18 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer4">
                                 H.Ferr Consulting services clients throughout Wisconsin. We provide services everywhere
-                                from
-                                home visits and attorney's offices to hospitals and clinics around the state.
+                                from home visits and attorney's offices to hospitals and clinics around the state.
                             </p>
                         </div>
                     </details>
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> What information do I need to have when I call to schedule an appointment? </span>
+                            <span data-i18n="faq.question5">
+                                What information do I need to have when I call to schedule an appointment?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -676,12 +740,12 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer5.paragraph1">
                                 We will need the date, time, and location of your appointment. We will also ask for the
                                 client or patient's name and the name of the responsible party.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer5.paragraph2">
                                 If you have any special requests, please let us know.
                                 We are always willing to accommodate special requests.
                             </p>
@@ -690,7 +754,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> What are H.Ferr Consulting's rates? </span>
+                            <span data-i18n="faq.question6">
+                                What are H.Ferr Consulting's rates?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -698,10 +764,10 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer6">
                                 Rates vary based on the needs of individual clients.
-                                Please call H.Ferr Consulting at <a href="tel:+14142614337"> 414.261.4337 </a>
-                                or email us at <a href="mailto:info@hferr.com"> info@hferr.com </a>
+                                Please call H.Ferr Consulting at <a href="tel:+14142614337">414.261.4337</a>
+                                or email us at <a href="mailto:info@hferr.com">info@hferr.com</a>
                                 so that we can provide a custom price quote for you.
                             </p>
                         </div>
@@ -709,7 +775,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> What if I need to cancel an appointment? </span>
+                            <span data-i18n="faq.question7">
+                                What if I need to cancel an appointment?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -717,7 +785,7 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer7">
                                 Please notify us as soon as possible if an appointment is canceled.
                                 If the cancellation is received less than 24 hours before the scheduled
                                 appointment time, the minimum two-hour charge will be invoiced.
@@ -727,7 +795,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> Does H.Ferr Consulting provide phone interpreting services? </span>
+                            <span data-i18n="faq.question8">
+                                Does H.Ferr Consulting provide phone interpreting services?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -735,13 +805,13 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer8.paragraph1">
                                 Yes, we are happy to provide interpreting services by phone.
                                 For example, clients frequently use our services to schedule or
                                 confirm appointments or to provide instructions prior to an appointment.
                             </p>
 
-                            <p>
+                            <p data-i18n="faq.answer8.paragraph2">
                                 Please call us to get more information about this service.
                             </p>
                         </div>
@@ -749,7 +819,9 @@
 
                     <details class="faq__item">
                         <summary class="faq__question">
-                            <span> How do I schedule? </span>
+                            <span data-i18n="faq.question9">
+                                How do I schedule?
+                            </span>
 
                             <span class="faq__icon" aria-hidden="true">
                                 +
@@ -757,9 +829,9 @@
                         </summary>
 
                         <div class="faq__answer">
-                            <p>
+                            <p data-i18n="faq.answer9">
                                 That's up to you. You can call or email your request. If you need an immediate response,
-                                please call us at <a href="tel:+14142614337"> 414.261.4337 </a>.
+                                please call us at <a href="tel:+14142614337">414.261.4337</a>.
                             </p>
                         </div>
                     </details>
@@ -778,14 +850,14 @@
                 </div>
 
                 <div class="site-footer__column">
-                    <h2 class="site-footer__heading">
+                    <h2 class="site-footer__heading" data-i18n="footer.contact">
                         Contact
                     </h2>
 
                     <div class="site-footer__contact">
                         <a href="#" class="site-footer__contact-link" id="footer-phone"
                             aria-label="Save H.Ferr Consulting phone number">
-                            <span class="site-footer__contact-label">
+                            <span class="site-footer__contact-label" data-i18n="footer.phone">
                                 Phone
                             </span>
 
@@ -793,7 +865,7 @@
                         </a>
 
                         <a href="mailto:info@hferr.com" class="site-footer__contact-link">
-                            <span class="site-footer__contact-label">
+                            <span class="site-footer__contact-label" data-i18n="footer.email">
                                 Email
                             </span>
 
@@ -803,7 +875,7 @@
                 </div>
 
                 <div class="site-footer__column">
-                    <h2 class="site-footer__heading">
+                    <h2 class="site-footer__heading" data-i18n="footer.followUs">
                         Follow us
                     </h2>
 
@@ -850,13 +922,13 @@
                 </div>
 
                 <div class="site-footer__column site-footer__cta">
-                    <p class="site-footer__cta-text">
+                    <p class="site-footer__cta-text" data-i18n="footer.ctaText">
                         Need interpretation or translation services?
                     </p>
 
                     <a href="https://wa.me/14142614337" class="site-footer__cta-button" target="_blank"
                         rel="noopener noreferrer">
-                        <span>
+                        <span data-i18n="footer.ctaButton">
                             Request a service
                         </span>
 
@@ -877,6 +949,7 @@
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/main.js" defer></script>
 </body>
 

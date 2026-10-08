@@ -196,6 +196,47 @@
     }
 }
 
+.navbar__language {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 1.5rem;
+}
+
+.navbar__language-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+
+    img {
+        display: block;
+        width: 22px;
+        height: 15px;
+        object-fit: cover;
+        border-radius: 2px;
+    }
+
+    &:hover,
+    &.is-active {
+        opacity: 1;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+}
+
+.navbar__language-divider {
+    opacity: 0.3;
+    user-select: none;
+}
+
 @media (max-width: $breakpoint-tablet) {
     .navbar {
         &__container {

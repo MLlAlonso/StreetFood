@@ -1,0 +1,154 @@
+{
+    "nav": {
+        "about": "Nosotros",
+        "services": "Servicios",
+        "whyUs": "¿Por qué nosotros?",
+        "faq": "Preguntas frecuentes",
+        "contact": "Contacto",
+        "getInTouch": "Contáctanos"
+    },
+
+    "hero": {
+        "eyebrow": "Servicios de Idiomas e Interpretación",
+        "title": "Servicios de Interpretación y Traducción",
+        "brand": "H.Ferr Consulting",
+        "description": "H.Ferr Consulting es un proveedor líder de servicios de interpretación de idiomas extranjeros. Nuestros intérpretes profesionales y experimentados cuentan con amplia experiencia en traducción e interpretación. Le ayudamos a comunicarse de manera efectiva y respetuosa con sus pacientes y clientes con dominio limitado del inglés.",
+        "requestService": "Solicitar un servicio",
+        "learnMore": "Conocer más"
+    },
+
+    "services": {
+        "badge": "Nuestros servicios",
+        "title": "Servicios de idiomas para un",
+        "titleHighlight": "Mundo más inclusivo",
+        "description": "Ofrecemos servicios profesionales de interpretación y traducción adaptados a las necesidades de su industria y comunidad.",
+        "interpretation": {
+            "title": "Interpretación",
+            "short": "Comunicación clara y profesional entre personas que hablan diferentes idiomas.",
+            "long": "Nuestros intérpretes ayudan a organizaciones y personas a comunicarse eficazmente superando las barreras del idioma. Los servicios pueden proporcionarse de manera presencial o por teléfono, según sus necesidades."
+        },
+        "legal": {
+            "title": "Servicios legales",
+            "short": "Interpretación precisa para profesionales del ámbito legal y sus clientes.",
+            "long": "Nuestros intérpretes facilitan la comunicación en entornos legales donde la precisión, claridad y profesionalismo son esenciales para generar entendimiento entre profesionales y clientes."
+        },
+        "financial": {
+            "title": "Traducción financiera",
+            "short": "Traducción profesional de documentos e información financiera.",
+            "long": "Proporcionamos apoyo lingüístico para contenido financiero donde la precisión y una comunicación clara son esenciales para comprender información importante."
+        },
+        "academic": {
+            "title": "Traducción académica",
+            "short": "Apoyo lingüístico claro para documentos educativos y comunicación académica.",
+            "long": "La traducción profesional ayuda a las instituciones educativas a comunicar información claramente entre idiomas, respetando el contexto y propósito de cada documento."
+        }
+    },
+
+    "about": {
+        "badge": "Nosotros",
+        "title": "H.FERR Consulting",
+        "paragraph1": "Fundada en 2007, H.Ferr Consulting, LLC es una agencia de interpretación propiedad de minorías con sede en Milwaukee, Wisconsin. Seleccionamos intérpretes experimentados, honestos y apasionados que mantienen los más altos estándares de profesionalismo e integridad. Como agencia dirigida por profesionales del lenguaje, ofrecemos un entorno excepcional que garantiza el control de calidad y la selección de los mejores intérpretes y traductores del sureste de Wisconsin.",
+        "paragraph2": "Buscamos ofrecer servicios lingüísticos totalmente personalizados que vayan más allá de las palabras y construyan puentes entre culturas. Nuestros profesionales del lenguaje han sido capacitados y evaluados tanto en competencia lingüística como cultural. También realizamos observaciones aleatorias de nuestros intérpretes para garantizar los más altos estándares de calidad.",
+        "paragraph3": "Nuestros clientes incluyen agencias gubernamentales y empresas privadas de diferentes industrias.",
+        "quote": "El lenguaje tiene el poder de abrir puertas, crear oportunidades y unir a las personas."
+    },
+
+    "whyUs": {
+        "badge": "El impacto",
+        "title": "Una comunicación clara crea",
+        "titleHighlight": "comunidades más fuertes",
+        "description": "Al trabajar con H.Ferr Consulting, recibirá servicios de interpretación eficientes y efectivos para…",
+        "benefit1": "Establecer una comunicación clara",
+        "benefit2": "Permitir que pacientes y clientes participen",
+        "benefit3": "Promover el acceso equitativo para personas con dominio limitado del inglés"
+    },
+
+    "location": {
+        "visitUs": "Visítanos",
+        "title": "Nuestra ubicación",
+        "openMaps": "Abrir en Maps",
+        "contactBadge": "Contáctanos",
+        "contactTitle": "Envíanos un mensaje",
+        "name": "Nombre",
+        "namePlaceholder": "Tu nombre",
+        "email": "Correo electrónico",
+        "emailPlaceholder": "Ingresa tu correo electrónico",
+        "emailHelp": "Ingresa un correo electrónico válido para que podamos responderte.",
+        "helpLabel": "¿Cómo podemos ayudarte?",
+        "selectOption": "Selecciona una opción",
+        "interpretationServices": "Servicios de interpretación",
+        "legalInterpretation": "Interpretación legal",
+        "medicalServices": "Interpretación médica",
+        "businessServices": "Servicios empresariales",
+        "other": "Otro",
+        "message": "Mensaje",
+        "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
+        "sendMessage": "Enviar mensaje"
+    },
+
+    "faq": {
+        "badge": "Preguntas frecuentes",
+        "title": "Preguntas",
+        "titleHighlight": "frecuentes",
+        "description": "Encuentra respuestas a algunas de las preguntas más comunes sobre nuestros servicios de interpretación y traducción.",
+        "question1": "¿Por qué utilizar un servicio profesional de interpretación y traducción?",
+        "answer1": {
+            "intro": "Trabajar con un intérprete o traductor profesional ofrece beneficios importantes, especialmente en industrias sensibles a cuestiones de responsabilidad legal.",
+            "medical": {
+                "title": "Médico",
+                "item1": "Garantiza una comunicación efectiva entre pacientes y proveedores.",
+                "item2": "Previene resultados negativos derivados del uso de intérpretes no calificados.",
+                "item3": "Reduce la responsabilidad legal asociada con una interpretación inadecuada.",
+                "item4": "Ayuda a los proveedores a ganarse la confianza y el respeto de sus pacientes con dominio limitado del inglés."
+            },
+            "legal": {
+                "title": "Legal",
+                "item1": "Garantiza una buena relación entre los profesionales del ámbito legal y sus clientes.",
+                "item2": "Minimiza la confusión y los malentendidos."
+            },
+            "business": {
+                "title": "Empresarial",
+                "text": "Si su empresa cuenta con un gran número de empleados con dominio limitado del inglés, H.Ferr Consulting puede ayudar a garantizar que todos comprendan las políticas, procedimientos y beneficios de la empresa."
+            }
+        },
+        "question2": "¿Qué preparación tienen sus intérpretes?",
+        "answer2": {
+            "paragraph1": "Los intérpretes de H.Ferr deben ser hablantes nativos del idioma extranjero o contar con fluidez nativa en dicho idioma. También deben demostrar fluidez nativa en inglés.",
+            "paragraph2": "Además de dominar al menos dos idiomas, nuestros intérpretes reciben capacitación especializada para interpretar terminología médica y legal. También reciben capacitación sobre las regulaciones de HIPAA y todos firman un Código de Ética.",
+            "paragraph3": "Si su industria requiere habilidades específicas de interpretación, háganoslo saber. Trabajaremos con usted para asegurarnos de que nuestros intérpretes reciban preparación adicional de acuerdo con sus necesidades."
+        },
+        "question3": "¿Con cuánta anticipación debo programar una cita?",
+        "answer3": {
+            "paragraph1": "Aunque agradecemos toda la anticipación que pueda darnos, hacemos todo lo posible para enviarle un intérprete rápidamente sin importar cuándo lo necesite.",
+            "paragraph2": "Reconocemos que muchas citas se programan a última hora. Gracias a nuestro amplio equipo y a nuestro experimentado equipo de programación, estamos disponibles para enviar un intérprete incluso para citas con poca anticipación.",
+            "paragraph3": "Por lo general, podemos enviar un intérprete a su ubicación en tan solo 30 minutos. Estamos disponibles las 24 horas del día, los 7 días de la semana."
+        },
+        "question4": "¿En qué lugares presta servicios H.Ferr Consulting?",
+        "answer4": "H.Ferr Consulting presta servicios a clientes en todo Wisconsin. Ofrecemos servicios desde visitas a domicilio y oficinas de abogados hasta hospitales y clínicas en todo el estado.",
+        "question5": "¿Qué información necesito tener cuando llame para programar una cita?",
+        "answer5": {
+            "paragraph1": "Necesitaremos la fecha, hora y ubicación de su cita. También solicitaremos el nombre del cliente o paciente y el nombre de la persona responsable.",
+            "paragraph2": "Si tiene alguna solicitud especial, háganoslo saber. Siempre estamos dispuestos a atender solicitudes especiales."
+        },
+        "question6": "¿Cuáles son las tarifas de H.Ferr Consulting?",
+        "answer6": "Las tarifas varían según las necesidades de cada cliente. Llame a H.Ferr Consulting al {phone} o escríbanos a {email} para que podamos proporcionarle una cotización personalizada.",
+        "question7": "¿Qué sucede si necesito cancelar una cita?",
+        "answer7": "Por favor, notifíquenos lo antes posible si una cita es cancelada. Si la cancelación se recibe con menos de 24 horas de anticipación a la hora programada, se facturará el cargo mínimo correspondiente a dos horas.",
+        "question8": "¿H.Ferr Consulting ofrece servicios de interpretación por teléfono?",
+        "answer8": {
+            "paragraph1": "Sí, con gusto ofrecemos servicios de interpretación por teléfono. Por ejemplo, los clientes utilizan nuestros servicios con frecuencia para programar o confirmar citas o para proporcionar instrucciones antes de una cita.",
+            "paragraph2": "Llámenos para obtener más información sobre este servicio."
+        },
+        "question9": "¿Cómo puedo programar un servicio?",
+        "answer9": "Depende de usted. Puede llamar o enviar su solicitud por correo electrónico. Si necesita una respuesta inmediata, llámenos al {phone}."
+    },
+    
+    "footer": {
+        "contact": "Contacto",
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
+        "followUs": "Síguenos",
+        "ctaText": "¿Necesitas servicios de interpretación o traducción?",
+        "ctaButton": "Solicitar un servicio"
+    }
+}

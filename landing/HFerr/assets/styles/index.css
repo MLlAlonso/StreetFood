@@ -157,6 +157,46 @@
   outline-offset: 3px;
 }
 
+.navbar__language {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: 1.5rem;
+}
+
+.navbar__language-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.navbar__language-button img {
+  display: block;
+  width: 22px;
+  height: 15px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 2px;
+}
+.navbar__language-button:hover, .navbar__language-button.is-active {
+  opacity: 1;
+}
+.navbar__language-button:hover {
+  transform: translateY(-1px);
+}
+
+.navbar__language-divider {
+  opacity: 0.3;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
 @media (max-width: 1024px) {
   .navbar__container {
     min-height: 74px;
