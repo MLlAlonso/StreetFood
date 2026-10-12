@@ -395,4 +395,189 @@ export const styles = StyleSheet.create({
         color: "#FFF",
         fontWeight: "700",
     },
+
+
+    /* DESKTOP LAYOUT */
+
+    content: {
+        flexGrow: 1,
+    },
+
+    contentDesktop: {
+        alignItems: "center",
+        paddingHorizontal: 20,
+        paddingTop: 25,
+        paddingBottom: 40,
+    },
+
+    mobileWrapper: {
+        width: "100%",
+    },
+
+    desktopWrapper: {
+        width: "100%",
+        maxWidth: 1400,
+        alignSelf: "center",
+    },
+
+    /* HERO */
+
+    heroDesktop: {
+        height: 420,
+        borderRadius: 20,
+        overflow: "hidden",
+        backgroundColor: colors.primary,
+    },
+
+    heroImageDesktop: {
+        width: "100%",
+        height: 420,
+        resizeMode: "cover",
+    },
+
+    heroOverlayDesktop: {
+        paddingHorizontal: 32,
+        paddingVertical: 20,
+        backgroundColor: "rgba(0,0,0,0.48)",
+    },
+
+    businessNameDesktop: {
+        fontSize: 46,
+        lineHeight: 56,
+    },
+
+    businessTypeDesktop: {
+        marginHorizontal: 0,
+        marginTop: 18,
+        fontSize: 17,
+    },
+
+    /* STATS */
+    statsDesktop: {
+        marginHorizontal: 0,
+        marginTop: 24,
+        alignSelf: "stretch",
+        borderRadius: 16,
+    },
+
+    statItemDesktop: {
+        paddingVertical: 22,
+    },
+
+    /* ACTIONS */
+    ownerActionsDesktop: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 16,
+        marginTop: 24,
+    },
+
+    profileButtonsRowDesktop: {
+        alignSelf: "flex-start",
+        width: 520,
+        marginHorizontal: 0,
+        marginTop: 24,
+    },
+
+    editButtonDesktop: {
+        width: 240,
+        marginHorizontal: 0,
+    },
+
+    statusButtonDesktop: {
+        minWidth: 220,
+        height: 58,
+        paddingHorizontal: 24,
+    },
+
+    /* DETAILS GRID */
+    desktopDetailsGrid: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: 32,
+        marginTop: 20,
+    },
+
+    desktopMainColumn: {
+        flex: 1,
+        minWidth: 0,
+    },
+
+    desktopSideColumn: {
+        width: 350,
+        minWidth: 0,
+    },
+
+    desktopSection: {
+        marginBottom: 28,
+    },
+
+    sectionTitleDesktop: {
+        marginHorizontal: 0,
+        marginTop: 0,
+        marginBottom: 14,
+        fontSize: 25,
+    },
+
+    descriptionDesktop: {
+        marginHorizontal: 0,
+        fontSize: 16,
+        lineHeight: 27,
+    },
+
+    scheduleCardDesktop: {
+        backgroundColor: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: colors.border,
+        borderRadius: 16,
+        padding: 22,
+    },
+
+    /* MENU */
+    menuContainerDesktop: {
+        marginHorizontal: 0,
+    },
+
+    menuGridDesktop: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 20,
+    },
+
+    menuItemDesktop: {
+        width: "47%",
+        minWidth: 0,
+    },
+
+    /* SOCIAL LINKS */
+
+    actionsContainerDesktop: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        width: "100%",
+        marginHorizontal: 0,
+        marginTop: 12,
+        marginBottom: 20,
+        gap: 12,
+    },
+
+    actionButtonDesktop: {
+        flex: 0,
+        width: 52,
+        height: 52,
+        minWidth: 52,
+        borderRadius: 14,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    actionIconDesktop: {
+        width: 26,
+        height: 26,
+        resizeMode: "contain",
+    },
+
 });

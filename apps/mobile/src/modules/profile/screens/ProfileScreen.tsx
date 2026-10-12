@@ -1,10 +1,11 @@
+
 import { View, ScrollView, Text, Image, ActivityIndicator, TouchableOpacity, } from "react-native";
 
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { colors } from "@/styles/theme/colors";
 import { styles } from "../styles/profile.styles";
+import { useResponsive } from "@/hooks/useResponsive";
 import { useProfile } from "../hooks/useProfile";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import Button from "@/components/ui/Button";
@@ -17,13 +18,14 @@ import { useBusiness } from "../hooks/useBusiness";
 
 export default function ProfileScreen() {
     const router = useRouter();
-    const { authenticated, loading: authLoading, signOut, } = useAuth();
-    const { profile, loading, saveProfile, } = useProfile();
-    const [editVisible, setEditVisible,] = useState(false);
-    const [saving, setSaving,] = useState(false);
-    const [showLogoutModal, setShowLogoutModal,] = useState(false);
+    const { signOut } = useAuth();
+    const { profile, loading, saveProfile } = useProfile();
+    const { business } = useBusiness();
     const { t } = useTranslation();
-    const { business,} = useBusiness();
+    const { isDesktop } = useResponsive();
+    const [editVisible, setEditVisible] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleSaveProfile = async (data: any) => {
         try {
@@ -50,27 +52,26 @@ export default function ProfileScreen() {
         <View style={styles.container}>
             <AppHeader />
 
-            <ScrollView contentContainerStyle={styles.content} >
-                {
-                    loading ?
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.content, isDesktop && styles.desktopContent,]} >
+                {loading ? (
+                    <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color={colors.secondary} />
-                        :
-                        profile && (
-                            <>
-                                <View style={styles.center}>
-                                    <View style={styles.avatar}>
-                                        {
-                                            profile.avatar ?
-                                                <Image source={{ uri: profile.avatar, }} style={styles.avatarImage} />
-                                                :
-                                                <Image
-                                                    source={require("@/assets/icons/customer.png")}
-                                                    resizeMode="contain"
-                                                    style={{ width: 60, height: 60, opacity: .55, }}
-                                                />
-                                        }
-                                    </View>
+                    </View>
+                ) : (
+                    profile && (
+                        <View style={[styles.pageWrapper, isDesktop && styles.desktopPageWrapper,]} >
 
+                            <View style={[styles.center, isDesktop && styles.desktopIdentity,]} >
+                                <View
+                                    style={[styles.avatar, isDesktop && styles.desktopAvatar,]} >
+                                    {profile.avatar ? (
+                                        <Image source={{ uri: profile.avatar }} style={styles.avatarImage} />
+                                    ) : (
+                                        <Image source={require("@/assets/icons/customer.png")} resizeMode="contain" style={{ width: 60, height: 60, opacity: 0.55, }} />
+                                    )}
+                                </View>
+
+                                <View style={[styles.identityText, isDesktop && styles.desktopIdentityText,]} >
                                     <Text style={styles.name}>
                                         {profile.name}
                                     </Text>
@@ -79,19 +80,19 @@ export default function ProfileScreen() {
                                         {profile.email}
                                     </Text>
                                 </View>
+                            </View>
 
-                                <View style={styles.card}>
+                            {/* Profile cards */}
+                            <View style={[styles.cardsGrid, isDesktop && styles.desktopCardsGrid,]} >
+                                {/* Personal information */}
+                                <View style={[styles.card, isDesktop && styles.desktopCard,]} >
                                     <View style={styles.cardHeader}>
                                         <Text style={styles.cardTitle}>
                                             {t("myProfile")}
                                         </Text>
 
-                                        <TouchableOpacity onPress={() => setEditVisible(true)} >
-                                            <Image
-                                                source={require("@/assets/icons/edit.png")}
-                                                resizeMode="contain"
-                                                style={{ width: 26, height: 26, }}
-                                            />
+                                        <TouchableOpacity onPress={() => setEditVisible(true)} accessibilityRole="button" accessibilityLabel={t("myProfile")} >
+                                            <Image source={require("@/assets/icons/edit.png")} resizeMode="contain" style={{ width: 26, height: 26, }} />
                                         </TouchableOpacity>
                                     </View>
 
@@ -126,60 +127,83 @@ export default function ProfileScreen() {
                                     </View>
                                 </View>
 
-                                <View style={styles.card}>
-                                    <Text style={[ styles.cardTitle, { marginBottom: 12, }, ]} >
-                                        My Business
+                                {/* Business */}
+                                <View style={[styles.card, isDesktop && styles.desktopCard]}>
+                                    <Text style={[styles.cardTitle, styles.cardTitleSpacing]}>
+                                        {t("myBusinesses")}
                                     </Text>
 
-                                    <Button
-                                        title={ business.length === 0 ? "Create Business" : "My Businesses" }
-                                        onPress={() => {
-                                            router.push("/my-business");
-                                        }}
-                                    />
+                                    {business.length === 0 ? (
+                                        <View style={styles.businessEmpty}>
+                                            <Text style={styles.businessEmptyText}>
+                                                {t("noBusinessesYet")}
+                                            </Text>
+                                        </View>
+                                    ) : (
+                                        <View style={styles.businessList}>
+                                            {business.map((item) => {
+                                                const businessData = item as typeof item & {
+                                                    business_name?: string;
+                                                    business_type?: string;
+                                                    type?: string;
+                                                };
+
+                                                const businessName = businessData.business_name ?? item.name;
+                                                const businessType = businessData.business_type ?? businessData.type;
+                                                const businessIcon = businessType === "restaurant" ? require("@/assets/icons/restaurant2.png") : require("@/assets/icons/foodtruck.png");
+
+
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={item.id}
+                                                        style={styles.businessItem}
+                                                        activeOpacity={0.75}
+                                                        onPress={() => router.push(`/business/${item.id}` as any)}
+                                                        accessibilityRole="button"
+                                                        accessibilityLabel={businessName}
+                                                    >
+                                                        <View style={styles.businessIconContainer}>
+                                                            <Image source={businessIcon} resizeMode="contain" style={styles.businessIcon} />
+                                                        </View>
+
+                                                        <Text style={styles.businessName} numberOfLines={2} >
+                                                            {businessName}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                );
+
+                                            })}
+                                        </View>
+                                    )}
+
+                                    {business.length < 5 && (
+                                        <View style={styles.businessCreateButton}>
+                                            <Button title={t("createBusiness")} onPress={() => router.push("/my-business/create")} />
+                                        </View>
+                                    )}
                                 </View>
 
-                                <View style={styles.card}>
-                                    <Text style={[styles.cardTitle, { marginBottom: 12, },]} >
+                                {/* Account options */}
+                                <View style={[styles.card, isDesktop && styles.desktopCard,]} >
+                                    <Text style={[styles.cardTitle, styles.cardTitleSpacing,]} >
                                         {t("more")}
                                     </Text>
 
-                                    <ProfileOptionCard
-                                        title={t("settings")}
-                                        icon={require("@/assets/icons/Settings.png")}
-                                        onPress={() => { }}
-                                    />
+                                    <View style={styles.optionsList}>
+                                        <ProfileOptionCard title={t("settings")} icon={require("@/assets/icons/Settings.png")} onPress={() => { }} />
+                                        <ProfileOptionCard title={t("help")} icon={require("@/assets/icons/Help.png")} onPress={() => { }} />
+                                        <ProfileOptionCard title={t("privacy")} icon={require("@/assets/icons/Privacy.png")} onPress={() => { }} />
+                                        <ProfileOptionCard title={t("aboutUs")} icon={require("@/assets/icons/foodtruck.png")} onPress={() => { }} />
+                                    </View>
 
-                                    <ProfileOptionCard
-                                        title={t("help")}
-                                        icon={require("@/assets/icons/Help.png")}
-                                        onPress={() => { }}
-                                    />
-
-                                    <ProfileOptionCard
-                                        title={t("privacy")}
-                                        icon={require("@/assets/icons/Privacy.png")}
-                                        onPress={() => { }}
-                                    />
-
-                                    <ProfileOptionCard
-                                        title={t("aboutUs")}
-                                        icon={require("@/assets/icons/foodtruck.png")}
-                                        onPress={() => { }}
-                                    />
-
-                                    <View style={{ marginTop: 20, }} >
-                                        <Button
-                                            title={t("logout")}
-                                            onPress={() => setShowLogoutModal(true)}
-                                            backgroundColor="#E53935"
-                                            textColor="#FFF"
-                                        />
+                                    <View style={styles.logoutContainer}>
+                                        <Button title={t("logout")} onPress={() => setShowLogoutModal(true)} backgroundColor="#E53935" textColor="#FFF" />
                                     </View>
                                 </View>
-                            </>
-                        )
-                }
+                            </View>
+                        </View>
+                    )
+                )}
             </ScrollView>
 
             <EditProfileModal
