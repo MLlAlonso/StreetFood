@@ -83,7 +83,7 @@ export default function RegisterScreen() {
         }
 
         if (categories.length >= 3) {
-            openModal( "Limit reached", "You can select a maximum of 3 categories" );
+            openModal("Limit reached", "You can select a maximum of 3 categories");
             return;
         }
 
@@ -162,7 +162,7 @@ export default function RegisterScreen() {
 
             setShowVerificationModal(true);
         } catch {
-            openModal( "Error", "Could not send verification code" );
+            openModal("Error", "Could not send verification code");
         } finally {
             setSendingVerificationCode(false);
         }
@@ -187,7 +187,7 @@ export default function RegisterScreen() {
     };
 
     const handleContinue = async () => {
-        if ( !form.name.trim() || !form.email.trim() || !form.password.trim() ) {
+        if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
             openModal("Missing fields", "Please complete required fields");
             return;
         }
@@ -203,7 +203,7 @@ export default function RegisterScreen() {
         }
 
         if (!PASSWORD_REGEX.test(form.password)) {
-            openModal( "Invalid password", "Password must contain at least 8 characters, 1 uppercase letter and 1 number" );
+            openModal("Invalid password", "Password must contain at least 8 characters, 1 uppercase letter and 1 number");
             return;
         }
 
@@ -352,151 +352,166 @@ export default function RegisterScreen() {
                 </Text>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} >
-                <AuthContainer>
-                    {step === 1 ? (
-                        <>
-                            <Text style={styles.label}>
-                                I am
-                            </Text>
-
-                            <View style={[styles.row, !isMobile && styles.desktopRow,]} >
-                                <SelectorCard
-                                    icon={customerIcon}
-                                    title="Customer"
-                                    subtitle="Find & explore food"
-                                    active={role === "customer"}
-                                    onPress={() => setRole("customer")}
-                                />
-
-                                <SelectorCard
-                                    icon={vendorIcon}
-                                    title="Vendor"
-                                    subtitle="List your business"
-                                    active={role === "vendor"}
-                                    onPress={() => setRole("vendor")}
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[
+                    styles.content,
+                    isTablet && styles.tabletContent,
+                    isDesktop && styles.desktopContent,
+                ]}
+            >
+                <View
+                    style={[
+                        styles.pageWrapper,
+                        isTablet && styles.tabletForm,
+                        isDesktop && styles.desktopForm,
+                    ]}
+                >
+                    <AuthContainer>
+                        {step === 1 ? (
+                            <>
                                 <Text style={styles.label}>
-                                    Full Name*
-                                </Text>
-
-                                <Input
-                                    value={form.name}
-                                    onChangeText={text => setForm({ ...form, name: text, })}
-                                    placeholder="Your name"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Email*
-                                </Text>
-
-                                <Input
-                                    value={form.email}
-                                    onChangeText={text => setForm({ ...form, email: text, })}
-                                    placeholder="example@email.com"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Phone Number
-                                </Text>
-
-                                <Input
-                                    value={form.phone}
-                                    onChangeText={text => setForm({ ...form, phone: text, })}
-                                    placeholder="XXX XXX XXX XXXX"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Password*
-                                </Text>
-
-                                <Input
-                                    value={form.password}
-                                    onChangeText={text => setForm({ ...form, password: text, })}
-                                    secureTextEntry
-                                    placeholder="8 chars, 1 uppercase, 1 number"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Repeat password*
-                                </Text>
-
-                                <Input
-                                    value={form.repeatPassword}
-                                    onChangeText={text => setForm({ ...form, repeatPassword: text, })}
-                                    secureTextEntry
-                                    placeholder="8 chars, 1 uppercase, 1 number"
-                                />
-                            </View>
-
-                            <View style={styles.formGroup}>
-                                <Text style={styles.label}>
-                                    Select language
+                                    I am
                                 </Text>
 
                                 <View style={[styles.row, !isMobile && styles.desktopRow,]} >
-                                    <TouchableOpacity
-                                        style={[styles.languageButton, selectedLanguage === "en" && styles.languageButtonActive,]}
-                                        onPress={() => setSelectedLanguage("en")}
-                                    >
-                                        <Text style={[styles.languageText, selectedLanguage === "en" && styles.languageTextActive,]} >
-                                            English
-                                        </Text>
-                                    </TouchableOpacity>
+                                    <SelectorCard
+                                        icon={customerIcon}
+                                        title="Customer"
+                                        subtitle="Find & explore food"
+                                        active={role === "customer"}
+                                        onPress={() => setRole("customer")}
+                                    />
 
-                                    <TouchableOpacity
-                                        style={[styles.languageButton, selectedLanguage === "es" && styles.languageButtonActive,]}
-                                        onPress={() => setSelectedLanguage("es")}
-                                    >
-                                        <Text style={[styles.languageText, selectedLanguage === "es" && styles.languageTextActive,]} >
-                                            Español
-                                        </Text>
-                                    </TouchableOpacity>
+                                    <SelectorCard
+                                        icon={vendorIcon}
+                                        title="Vendor"
+                                        subtitle="List your business"
+                                        active={role === "vendor"}
+                                        onPress={() => setRole("vendor")}
+                                    />
                                 </View>
-                            </View>
 
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleContinue} disabled={loading || sendingVerificationCode} >
-                                {(loading || sendingVerificationCode) ? (
-                                    <ActivityIndicator color="#FFF" />
-                                ) : (
-                                    <Text style={styles.primaryButtonText}>
-                                        {role === "customer" ? "Create Account" : "Continue"}
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Full Name*
                                     </Text>
-                                )}
-                            </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => router.push("/login")}  >
-                                <Text style={styles.footerText}>
-                                    Already have an
-                                    account?{" "}
-                                    <Text style={styles.footerBold} >
-                                        Log In
+                                    <Input
+                                        value={form.name}
+                                        onChangeText={text => setForm({ ...form, name: text, })}
+                                        placeholder="Your name"
+                                    />
+                                </View>
+
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Email*
                                     </Text>
-                                </Text>
-                            </TouchableOpacity>
-                        </>
-                    ) : (
-                        <BusinessForm
-                            loading={loading || sendingVerificationCode}
-                            state={businessState}
-                            actions={businessActions}
-                            onSubmit={handleVendorSubmit}
-                            onBack={() => setStep(1)}
-                            submitLabel="Create Account"
-                        />
-                    )}
-                </AuthContainer>
+
+                                    <Input
+                                        value={form.email}
+                                        onChangeText={text => setForm({ ...form, email: text, })}
+                                        placeholder="example@email.com"
+                                    />
+                                </View>
+
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Phone Number
+                                    </Text>
+
+                                    <Input
+                                        value={form.phone}
+                                        onChangeText={text => setForm({ ...form, phone: text, })}
+                                        placeholder="XXX XXX XXX XXXX"
+                                    />
+                                </View>
+
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Password*
+                                    </Text>
+
+                                    <Input
+                                        value={form.password}
+                                        onChangeText={text => setForm({ ...form, password: text, })}
+                                        secureTextEntry
+                                        placeholder="8 chars, 1 uppercase, 1 number"
+                                    />
+                                </View>
+
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Repeat password*
+                                    </Text>
+
+                                    <Input
+                                        value={form.repeatPassword}
+                                        onChangeText={text => setForm({ ...form, repeatPassword: text, })}
+                                        secureTextEntry
+                                        placeholder="8 chars, 1 uppercase, 1 number"
+                                    />
+                                </View>
+
+                                <View style={styles.formGroup}>
+                                    <Text style={styles.label}>
+                                        Select language
+                                    </Text>
+
+                                    <View style={[styles.row, !isMobile && styles.desktopRow,]} >
+                                        <TouchableOpacity
+                                            style={[styles.languageButton, selectedLanguage === "en" && styles.languageButtonActive,]}
+                                            onPress={() => setSelectedLanguage("en")}
+                                        >
+                                            <Text style={[styles.languageText, selectedLanguage === "en" && styles.languageTextActive,]} >
+                                                English
+                                            </Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            style={[styles.languageButton, selectedLanguage === "es" && styles.languageButtonActive,]}
+                                            onPress={() => setSelectedLanguage("es")}
+                                        >
+                                            <Text style={[styles.languageText, selectedLanguage === "es" && styles.languageTextActive,]} >
+                                                Español
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <TouchableOpacity style={styles.primaryButton} onPress={handleContinue} disabled={loading || sendingVerificationCode} >
+                                    {(loading || sendingVerificationCode) ? (
+                                        <ActivityIndicator color="#FFF" />
+                                    ) : (
+                                        <Text style={styles.primaryButtonText}>
+                                            {role === "customer" ? "Create Account" : "Continue"}
+                                        </Text>
+                                    )}
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => router.push("/login")}  >
+                                    <Text style={styles.footerText}>
+                                        Already have an
+                                        account?{" "}
+                                        <Text style={styles.footerBold} >
+                                            Log In
+                                        </Text>
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            <BusinessForm
+                                loading={loading || sendingVerificationCode}
+                                state={businessState}
+                                actions={businessActions}
+                                onSubmit={handleVendorSubmit}
+                                onBack={() => setStep(1)}
+                                submitLabel="Create Account"
+                            />
+                        )}
+                    </AuthContainer>
+                </View>
             </ScrollView>
 
             <Modal visible={showLogoModal} transparent animationType="fade" >

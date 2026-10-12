@@ -1,3 +1,4 @@
+
 import { StyleSheet } from "react-native";
 
 import { colors } from "@/styles/theme/colors";
@@ -11,6 +12,7 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
 
+    // Header
     header: {
         backgroundColor: colors.primary,
         paddingHorizontal: spacing.lg,
@@ -26,23 +28,62 @@ export const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
-        marginTop: 8,
+        marginTop: spacing.sm,
         color: "#FFF",
         opacity: 0.8,
         fontSize: typography.size.lg,
         fontFamily: typography.fontFamily.body,
+        lineHeight: 28,
     },
 
+    // ScrollView
     content: {
         padding: spacing.lg,
-        paddingBottom: 20,
+        paddingBottom: spacing.xl,
+        flexGrow: 1,
     },
 
+    desktopContent: {
+        alignItems: "center",
+        paddingHorizontal: spacing.xl,
+        paddingTop: spacing.xl,
+        paddingBottom: spacing.xxl,
+    },
+
+    tabletContent: {
+        paddingHorizontal: spacing.xl,
+        paddingTop: spacing.lg,
+    },
+
+    // Form wrapper
+    pageWrapper: {
+        width: "100%",
+        alignItems: "center",
+    },
+
+    desktopForm: {
+        width: "100%",
+        maxWidth: 900,
+        alignSelf: "center",
+    },
+
+    tabletForm: {
+        width: "100%",
+        maxWidth: 700,
+        alignSelf: "center",
+    },
+
+    // Rows
     row: {
         flexDirection: "row",
         gap: 15,
     },
 
+    desktopRow: {
+        justifyContent: "space-between",
+    },
+
+    // Form fields
     formGroup: {
         marginTop: 25,
     },
@@ -55,6 +96,7 @@ export const styles = StyleSheet.create({
         fontWeight: typography.weight.bold as any,
     },
 
+    // Language selector
     languageButton: {
         flex: 1,
         height: 60,
@@ -81,6 +123,7 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
     },
 
+    // Main action
     primaryButton: {
         height: 58,
         borderRadius: 15,
@@ -97,6 +140,7 @@ export const styles = StyleSheet.create({
         fontWeight: typography.weight.bold as any,
     },
 
+    // Footer
     footerText: {
         textAlign: "center",
         marginTop: 25,
@@ -109,6 +153,7 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
     },
 
+    // Business form controls
     textArea: {
         minHeight: 140,
         backgroundColor: "#FFF",
@@ -199,6 +244,7 @@ export const styles = StyleSheet.create({
         fontWeight: typography.weight.bold as any,
     },
 
+    // Modals
     modalOverlay: {
         flex: 1,
         backgroundColor: "rgba(0,0,0,0.85)",
@@ -224,22 +270,12 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
     },
 
-    pageWrapper: {
-        width: "100%",
-        alignItems: "center",
-    },
-
-    desktopForm: {
-        width: "100%",
-        maxWidth: 900,
-    },
-
-    desktopRow: {
-        justifyContent: "space-between",
-    },
-
+    // Desktop header
     desktopHeader: {
         alignItems: "center",
+        paddingTop: 36,
+        paddingBottom: 36,
+        paddingHorizontal: spacing.xl,
     },
 
     desktopTextCenter: {
