@@ -152,7 +152,6 @@ export default function ProfileScreen() {
                                                 const businessType = businessData.business_type ?? businessData.type;
                                                 const businessIcon = businessType === "restaurant" ? require("@/assets/icons/restaurant2.png") : require("@/assets/icons/foodtruck.png");
 
-
                                                 return (
                                                     <TouchableOpacity
                                                         key={item.id}
@@ -176,11 +175,26 @@ export default function ProfileScreen() {
                                         </View>
                                     )}
 
+
                                     {business.length < 5 && (
                                         <View style={styles.businessCreateButton}>
-                                            <Button title={t("createBusiness")} onPress={() => router.push("/my-business/create")} />
+                                            <Button
+                                                title={
+                                                    business.length === 0
+                                                        ? t("createBusiness")
+                                                        : t("myBusinesses")
+                                                }
+                                                onPress={() => {
+                                                    if (business.length === 0) {
+                                                        router.push("/my-business/create");
+                                                    } else {
+                                                        router.push("/my-business");
+                                                    }
+                                                }}
+                                            />
                                         </View>
                                     )}
+
                                 </View>
 
                                 {/* Account options */}

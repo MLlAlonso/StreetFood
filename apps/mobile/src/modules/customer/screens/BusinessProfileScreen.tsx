@@ -1,8 +1,8 @@
 
 import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Alert, Linking, Animated, } from "react-native";
 
-import { useEffect, useRef, useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import BottomTabs from "@/components/layout/BottomTabs";
 import MenuItemCard from "@/components/cards/MenuItemCard";
@@ -85,9 +85,7 @@ export default function BusinessProfileScreen() {
         },
     };
 
-    useEffect(() => {
-        loadBusiness();
-    }, [id]);
+
 
     useEffect(() => {
         const listener = animatedRating.addListener(({ value }) => {
@@ -99,24 +97,33 @@ export default function BusinessProfileScreen() {
         };
     }, [animatedRating]);
 
-    const loadBusiness = async () => {
+    const loadBusiness = useCallback(async () => {
+        if (!id) return;
+
         try {
             setLoading(true);
             const response = await getBusiness(Number(id));
             setBusiness(response);
             animatedRating.setValue(0);
+
             Animated.timing(animatedRating, {
                 toValue: response.rating,
                 duration: 800,
                 useNativeDriver: false,
             }).start();
         } catch (error) {
-            console.log(error);
+            console.error("Error loading business:", error);
             setBusiness(null);
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, animatedRating]);
+
+    useFocusEffect(
+        useCallback(() => {
+            void loadBusiness();
+        }, [loadBusiness])
+    );
 
     const handleFavorite = () => {
         if (!authenticated) {

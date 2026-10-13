@@ -1,27 +1,31 @@
-import { useCallback, useEffect, useState, } from "react";
+
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "expo-router";
 import { Business } from "@/modules/customer/types/Business";
 import { BusinessDetail } from "@/modules/business/types/BusinessDetail";
 
-import { getMyBusinesses, getBusiness, createBusiness, updateBusiness, deleteBusiness, updateBusinessStatus,} from "../services/business.service";
+import { getMyBusinesses, getBusiness, createBusiness, updateBusiness, deleteBusiness, updateBusinessStatus, } from "../services/business.service";
 
 export function useBusiness() {
-    const [business, setBusiness,] = useState<Business[]>([]);
-    const [loading, setLoading,] = useState(true);
+    const [business, setBusiness] = useState<Business[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const reload = useCallback(
-        async () => {
-            try {
-                const data = await getMyBusinesses();
-                setBusiness(data);
-            }
-            finally {
-                setLoading(false);
-            }
-        },
-        []
+    const reload = useCallback(async () => {
+        try {
+            const data = await getMyBusinesses();
+            setBusiness(data);
+        } catch (error) {
+            console.error("Error loading businesses:", error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            void reload();
+        }, [reload])
     );
-
-    useEffect(() => { reload(); }, [reload]);
 
     const find = async (id: number): Promise<BusinessDetail> => {
         return await getBusiness(id);
@@ -47,12 +51,11 @@ export function useBusiness() {
 
     const remove = async (id: number) => {
         try {
-            console.log("Deleting business:", id);
             await deleteBusiness(id);
-            console.log("Delete successful");
             await reload();
         } catch (error) {
-            console.log("Delete error:", error);
+            console.error("Error deleting business:", error);
+            throw error;
         }
     };
 

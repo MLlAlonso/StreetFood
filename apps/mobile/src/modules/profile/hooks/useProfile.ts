@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { getProfile, updateProfile, } from "../services/profile.service";
+
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { getProfile, updateProfile,} from "../services/profile.service";
 import { Profile } from "../types/Profile";
 
 export function useProfile() {
@@ -10,14 +12,19 @@ export function useProfile() {
         try {
             const data = await getProfile();
             setProfile(data);
+        } catch (error) {
+            console.error("Error loading profile:", error);
         } finally {
             setLoading(false);
         }
     }, []);
 
-    useEffect(() => {
-        loadProfile();
-    }, [loadProfile]);
+    // Recarga al entrar o regresar a la pantalla.
+    useFocusEffect(
+        useCallback(() => {
+            void loadProfile();
+        }, [loadProfile])
+    );
 
     const saveProfile = async (values: Partial<Profile>) => {
         const updated = await updateProfile(values);
