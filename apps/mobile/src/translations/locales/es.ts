@@ -91,6 +91,11 @@ const es: Record<TranslationKeys, string> = {
     friday: "Friday",
     saturday: "Saturday",
     followUs: "Síguenos",
+    
+    incompleteBusinessHours: "Horarios incompletos",
+    businessHoursRequired: "Debes ingresar tanto la hora de apertura como la de cierre.",
+    openingAndClosingTimesRequired: "Las horas de apertura y cierre son obligatorias.",
+
 };
 
 export default es;

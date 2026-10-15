@@ -90,5 +90,10 @@ export type TranslationKeys =
     | "friday"
     | "saturday"
     | "followUs"
+    
+    | "incompleteBusinessHours"
+    | "businessHoursRequired"
+    | "openingAndClosingTimesRequired"
+
     ;
 ;

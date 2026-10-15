@@ -12,6 +12,7 @@ import * as Location from "expo-location";
 import { useBusiness } from "@/modules/profile/hooks/useBusiness";
 import { DEFAULT_BUSINESS_WEEK } from "../constants/businessWeek";
 import { BusinessSocialLink } from "../types/BusinessSocialLink";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function EditBusinessScreen() {
     const router = useRouter();
@@ -32,6 +33,7 @@ export default function EditBusinessScreen() {
     const [scheduleEnabled, setScheduleEnabled] = useState(false);
     const [hours, setHours] = useState(DEFAULT_BUSINESS_WEEK);
     const [socialLinks, setSocialLinks] = useState<BusinessSocialLink[]>([]);
+    const { t } = useTranslation();
 
     function openModal(title: string, message: string) {
         setModalTitle(title);
@@ -152,6 +154,23 @@ export default function EditBusinessScreen() {
         if (categories.length === 0) {
             openModal("Missing categories", "Select at least one category.");
             return;
+        }
+
+        if (scheduleEnabled) {
+            const incompleteDay = hours.find(
+                (day) =>
+                    day.enabled &&
+                    (!day.open_time?.trim() || !day.close_time?.trim())
+            );
+
+            if (incompleteDay) {
+                openModal(
+                    t("incompleteBusinessHours"),
+                    t("businessHoursRequired")
+                );
+
+                return;
+            }
         }
 
         setLoading(true);
