@@ -2,6 +2,7 @@
 
 namespace App\Modules\Business\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateBusinessRequest extends FormRequest
@@ -21,7 +22,7 @@ class CreateBusinessRequest extends FormRequest
             'latitude' => ['nullable', 'numeric',],
             'longitude' => ['nullable', 'numeric',],
             'categories' => ['required', 'array', 'min:1', 'max:3',],
-            'categories.*' => ['string',],
+            'categories.*' => ['required', 'string', 'distinct', Rule::in(config('food_categories')),],
             'menu' => ['nullable', 'array',],
             'menu.*.name' => ['required', 'string',],
             'menu.*.description' => ['nullable', 'string',],

@@ -4,7 +4,6 @@ namespace App\Modules\Business\Services;
 
 use App\Models\Business;
 use App\Models\User;
-use App\Models\Category;
 use App\Modules\Shared\Responses\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -14,7 +13,7 @@ class BusinessService
 {
     public function index()
     {
-        $businesses = Business::with(['categories', 'menuItems', 'reviews', 'hours', 'socialLinks',])->get();
+        $businesses = Business::with(['menuItems', 'reviews', 'hours', 'socialLinks',])->get();
 
         $data = $businesses->map(
             function ($business) {
@@ -27,7 +26,7 @@ class BusinessService
                     'business_type' => $business->business_type,
                     'logo' => $business->logo,
                     'image' => $business->menuItems->first()?->image ?? $business->logo,
-                    'categories' => $business->categories->pluck('name')->values(),
+                    'categories' => $business->categories ?? [],
                     'social_links' => $business->socialLinks
                         ->map(function ($link) {
                             return ['type' => $link->type, 'url' => $link->url,];
@@ -49,8 +48,7 @@ class BusinessService
 
     public function show(int $id)
     {
-        $business = Business::with(['user', 'categories', 'menuItems', 'reviews.user', 'hours', 'socialLinks'])->findOrFail($id);
-
+        $business = Business::with(['user', 'menuItems', 'reviews.user', 'hours', 'socialLinks',])->findOrFail($id);
         $status = $this->statusService->resolve($business);
         $rating = round($business->reviews->avg('rating') ?? 0, 1);
         $totalReviews = $business->reviews->count();
@@ -104,7 +102,7 @@ class BusinessService
                     'avatar' => $business->user->avatar,
                 ],
 
-                'categories' => $business->categories->pluck('name')->values(),
+                'categories' => $business->categories ?? [],
 
                 'menu' => $business->menuItems
                     ->map(function ($item) {
@@ -122,7 +120,6 @@ class BusinessService
                         'rating' => $review->rating,
                         'comment' => $review->comment,
                         'created_at' => $review->created_at,
-
                         'user' => [
                             'id' => $review->user->id,
                             'name' => $review->user->name,
@@ -162,9 +159,7 @@ class BusinessService
 
     public function my(User $user)
     {
-        $businesses = $user->business()
-            ->with(['categories', 'menuItems', 'reviews', 'hours', 'socialLinks'])
-            ->get();
+        $businesses = $user->business()->with(['menuItems', 'reviews', 'hours', 'socialLinks',])->get();
 
         return ApiResponse::success(
             'Businesses retrieved',
@@ -179,7 +174,7 @@ class BusinessService
                         'business_type' => $business->business_type,
                         'logo' => $business->logo,
                         'image' => $business->menuItems->first()?->image ?? $business->logo,
-                        'categories' => $business->categories->pluck('name')->values(),
+                        'categories' => $business->categories ?? [],
                         'rating' => $rating,
                         'reviews_count' => $business->reviews->count(),
                         'distance' => 0,
@@ -216,17 +211,8 @@ class BusinessService
                 'longitude' => $data['longitude'] ?? null,
                 'schedule_enabled' => $data['schedule_enabled'],
                 'manual_override' => 'none',
+                'categories' => array_values($data['categories']),
             ]);
-
-            /*
-            |--------------------------------------------------------------------------
-            | Categories
-            |--------------------------------------------------------------------------
-            */
-            if (!empty($data['categories'])) {
-                $ids = Category::whereIn('name', $data['categories'])->pluck('id');
-                $business->categories()->sync($ids);
-            }
 
             /*
             |--------------------------------------------------------------------------
@@ -237,7 +223,7 @@ class BusinessService
                 foreach ($data['social_links'] as $link) {
                     $business->socialLinks()->create([
                         'type' => $link['type'],
-                        'url'  => $link['url'],
+                        'url' => $link['url'],
                     ]);
                 }
             }
@@ -265,11 +251,13 @@ class BusinessService
             $this->syncBusinessHours($business, $data['hours']);
         });
 
-        return ApiResponse::success(
-            'Business created.',
-            $business->load(['categories', 'menuItems', 'socialLinks', 'hours',])
-        );
+        if (!$business instanceof Business) {
+            throw new \LogicException('Business creation failed.');
+        }
+
+        return ApiResponse::success('Business created.', $business->load(['menuItems', 'socialLinks', 'hours',]));
     }
+
 
     public function update(User $user, int $id, array $data)
     {
@@ -284,23 +272,29 @@ class BusinessService
                 'latitude' => $data['latitude'] ?? null,
                 'longitude' => $data['longitude'] ?? null,
                 'schedule_enabled' => $data['schedule_enabled'],
+                'categories' => array_values($data['categories']),
             ]);
 
             if ($data['schedule_enabled']) {
                 $business->update(['manual_override' => 'none',]);
             }
 
-            $ids = Category::whereIn('name', $data['categories'])->pluck('id');
-            $business->categories()->sync($ids);
+            /*
+            |--------------------------------------------------------------------------
+            | Social Links
+            |--------------------------------------------------------------------------
+            */
             $business->socialLinks()->delete();
 
             foreach ($data['social_links'] ?? [] as $link) {
-                $business->socialLinks()->create([
-                    'type' => $link['type'],
-                    'url' => $link['url'],
-                ]);
+                $business->socialLinks()->create(['type' => $link['type'], 'url' => $link['url'],]);
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Menu
+            |--------------------------------------------------------------------------
+            */
             $business->menuItems()->delete();
 
             foreach ($data['menu'] ?? [] as $dish) {
@@ -311,14 +305,17 @@ class BusinessService
                 ]);
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Business Hours
+            |--------------------------------------------------------------------------
+            */
             $this->syncBusinessHours($business, $data['hours']);
         });
 
-        return ApiResponse::success(
-            'Business updated.',
-            $business->load('categories', 'menuItems', 'socialLinks', 'hours')
-        );
+        return ApiResponse::success('Business updated.', $business->load(['menuItems', 'socialLinks', 'hours',]));
     }
+
 
     public function updateStatus(User $user, int $id, array $data)
     {
@@ -367,15 +364,8 @@ class BusinessService
                 return ApiResponse::error('Business cannot be opened after closing time.', null, 422);
             }
 
-            $business->update([
-                'manual_override' => 'open',
-                'manual_override_until' => $open,
-            ]);
-
-            return ApiResponse::success(
-                'Business opened.',
-                ['status' => 'open',]
-            );
+            $business->update(['manual_override' => 'open', 'manual_override_until' => $open,]);
+            return ApiResponse::success('Business opened.', ['status' => 'open',]);
         }
 
         /*
@@ -383,10 +373,7 @@ class BusinessService
         | Cerrar ahora
         |--------------------------------------------------------------------------
         */
-        $business->update([
-            'manual_override' => 'closed',
-            'manual_override_until' => $close,
-        ]);
+        $business->update(['manual_override' => 'closed', 'manual_override_until' => $close,]);
 
         return ApiResponse::success('Business closed.', ['status' => 'closed',]);
     }

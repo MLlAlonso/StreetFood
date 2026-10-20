@@ -17,6 +17,7 @@ class Business extends Model
         'business_name',
         'logo',
         'description',
+        'categories',
         'latitude',
         'longitude',
         'schedule_enabled',
@@ -26,6 +27,7 @@ class Business extends Model
 
     protected $casts = [
         'schedule_enabled' => 'boolean',
+        'categories' => 'array',
         'manual_override_until' => 'datetime',
     ];
 
