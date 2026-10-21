@@ -1,6 +1,7 @@
 import { View, ScrollView, StyleSheet, Text, ActivityIndicator, } from "react-native";
 
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
+import { useLocalSearchParams } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import BottomTabs from "@/components/layout/BottomTabs";
 import SearchBar from "@/components/search/SearchBar";
@@ -13,49 +14,49 @@ import { useResponsive } from "@/hooks/useResponsive";
 import { Business } from "@/modules/customer/types/Business";
 import { getBusinesses } from "@/modules/customer/services/business.service";
 import { useTranslation } from "@/translations/hooks/useTranslation";
+import { rankTrendingBusinesses } from "@/modules/explore/utils/trendingBusinesses";
 
 interface Props { mode: "nearby" | "trending"; }
-import { useLocalSearchParams, } from "expo-router";
 
-export default function BusinessListScreen({ mode, }: Props) {
+export default function BusinessListScreen({ mode }: Props) {
     const params = useLocalSearchParams();
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
-    const [businesses, setBusinesses,] = useState<Business[]>([]);
-    const [loading, setLoading,] = useState(true);
+    const [businesses, setBusinesses] = useState<Business[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const [selectedCategory, setSelectedCategory,] =
-        useState(typeof params.category === "string" ? params.category : "");
-    const { isTablet, isDesktop, } = useResponsive();
+    const [selectedCategory, setSelectedCategory] = useState(
+        typeof params.category === "string" ? params.category : ""
+    );
 
-    useEffect(() => {
-        loadBusinesses();
-    }, []);
+    const { isTablet, isDesktop } = useResponsive();
+
+    useEffect(() => { void loadBusinesses(); }, []);
 
     const loadBusinesses = async () => {
         try {
+            setLoading(true);
             const data = await getBusinesses();
             setBusinesses(data);
         } catch (error) {
-            console.log(error);
+            console.error("Error loading businesses:", error);
         } finally {
             setLoading(false);
         }
     };
 
-    const filteredBusinesses = businesses.filter(
-        business => {
-            const matchSearch = business.business_name
-                .toLowerCase()
-                .includes(search.toLowerCase());
+    const matchesFilters = (business: Business) => {
+        const matchSearch = business.business_name.toLowerCase().includes(search.trim().toLowerCase());
+        const matchCategory = !selectedCategory || business.categories.includes(selectedCategory);
+        return matchSearch && matchCategory;
+    };
 
-            const matchCategory = !selectedCategory || business.categories.includes(selectedCategory);
+    // Nearby conserva el orden recibido del servicio.
+    const filteredBusinesses = businesses.filter(matchesFilters);
 
-            return (
-                matchSearch && matchCategory
-            );
-        }
-    );
+    // Trending aplica el ranking y después los filtros.
+    const trendingBusinesses = rankTrendingBusinesses(businesses).filter(matchesFilters).slice(0, 20);
+    const hasBusinesses = mode === "trending" ? trendingBusinesses.length > 0 : filteredBusinesses.length > 0;
 
     return (
         <View style={styles.container}>
@@ -65,72 +66,48 @@ export default function BusinessListScreen({ mode, }: Props) {
                 <SearchBar value={search} onChangeText={setSearch} />
 
                 <CategoryScroller selected={selectedCategory} onSelect={setSelectedCategory} />
-                {
-                    loading && (
-                        <ActivityIndicator size="large" color={colors.primary} />
-                    )
-                }
 
-                {
-                    !loading && filteredBusinesses.length > 0 && mode === "nearby" && (
-                        <>
-                            <Text style={styles.sectionTitle} >
-                                {t("openNearby")}
-                            </Text>
+                {loading && (
+                    <ActivityIndicator size="large" color={colors.primary} />
+                )}
 
-                            <View style={styles.largeGrid} >
-                                {
-                                    filteredBusinesses.map(
-                                        business => (
-                                            <View
-                                                key={business.id}
-                                                style={[
-                                                    styles.largeWrapper,
-                                                    isTablet && styles.largeWrapperTablet,
-                                                    isDesktop && styles.largeWrapperDesktop,
-                                                ]}
-                                            >
+                {!loading && hasBusinesses && mode === "nearby" && (
+                    <>
+                        <Text style={styles.sectionTitle}>
+                            {t("openNearby")}
+                        </Text>
 
-                                                <BusinessCardLarge business={business} />
-                                            </View>
-                                        )
-                                    )
-                                }
-                            </View>
-                        </>
-                    )
-                }
+                        <View style={styles.largeGrid}>
+                            {filteredBusinesses.map((business) => (
+                                <View key={business.id} style={[styles.largeWrapper, isTablet && styles.largeWrapperTablet, isDesktop && styles.largeWrapperDesktop,]} >
+                                    <BusinessCardLarge business={business} />
+                                </View>
+                            ))}
+                        </View>
+                    </>
+                )}
 
-                {
-                    !loading && filteredBusinesses.length > 0 && mode === "trending" && (
-                        <>
-                            <Text style={styles.sectionTitle} >
-                                {t("trending")}
-                            </Text>
+                {!loading && hasBusinesses && mode === "trending" && (
+                    <>
+                        <Text style={styles.sectionTitle}>
+                            {t("trending")}
+                        </Text>
 
-                            <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
-                                {
-                                    filteredBusinesses.map(
-                                        business => (
-                                            <View
-                                                key={business.id}
-                                                style={[
-                                                    styles.smallWrapper,
-                                                    isTablet && styles.smallWrapperTablet,
-                                                    isDesktop && styles.smallWrapperDesktop,
-                                                ]}
-                                            >
+                        <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]}  >
+                            {trendingBusinesses.map((business) => (
+                                <View key={business.id} style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]} >
+                                    <BusinessCardSmall business={business} />
+                                </View>
+                            ))}
+                        </View>
+                    </>
+                )}
 
-                                                <BusinessCardSmall
-                                                    business={business} />
-                                            </View>
-                                        )
-                                    )
-                                }
-                            </View>
-                        </>
-                    )
-                }
+                {!loading && !hasBusinesses && (
+                    <Text style={styles.emptyText}>
+                        {t("noBusinessesYet")}
+                    </Text>
+                )}
             </ScrollView>
 
             <BottomTabs />
@@ -154,6 +131,13 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         color: colors.primary,
+    },
+
+    emptyText: {
+        fontSize: 15,
+        color: colors.textMuted,
+        textAlign: "center",
+        paddingVertical: 24,
     },
 
     /* LARGE */

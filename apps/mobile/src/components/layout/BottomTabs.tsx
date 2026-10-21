@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image, Text, StyleSheet, useWindowDimensions, } from "react-native";
+import { View, TouchableOpacity, Image, Text, StyleSheet, } from "react-native";
 
 import { useRouter, usePathname } from "expo-router";
 import { useEffect, useState } from "react";
@@ -29,7 +29,6 @@ export default function BottomTabs() {
             icon: require("@/assets/icons/home.png"),
             requiresAuth: false,
         },
-
         {
             label: t("map"),
             route: "/(tabs)/map",
@@ -37,7 +36,6 @@ export default function BottomTabs() {
             icon: require("@/assets/icons/map.png"),
             requiresAuth: false,
         },
-
         {
             label: t("favorites"),
             route: "/(tabs)/favorites",
@@ -45,7 +43,6 @@ export default function BottomTabs() {
             icon: require("@/assets/icons/favorite.png"),
             requiresAuth: true,
         },
-
         {
             label: t("myAccount"),
             route: "/(tabs)/profile",
@@ -70,9 +67,19 @@ export default function BottomTabs() {
         }
     };
 
+    const handleCreateAccount = () => {
+        setShowLoginModal(false);
+        router.push("/register");
+    };
+
+    const handleLogin = () => {
+        setShowLoginModal(false);
+        router.push("/login");
+    };
+
     return (
         <>
-            <View style={[styles.container, isDesktop && styles.desktopContainer,]} >
+            <View style={[styles.container, isDesktop && styles.desktopContainer,]}  >
                 {tabs.map((tab, index) => {
                     const active = pathname === tab.path;
 
@@ -80,18 +87,12 @@ export default function BottomTabs() {
                         <TouchableOpacity
                             key={tab.route}
                             activeOpacity={0.9}
-                            style={[
-                                styles.tab,
-                                index === tabs.length - 1 && {
-                                    borderRightWidth: 0,
-                                },
-                                active && styles.activeTab,
-                            ]}
+                            style={[styles.tab, index === tabs.length - 1 && { borderRightWidth: 0, }, active && styles.activeTab,]}
                             onPress={() => handlePress(tab)}
                         >
                             <Image source={tab.icon} style={styles.icon} />
 
-                            <Text style={[styles.label, active && styles.activeLabel,]} >
+                            <Text style={[styles.label, active && styles.activeLabel,]}  >
                                 {tab.label}
                             </Text>
                         </TouchableOpacity>
@@ -102,7 +103,8 @@ export default function BottomTabs() {
             <LoginRequiredModal
                 visible={showLoginModal}
                 onCancel={() => setShowLoginModal(false)}
-                onAccept={() => { setShowLoginModal(false); router.push("/register"); }}
+                onAccept={handleCreateAccount}
+                onLogin={handleLogin}
             />
         </>
     );

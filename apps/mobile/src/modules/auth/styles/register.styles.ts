@@ -135,7 +135,7 @@ export const styles = StyleSheet.create({
 
     primaryButtonText: {
         color: "#FFF",
-        fontSize: typography.size.xl,
+        fontSize: typography.size.lg,
         fontFamily: typography.fontFamily.title,
         fontWeight: typography.weight.bold as any,
     },
@@ -280,5 +280,35 @@ export const styles = StyleSheet.create({
 
     desktopTextCenter: {
         textAlign: "center",
+    },
+
+    formActions: {
+        flexDirection: "row",
+        gap: 12,
+        marginTop: 40,
+        alignItems: "center",
+    },
+
+    cancelButton: {
+        flex: 1,
+        height: 58,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: colors.border,
+        backgroundColor: "#FFF",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    cancelButtonText: {
+        color: colors.title,
+        fontSize: typography.size.lg,
+        fontFamily: typography.fontFamily.title,
+        fontWeight: typography.weight.bold as any,
+    },
+
+    saveButton: {
+        flex: 1,
+        marginTop: 0,
     },
 });

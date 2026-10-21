@@ -21,8 +21,8 @@ export const createStyles = (
       maxWidth: isDesktop
         ? 600
         : isTablet
-        ? 500
-        : undefined,
+          ? 500
+          : undefined,
 
       alignSelf: "center",
       padding: spacing.lg,
@@ -67,5 +67,43 @@ export const createStyles = (
       color: "#FFF",
       fontSize: 18,
       fontWeight: "700",
+    },
+
+    backButton: {
+      alignSelf: "flex-start",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+      marginHorizontal: 20,
+      marginTop: 20,
+      marginBottom: 8,
+      paddingVertical: 10,
+      paddingLeft: 10,
+      paddingRight: 18,
+      backgroundColor: "#09233E",
+      borderWidth: 1,
+      borderColor: "#E0E6EA",
+      borderRadius: 30,
+      shadowColor: "#09233E",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 5,
+      elevation: 2,
+    },
+
+    backButtonIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      backgroundColor: "#09233E",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    backButtonText: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: "#ffff",
+      letterSpacing: 0.2,
     },
   });

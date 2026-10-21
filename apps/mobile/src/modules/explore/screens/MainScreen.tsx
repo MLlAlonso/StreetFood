@@ -1,6 +1,7 @@
-import { View, ScrollView, StyleSheet, Text, ActivityIndicator, } from "react-native";
+import { View, ScrollView, StyleSheet, Text, ActivityIndicator, TouchableOpacity, } from "react-native";
 
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import SearchBar from "@/components/search/SearchBar";
 import BottomTabs from "@/components/layout/BottomTabs";
@@ -12,43 +13,46 @@ import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
 import { Business } from "@/modules/customer/types/Business";
 import { getBusinesses } from "@/modules/customer/services/business.service";
-import { TouchableOpacity, } from "react-native";
-import { useRouter, } from "expo-router";
-
+import { rankTrendingBusinesses } from "@/modules/explore/utils/trendingBusinesses";
 import { useTranslation } from "@/translations/hooks/useTranslation";
 
 export default function MainScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
-    const [selectedCategory, setSelectedCategory,] = useState("");
-    const [businesses, setBusinesses,] = useState<Business[]>([]);
-    const [loading, setLoading,] = useState(true);
-    const { isTablet, isDesktop, } = useResponsive();
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [businesses, setBusinesses] = useState<Business[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { isTablet, isDesktop } = useResponsive();
 
-    useEffect(() => { loadBusinesses(); }, []);
+    useEffect(() => {
+        void loadBusinesses();
+    }, []);
 
     const loadBusinesses = async () => {
         try {
             const data = await getBusinesses();
             setBusinesses(data);
         } catch (error) {
-            console.log(error);
+            console.error("Error loading businesses:", error);
         } finally {
             setLoading(false);
         }
     };
 
-    const filteredBusinesses = businesses.filter(
-        business => {
-            const matchSearch = business.business_name
-                .toLowerCase()
-                .includes(search.toLowerCase());
+    const matchesFilters = (business: Business) => {
+        const matchSearch = business.business_name.toLowerCase().includes(search.trim().toLowerCase());
+        const matchCategory = !selectedCategory || business.categories.includes(selectedCategory);
+        return matchSearch && matchCategory;
+    };
 
-            const matchCategory = !selectedCategory || business.categories.includes(selectedCategory);
-            return (matchSearch && matchCategory);
-        }
-    );
+    // Negocios cercanos: conserva el comportamiento actual.
+    const filteredBusinesses = businesses.filter(matchesFilters);
+
+    // Trending: ordenar y limitar según el dispositivo.
+    const trendingLimit = isTablet || isDesktop ? 8 : 6;
+
+    const trendingBusinesses = rankTrendingBusinesses(businesses).filter(matchesFilters).slice(0, trendingLimit);
 
     return (
         <View style={styles.container}>
@@ -58,91 +62,65 @@ export default function MainScreen() {
                 <SearchBar value={search} onChangeText={setSearch} />
 
                 <CategoryScroller selected={selectedCategory} onSelect={setSelectedCategory} showMore />
-                {
-                    loading && (
-                        <ActivityIndicator size="large" color={colors.primary} />
-                    )
-                }
 
-                {
-                    !loading && filteredBusinesses.length > 0 && (
-                        <>
-                            <View style={styles.sectionHeader} >
-                                <Text style={styles.sectionTitle} >
-                                    {t("openNearby")}
+                {loading && (
+                    <ActivityIndicator size="large" color={colors.primary} />
+                )}
+
+                {!loading && filteredBusinesses.length > 0 && (
+                    <>
+                        <View style={styles.sectionHeader}>
+                            <Text style={styles.sectionTitle}>
+                                {t("openNearby")}
+                            </Text>
+
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/nearby")} >
+                                <Text style={styles.showMore}>
+                                    {t("showMore")}
                                 </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    onPress={() => router.push("/business/nearby")} >
-                                    <Text style={styles.showMore} >
-                                        {t("showMore")}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.largeGrid}>
+                            {filteredBusinesses.map((business) => (
+                                <View
+                                    key={`large-${business.id}`}
+                                    style={[
+                                        styles.largeWrapper,
+                                        isTablet && styles.largeWrapperTablet,
+                                        isDesktop && styles.largeWrapperDesktop,
+                                    ]}
+                                >
+                                    <BusinessCardLarge business={business} />
+                                </View>
+                            ))}
+                        </View>
+                    </>
+                )}
 
-                            <View style={styles.largeGrid}>
-                                {filteredBusinesses.map(
-                                    business => (
-                                        <View
-                                            key={`large-${business.id}`}
-                                            style={[
-                                                styles.largeWrapper,
-                                                isTablet && styles.largeWrapperTablet,
-                                                isDesktop && styles.largeWrapperDesktop,
-                                            ]}
-                                        >
-                                            <BusinessCardLarge business={business} />
-                                        </View>
-                                    )
-                                )}
-                            </View>
-                        </>
-                    )
-                }
+                {!loading && trendingBusinesses.length > 0 && (
+                    <>
+                        <View style={styles.sectionHeader}>
+                            <Text style={styles.sectionTitle}>
+                                {t("trending")}
+                            </Text>
 
-                {
-                    !loading && filteredBusinesses.length > 0 && (
-                        <>
-                            <View style={styles.sectionHeader} >
-                                <Text style={styles.sectionTitle} >
-                                    {t("trending")}
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/trending")}  >
+                                <Text style={styles.showMore}>
+                                    {t("showMore")}
                                 </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                                <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/trending")} >
-                                    <Text style={styles.showMore} >
-                                        {t("showMore")}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View
-                                style={[
-                                    styles.smallGrid,
-                                    isTablet && styles.smallGridTablet,
-                                    isDesktop && styles.smallGridDesktop,
-                                ]}
-                            >
-                                {
-                                    filteredBusinesses.map(
-                                        business => (
-                                            <View
-                                                key={`small-${business.id}`}
-                                                style={[
-                                                    styles.smallWrapper,
-                                                    isTablet && styles.smallWrapperTablet,
-                                                    isDesktop && styles.smallWrapperDesktop,
-                                                ]}
-                                            >
-                                                <BusinessCardSmall business={business} />
-                                            </View>
-                                        )
-                                    )
-                                }
-                            </View>
-                        </>
-                    )
-                }
+                        <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
+                            {trendingBusinesses.map((business) => (
+                                <View key={`small-${business.id}`} style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]} >
+                                    <BusinessCardSmall business={business} />
+                                </View>
+                            ))}
+                        </View>
+                    </>
+                )}
             </ScrollView>
 
             <BottomTabs />

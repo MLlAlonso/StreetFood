@@ -1,4 +1,3 @@
-
 import { View, ScrollView, Text, Image, ActivityIndicator, TouchableOpacity, } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -204,10 +203,9 @@ export default function ProfileScreen() {
                                     </Text>
 
                                     <View style={styles.optionsList}>
-                                        <ProfileOptionCard title={t("settings")} icon={require("@/assets/icons/Settings.png")} onPress={() => { }} />
-                                        <ProfileOptionCard title={t("help")} icon={require("@/assets/icons/Help.png")} onPress={() => { }} />
-                                        <ProfileOptionCard title={t("privacy")} icon={require("@/assets/icons/Privacy.png")} onPress={() => { }} />
-                                        <ProfileOptionCard title={t("aboutUs")} icon={require("@/assets/icons/foodtruck.png")} onPress={() => { }} />
+                                        <ProfileOptionCard title={t("help")} icon={require("@/assets/icons/Help.png")} onPress={() => router.push("/help")} />
+                                        <ProfileOptionCard title={t("privacy")} icon={require("@/assets/icons/Privacy.png")} onPress={() => router.push("/privacy")} />
+                                        <ProfileOptionCard title={t("aboutUs")} icon={require("@/assets/icons/foodtruck.png")} onPress={() => router.push("/about-us")} />
                                     </View>
 
                                     <View style={styles.logoutContainer}>

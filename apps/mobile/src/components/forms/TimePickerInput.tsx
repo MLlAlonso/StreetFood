@@ -9,7 +9,7 @@ interface Props {
     onChange(value: string): void;
 }
 
-export default function TimePickerInput({ value, placeholder = "08:00", onChange, }: Props) {
+export default function TimePickerInput({ value, placeholder = "--:--", onChange, }: Props) {
     const [text, setText] = useState(value?.substring(0, 5) ?? "");
 
     useEffect(() => {

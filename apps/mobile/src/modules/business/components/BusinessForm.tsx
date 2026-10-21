@@ -12,6 +12,8 @@ import MenuItemCard from "@/components/cards/MenuItemCard";
 import MenuItemModal from "@/modules/auth/components/MenuItemModal";
 import BusinessScheduleSection from "./BusinessScheduleSection";
 import BusinessSocialLinksSection from "./BusinessSocialLinksSection";
+import { useRouter } from "expo-router";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 interface Props {
     loading: boolean;
@@ -27,6 +29,17 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
     const restaurantIcon = require("@/assets/icons/restaurant.png");
     const pencilIcon = require("@/assets/icons/pencil.png");
     const trashIcon = require("@/assets/icons/trash.png");
+    const router = useRouter();
+    const { t } = useTranslation();
+
+    const handleCancel = () => {
+        if (onBack) {
+            onBack();
+            return;
+        }
+
+        router.back();
+    };
 
     return (
         <>
@@ -53,12 +66,7 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
                 <Input
                     value={state.form.business_name}
-                    onChangeText={(text) =>
-                        actions.setForm({
-                            ...state.form,
-                            business_name: text,
-                        })
-                    }
+                    onChangeText={(text) => actions.setForm({ ...state.form, business_name: text, })}
                     placeholder="Business name"
                 />
             </View>
@@ -71,12 +79,7 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 <TextInput
                     multiline
                     value={state.form.description}
-                    onChangeText={(text) =>
-                        actions.setForm({
-                            ...state.form,
-                            description: text,
-                        })
-                    }
+                    onChangeText={(text) => actions.setForm({ ...state.form, description: text, })}
                     placeholder="Describe your business"
                     placeholderTextColor="rgba(38,39,48,0.5)"
                     style={styles.textArea}
@@ -126,10 +129,7 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 onHoursChange={actions.setHours}
             />
 
-            <BusinessSocialLinksSection
-                links={state.socialLinks ?? []}
-                onChange={actions.setSocialLinks}
-            />
+            <BusinessSocialLinksSection links={state.socialLinks ?? []} onChange={actions.setSocialLinks} />
 
             <View style={styles.formGroup}>
                 <Text style={styles.label}>
@@ -179,15 +179,23 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.primaryButton} onPress={onSubmit} >
-                {loading ? (
-                    <ActivityIndicator color="#FFF" />
-                ) : (
-                    <Text style={styles.primaryButtonText}>
-                        {submitLabel}
+            <View style={styles.formActions}>
+                <TouchableOpacity style={styles.cancelButton} onPress={handleCancel} disabled={loading} >
+                    <Text style={styles.cancelButtonText}>
+                        {t("cancel")}
                     </Text>
-                )}
-            </TouchableOpacity>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.primaryButton, styles.saveButton,]} onPress={onSubmit} disabled={loading} >
+                    {loading ? (
+                        <ActivityIndicator color="#FFF" />
+                    ) : (
+                        <Text style={styles.primaryButtonText}>
+                            {submitLabel}
+                        </Text>
+                    )}
+                </TouchableOpacity>
+            </View>
 
             <MenuItemModal
                 visible={state.showMenuModal}
