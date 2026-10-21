@@ -15,7 +15,7 @@
                     <!-- HEADER -->
                     <tr>
                         <td align="center" style=" background:#0A0F23; padding:20px; ">
-                            <img src="https://res.cloudinary.com/dhzmsgmq2/image/upload/v1780535699/logo_llqhcy.png"
+                            <img src="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562050/buska-principal-negativo.svg"
                                 alt="StreetEats" style=" max-width:220px; width:100%; height:auto; ">
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
                             <p style=" margin-top:10px; font-size:14px; color:#262730; ">
                                 Need help? Contact us at
                                 <strong>
-                                    support@example.com
+                                    info@buskapp.co
                                 </strong>
                             </p>
                         </td>

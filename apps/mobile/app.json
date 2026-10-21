@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "scheme": "Buska",
     "userInterfaceStyle": "light",
+    "icon": "./src/assets/logo/icon.png",
     "experiments": {
       "typedRoutes": true
     },
@@ -27,7 +28,8 @@
       "package": "com.mllalonsosteam.Buska"
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./src/assets/logo/icon_web.png"
     },
     "extra": {
       "router": {},

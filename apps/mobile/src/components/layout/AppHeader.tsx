@@ -7,7 +7,7 @@ import { useResponsive } from "@/hooks/useResponsive";
 export default function AppHeader() {
     const router = useRouter();
     const { isDesktop, isTablet,} = useResponsive();
-    const logo = require( "@/assets/logo/logo.png");
+    const logo = require( "@/assets/logo/buska-principal-negativo.svg");
 
     return (
         <View

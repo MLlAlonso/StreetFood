@@ -61,7 +61,7 @@ export default function LoginScreen() {
             <View style={styles.wrapper}>
                 <View style={styles.header}>
                     <View style={styles.headerRow}>
-                        <Image source={require("@/assets/logo/logo.png")} style={styles.logo} />
+                        <Image source={require("@/assets/logo/buska-principal-negativo.svg")} style={styles.logo} />
                         <View style={styles.headerContent}>
                             <Text style={styles.title}>
                                 Welcome Back!

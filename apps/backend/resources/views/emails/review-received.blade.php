@@ -15,15 +15,8 @@
                     <!-- HEADER -->
                     <tr>
                         <td align="center" style=" background:#0A0F23; padding:20px; ">
-                            <img src="https://res.cloudinary.com/dhzmsgmq2/image/upload/v1780535699/logo_llqhcy.png"
+                            <img src="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562050/buska-principal-negativo.svg"
                                 alt="StreetEats" style=" max-width:220px; width:100%; height:auto; ">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td align="center" style=" background:#0A0F23; padding:25px; ">
-                            <img src="https://res.cloudinary.com/dhzmsgmq2/image/upload/v1780535699/logo_llqhcy.png"
-                                style="width:220px;">
                         </td>
                     </tr>
 
@@ -56,8 +49,17 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td style=" background:#F7F7F7; padding:30px; text-align:center; ">
+                    <tr style="display: flex; flex-direction: column;">
+                        <td style=" padding:5px; background:#F7F7F7; text-align:center; ">
+                            <p style=" margin-top:10px; font-size:14px; color:#262730; ">
+                                Need help? Contact us at
+                                <strong>
+                                    info@buskapp.co
+                                </strong>
+                            </p>
+                        </td>
+
+                        <td style=" background:#F7F7F7; padding:5px; text-align:center;padding-bottom: 15px; ">
                             StreetEats © {{ date('Y') }}
                         </td>
                     </tr>

@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
           ]}
         >
           <Image
-            source={require("@/assets/logo/logo.png")}
+            source={require("@/assets/logo/buska-principal-negativo.svg")}
             style={[
               styles.logo,
               isTablet && { width: 320, height: 320, },
@@ -36,18 +36,13 @@ export default function WelcomeScreen() {
             resizeMode="contain"
           />
 
-          <View style={[ isDesktop && { flex: 1, maxWidth: 500, }, ]} >
-            <Text
-              style={[
-                styles.title,
-                isDesktop && { textAlign: "left", fontSize: 42, lineHeight: 56, },
-              ]}
-            >
+          <View style={[isDesktop && { flex: 1, maxWidth: 500, },]} >
+            <Text style={[styles.title, isDesktop && { textAlign: "left", fontSize: 42, lineHeight: 56, },]} >
               Discover the{" "}
               <Text style={styles.highlight}>
-                best street food
+                flavor
               </Text>{" "}
-              near you
+              of your city.
             </Text>
 
             <Text
@@ -62,8 +57,7 @@ export default function WelcomeScreen() {
                 },
               ]}
             >
-              Explore food trucks, taco stands &
-              hidden gems in real time
+              Discover places that match your cravings, explore menus, and find your next go-to spot.
             </Text>
 
             <View
@@ -74,24 +68,24 @@ export default function WelcomeScreen() {
             >
               <Button
                 title="Sign Up"
-                backgroundColor={ colors.tertiary }
-                onPress={() => router.push("/register") }
+                backgroundColor={colors.tertiary}
+                onPress={() => router.push("/register")}
               />
 
               <Button
                 title="Log In"
-                backgroundColor={ colors.text }
+                backgroundColor={colors.text}
                 style={{ marginTop: spacing.md, }}
-                onPress={() => router.push("/login") }
+                onPress={() => router.push("/login")}
               />
 
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={ styles.guestContainer }
-                onPress={() => router.replace("/main") }
+                style={styles.guestContainer}
+                onPress={() => router.replace("/main")}
               >
-                <Text style={ styles.guestText } >
-                  <Text style={ styles.orText } > or{" "} </Text>
+                <Text style={styles.guestText} >
+                  <Text style={styles.orText} > or{" "} </Text>
                   Continue as guest →
                 </Text>
               </TouchableOpacity>
@@ -143,7 +137,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#FFF",
     textAlign: "center",
-    fontSize: typography.size.xl,
+    fontSize: typography.size.xxl,
     fontFamily: typography.fontFamily.title,
     fontWeight: typography.weight.bold as any,
     lineHeight: 42,

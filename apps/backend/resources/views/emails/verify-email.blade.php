@@ -15,7 +15,7 @@
                     <tr>
                         <td align="center" style=" background:#0A0F23; padding:20px; " >
                             <img
-                                src="https://res.cloudinary.com/dhzmsgmq2/image/upload/v1780535699/logo_llqhcy.png"
+                                src="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562050/buska-principal-negativo.svg"
                                 alt="StreetEats"
                                 style=" max-width:220px; width:100%; height:auto; " 
                             >
@@ -47,15 +47,15 @@
 
                     <!-- FOOTER -->
                     <tr>
-                        <td style=" padding:30px; background:#F7F7F7; text-align:center; " >
+                        <td style=" padding:20px; background:#F7F7F7; text-align:center; " >
                             <p style=" margin:0; font-size:14px; color:#262730; line-height:24px; " >
                                 If you did not request this email, you can safely ignore it.
                             </p>
 
-                            <p style=" margin-top:10px; font-size:14px; color:#262730; " >
+                            <p style=" margin-top:5px; font-size:14px; color:#262730; " >
                                 Need help? Contact us at
                                 <strong>
-                                    support@example.com
+                                    info@buskapp.co
                                 </strong>
                             </p>
                         </td>
