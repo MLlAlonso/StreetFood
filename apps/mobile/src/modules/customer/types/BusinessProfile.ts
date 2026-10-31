@@ -10,6 +10,7 @@ export interface BusinessProfile {
     description: string;
     latitude: number | null;
     longitude: number | null;
+    live_location_enabled?: boolean;
     rating: number;
     reviews_count: number;
     reviews: Review[];

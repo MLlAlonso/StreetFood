@@ -1,6 +1,6 @@
 import { View, ScrollView, StyleSheet, Text, ActivityIndicator, TouchableOpacity, } from "react-native";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import SearchBar from "@/components/search/SearchBar";
@@ -8,11 +8,12 @@ import BottomTabs from "@/components/layout/BottomTabs";
 import BusinessCardLarge from "@/components/cards/BusinessCardLarge";
 import BusinessCardSmall from "@/components/cards/BusinessCardSmall";
 import CategoryScroller from "@/components/categories/CategoryScroller";
-
 import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
-import { Business } from "@/modules/customer/types/Business";
-import { getBusinesses } from "@/modules/customer/services/business.service";
+import type { Business } from "@/modules/customer/types/Business";
+import { getCurrentCoordinates } from "@/modules/maps/services/deviceLocation.service";
+import { getNearbyBusinesses } from "@/modules/maps/services/location.service";
+import { mapNearbyBusinesses } from "@/modules/explore/utils/mapNearbyBusinesses";
 import { rankTrendingBusinesses } from "@/modules/explore/utils/trendingBusinesses";
 import { useTranslation } from "@/translations/hooks/useTranslation";
 
@@ -21,24 +22,31 @@ export default function MainScreen() {
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [businesses, setBusinesses] = useState<Business[]>([]);
+    const [nearbyBusinesses, setNearbyBusinesses] = useState<Business[]>([]);
     const [loading, setLoading] = useState(true);
+    const [nearbyError, setNearbyError] = useState<string | null>(null);
     const { isTablet, isDesktop } = useResponsive();
 
-    useEffect(() => {
-        void loadBusinesses();
-    }, []);
+    const loadBusinesses = useCallback(async () => {
+        setLoading(true);
+        setNearbyError(null);
 
-    const loadBusinesses = async () => {
         try {
-            const data = await getBusinesses();
-            setBusinesses(data);
+            const coordinates = await getCurrentCoordinates();
+            const result = await getNearbyBusinesses(coordinates, 60, 12);
+            const mappedBusinesses = mapNearbyBusinesses(result.businesses);
+            setNearbyBusinesses(mappedBusinesses);
         } catch (error) {
-            console.error("Error loading businesses:", error);
+            console.error("Error loading nearby businesses:", error);
+            setNearbyBusinesses([]);
+            const message = error instanceof Error ? error.message : "NEARBY_BUSINESSES_FAILED";
+            setNearbyError(message);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => { void loadBusinesses(); }, [loadBusinesses]);
 
     const matchesFilters = (business: Business) => {
         const matchSearch = business.business_name.toLowerCase().includes(search.trim().toLowerCase());
@@ -46,13 +54,11 @@ export default function MainScreen() {
         return matchSearch && matchCategory;
     };
 
-    // Negocios cercanos: conserva el comportamiento actual.
-    const filteredBusinesses = businesses.filter(matchesFilters);
+    // Cerca de ti: primeros 9 negocios por distancia.
+    const filteredBusinesses = nearbyBusinesses.filter(matchesFilters).slice(0, 9);
 
-    // Trending: ordenar y limitar según el dispositivo.
-    const trendingLimit = isTablet || isDesktop ? 8 : 6;
-
-    const trendingBusinesses = rankTrendingBusinesses(businesses).filter(matchesFilters).slice(0, trendingLimit);
+    // Trending: primero se limita el conjunto a los 12 más cercanos. Después se aplica el ranking original de Trending.
+    const trendingBusinesses = rankTrendingBusinesses(nearbyBusinesses).filter(matchesFilters).slice(0, 12);
 
     return (
         <View style={styles.container}>
@@ -60,14 +66,13 @@ export default function MainScreen() {
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} >
                 <SearchBar value={search} onChangeText={setSearch} />
-
                 <CategoryScroller selected={selectedCategory} onSelect={setSelectedCategory} showMore />
 
                 {loading && (
                     <ActivityIndicator size="large" color={colors.primary} />
                 )}
 
-                {!loading && filteredBusinesses.length > 0 && (
+                {!loading && (
                     <>
                         <View style={styles.sectionHeader}>
                             <Text style={styles.sectionTitle}>
@@ -81,44 +86,53 @@ export default function MainScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={styles.largeGrid}>
-                            {filteredBusinesses.map((business) => (
-                                <View
-                                    key={`large-${business.id}`}
-                                    style={[
-                                        styles.largeWrapper,
-                                        isTablet && styles.largeWrapperTablet,
-                                        isDesktop && styles.largeWrapperDesktop,
-                                    ]}
-                                >
-                                    <BusinessCardLarge business={business} />
-                                </View>
-                            ))}
-                        </View>
-                    </>
-                )}
-
-                {!loading && trendingBusinesses.length > 0 && (
-                    <>
-                        <View style={styles.sectionHeader}>
-                            <Text style={styles.sectionTitle}>
-                                {t("trending")}
+                        {nearbyError ? (
+                            <Text style={styles.infoText}>
+                                {nearbyError === "LOCATION_PERMISSION_DENIED" ? t("nearbyLocationPermissionRequired") : t("nearbyLoadError")}
                             </Text>
+                        ) : filteredBusinesses.length > 0 ? (
+                            <View style={styles.largeGrid}>
+                                {filteredBusinesses.map((business) => (
+                                    <View
+                                        key={`large-${business.id}`}
+                                        style={[styles.largeWrapper, isTablet && styles.largeWrapperTablet, isDesktop && styles.largeWrapperDesktop,]}
+                                    >
+                                        <BusinessCardLarge business={business} />
+                                    </View>
+                                ))}
+                            </View>
+                        ) : (
+                            <Text style={styles.infoText}>
+                                {t("noNearbyBusinesses")}
+                            </Text>
+                        )}
 
-                            <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/trending")}  >
-                                <Text style={styles.showMore}>
-                                    {t("showMore")}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        {!nearbyError && trendingBusinesses.length > 0 && (
+                            <>
+                                <View style={styles.sectionHeader}>
+                                    <Text style={styles.sectionTitle}>
+                                        {t("trending")}
+                                    </Text>
 
-                        <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
-                            {trendingBusinesses.map((business) => (
-                                <View key={`small-${business.id}`} style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]} >
-                                    <BusinessCardSmall business={business} />
+                                    <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/business/trending")} >
+                                        <Text style={styles.showMore}>
+                                            {t("showMore")}
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
-                            ))}
-                        </View>
+
+                                <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
+                                    {trendingBusinesses.map((business) => (
+                                        <View
+                                            key={`small-${business.id}`}
+                                            style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]}
+                                        >
+                                            <BusinessCardSmall business={business} />
+                                        </View>
+                                    ))}
+                                </View>
+                            </>
+                        )}
                     </>
                 )}
             </ScrollView>
@@ -144,6 +158,13 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         color: colors.primary,
+    },
+
+    infoText: {
+        fontSize: 14,
+        color: colors.textMuted,
+        textAlign: "center",
+        paddingVertical: 16,
     },
 
     /* LARGE CARDS */

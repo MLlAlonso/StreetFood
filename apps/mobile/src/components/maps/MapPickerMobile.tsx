@@ -1,141 +1,90 @@
-import React, { useState } from "react";
-import { Modal, View, Text, TouchableOpacity, StyleSheet, } from "react-native";
-import MapView, { Marker, MapPressEvent, } from "react-native-maps";
 
-import { colors } from "@/styles/theme/colors";
-import { useEffect } from "react";
-import * as Location from "expo-location";
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, View } from "react-native";
+
+import MapView, {
+    Marker,
+    MapPressEvent,
+    Region,
+} from "react-native-maps";
+
+import type { MapCoordinates } from "./MapPickerModal";
 
 interface Props {
-    visible: boolean;
-
-    initialLocation?: {
-        latitude: number;
-        longitude: number;
-    };
-
-    onClose: () => void;
-    onSelect: (latitude: number, longitude: number) => void;
+    initialLocation: MapCoordinates;
+    currentLocation: MapCoordinates | null;
+    selectedLocation: MapCoordinates | null;
+    onLocationChange: (location: MapCoordinates) => void;
 }
 
-export default function MapPickerMobile({ visible, initialLocation, onClose, onSelect, }: Props) {
-    const [marker, setMarker] = useState({
-        latitude: 19.4326,
-        longitude: -99.1332,
-    });
+export default function MapPickerMobile({
+    initialLocation,
+    currentLocation,
+    selectedLocation,
+    onLocationChange,
+}: Props) {
+    const mapRef = useRef<MapView>(null);
 
-    useEffect(() => {
-        const loadLocation = async () => {
-            try {
-                const permission = await Location.requestForegroundPermissionsAsync();
-
-                if (permission.status !== "granted") {
-                    return;
-                }
-
-                const current = await Location.getCurrentPositionAsync({});
-
-                setMarker({
-                    latitude: current.coords.latitude,
-                    longitude: current.coords.longitude,
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        if (visible) {
-            loadLocation();
-        }
-    }, [visible]);
-
-    const handlePress = (event: MapPressEvent) => {
-        const coords = event.nativeEvent.coordinate;
-        setMarker(coords);
+    const region: Region = {
+        ...initialLocation,
+        latitudeDelta: 0.012,
+        longitudeDelta: 0.012,
     };
 
-    const handleConfirm = () => {
-        onSelect(marker.latitude, marker.longitude);
-        onClose();
+    useEffect(() => {
+        mapRef.current?.animateToRegion(region, 350);
+    }, [
+        initialLocation.latitude,
+        initialLocation.longitude,
+    ]);
+
+    const handleMapPress = (event: MapPressEvent) => {
+        onLocationChange(event.nativeEvent.coordinate);
     };
 
     return (
-        <Modal visible={visible} animationType="slide" >
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>
-                        Select Location
-                    </Text>
+        <View style={styles.container}>
+            <MapView
+                ref={mapRef}
+                style={StyleSheet.absoluteFill}
+                initialRegion={region}
+                onPress={handleMapPress}
+                showsUserLocation
+                showsMyLocationButton
+                showsCompass
+            >
+                {/* Ubicación GPS del dispositivo */}
+                {currentLocation && (
+                    <Marker
+                        coordinate={currentLocation}
+                        title="Tu ubicación actual"
+                        pinColor="#2878D0"
+                        tracksViewChanges={false}
+                    />
+                )}
 
-                    <TouchableOpacity onPress={onClose} >
-                        <Text style={styles.close} >
-                            ✕
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-                <MapView
-                    style={styles.map}
-                    region={{
-                        latitude: marker.latitude,
-                        longitude: marker.longitude,
-                        latitudeDelta: 0.01,
-                        longitudeDelta: 0.01,
-                    }}
-                    onPress={handlePress}
-                >
-                    <Marker coordinate={marker} />
-                </MapView>
-
-                <TouchableOpacity style={styles.button} onPress={handleConfirm} >
-                    <Text style={styles.buttonText} >
-                        Confirm Location
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </Modal>
+                {/* Ubicación seleccionada del negocio */}
+                {selectedLocation && (
+                    <Marker
+                        coordinate={selectedLocation}
+                        title="Ubicación del negocio"
+                        description="Puedes mover este marcador para cambiar la ubicación."
+                        draggable
+                        pinColor="#009E66"
+                        onDragEnd={(event) =>
+                            onLocationChange(
+                                event.nativeEvent.coordinate
+                            )
+                        }
+                    />
+                )}
+            </MapView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-
-    header: {
-        height: 70,
-        backgroundColor: colors.primary,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 20,
-    },
-
-    title: {
-        color: "#FFF",
-        fontSize: 20,
-        fontWeight: "700",
-    },
-
-    close: {
-        color: "#FFF",
-        fontSize: 28,
-    },
-
-    map: {
-        flex: 1,
-    },
-
-    button: {
-        height: 60,
-        backgroundColor: colors.secondary,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    buttonText: {
-        color: "#FFF",
-        fontSize: 18,
-        fontWeight: "700",
     },
 });

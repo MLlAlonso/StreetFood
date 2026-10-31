@@ -1,6 +1,4 @@
-
 import { StyleSheet } from "react-native";
-
 import { colors } from "@/styles/theme/colors";
 import { spacing } from "@/styles/theme/spacing";
 import { typography } from "@/styles/theme/typography";
@@ -310,5 +308,47 @@ export const styles = StyleSheet.create({
     saveButton: {
         flex: 1,
         marginTop: 0,
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    locationButton: {
+        marginTop: 20,
+        minHeight: 46,
+        paddingHorizontal: 16,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: "#009E66",
+    },
+
+    locationButtonText: {
+        color: "#FFFFFF",
+        fontSize: 14,
+        fontWeight: "700",
+    },
+
+    locationAddress: {
+        marginTop: 8,
+        fontSize: 13,
+        lineHeight: 19,
+        color: "#666666",
     },
 });

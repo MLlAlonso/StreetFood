@@ -7,13 +7,12 @@ use App\Models\User;
 use App\Modules\Shared\Responses\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Modules\Business\Services\BusinessStatusService;
 
 class BusinessService
 {
     public function index()
     {
-        $businesses = Business::with(['menuItems', 'reviews', 'hours', 'socialLinks',])->get();
+        $businesses = Business::with(['menuItems', 'reviews', 'hours', 'socialLinks', 'liveLocation',])->get();
 
         $data = $businesses->map(
             function ($business) {
@@ -27,14 +26,19 @@ class BusinessService
                     'logo' => $business->logo,
                     'image' => $business->menuItems->first()?->image ?? $business->logo,
                     'categories' => $business->categories ?? [],
+
                     'social_links' => $business->socialLinks
                         ->map(function ($link) {
                             return ['type' => $link->type, 'url' => $link->url,];
                         })
                         ->values(),
+
                     'rating' => $rating,
                     'reviews_count' => $business->reviews->count(),
-                    'distance' => 0,
+                    'latitude' => $business->latitude !== null ? (float) $business->latitude : null,
+                    'longitude' => $business->longitude !== null ? (float) $business->longitude : null,
+                    'distance' => null,
+                    'live_location_enabled' => (bool) ($business->liveLocation?->active ?? false),
                     'status' => $status['status'],
                     'status_reason' => $status['reason'],
                     'opens_at' => optional($status['opens_at'])->format('H:i'),
@@ -48,7 +52,7 @@ class BusinessService
 
     public function show(int $id)
     {
-        $business = Business::with(['user', 'menuItems', 'reviews.user', 'hours', 'socialLinks',])->findOrFail($id);
+        $business = Business::with(['user', 'menuItems', 'reviews.user', 'hours', 'socialLinks',  'liveLocation',])->findOrFail($id);
         $status = $this->statusService->resolve($business);
         $rating = round($business->reviews->avg('rating') ?? 0, 1);
         $totalReviews = $business->reviews->count();
@@ -63,11 +67,12 @@ class BusinessService
                 'logo' => $business->logo,
                 'image' => $business->menuItems->first()?->image ?? $business->logo,
                 'description' => $business->description,
-                'latitude' => $business->latitude,
-                'longitude' => $business->longitude,
+                'latitude' => $business->latitude !== null ? (float) $business->latitude : null,
+                'longitude' => $business->longitude !== null  ? (float) $business->longitude : null,
                 'rating' => $rating,
                 'reviews_count' => $totalReviews,
-                'distance' => 0,
+                'distance' => null,
+                'live_location_enabled' => (bool) ($business->liveLocation?->active ?? false),
                 'status' => $status['status'],
                 'status_reason' => $status['reason'],
                 'opens_at' => optional($status['opens_at'])->format('H:i'),
@@ -86,12 +91,8 @@ class BusinessService
                     }),
 
                 'social_links' => $business->socialLinks->map(function ($link) {
-                    return [
-                        'type' => $link->type,
-                        'url' => $link->url,
-                    ];
-                })
-                    ->values(),
+                    return ['type' => $link->type, 'url' => $link->url,];
+                })->values(),
 
                 'owner' => [
                     'id' => $business->user->id,
@@ -114,26 +115,26 @@ class BusinessService
                         ];
                     }),
 
-                'reviews' => $latestReviews->map(function ($review) {
-                    return [
-                        'id' => $review->id,
-                        'rating' => $review->rating,
-                        'comment' => $review->comment,
-                        'created_at' => $review->created_at,
-                        'user' => [
-                            'id' => $review->user->id,
-                            'name' => $review->user->name,
-                            'avatar' => $review->user->avatar,
-                        ],
-                    ];
-                }),
+                'reviews' => $latestReviews
+                    ->map(function ($review) {
+                        return [
+                            'id' => $review->id,
+                            'rating' => $review->rating,
+                            'comment' => $review->comment,
+                            'created_at' => $review->created_at,
+                            'user' => [
+                                'id' => $review->user->id,
+                                'name' => $review->user->name,
+                                'avatar' => $review->user->avatar,
+                            ],
+                        ];
+                    }),
             ]
         );
     }
 
     public function reviews(int $id)
     {
-
         $business = Business::findOrFail($id);
         $reviews = $business->reviews()->with('user')->latest()->paginate(10);
 
@@ -144,7 +145,6 @@ class BusinessService
                     'rating' => $review->rating,
                     'comment' => $review->comment,
                     'created_at' => $review->created_at,
-
                     'user' => [
                         'id' => $review->user->id,
                         'name' => $review->user->name,
@@ -159,7 +159,7 @@ class BusinessService
 
     public function my(User $user)
     {
-        $businesses = $user->business()->with(['menuItems', 'reviews', 'hours', 'socialLinks',])->get();
+        $businesses = $user->business()->with(['menuItems', 'reviews', 'hours', 'socialLinks', 'liveLocation',])->get();
 
         return ApiResponse::success(
             'Businesses retrieved',
@@ -177,16 +177,17 @@ class BusinessService
                         'categories' => $business->categories ?? [],
                         'rating' => $rating,
                         'reviews_count' => $business->reviews->count(),
+                        'latitude' => $business->latitude !== null ? (float) $business->latitude : null,
+                        'longitude' => $business->longitude !== null ? (float) $business->longitude : null,
                         'distance' => 0,
+                        'live_location_enabled' => (bool) ($business->liveLocation?->active ?? false),
                         'status' => $status['status'],
                         'status_reason' => $status['reason'],
                         'opens_at' => optional($status['opens_at'])->format('H:i'),
                         'closes_at' => optional($status['closes_at'])->format('H:i'),
-                        'social_links' => $business->socialLinks
-                            ->map(function ($link) {
-                                return ['type' => $link->type, 'url' => $link->url,];
-                            })
-                            ->values(),
+                        'social_links' => $business->socialLinks->map(function ($link) {
+                            return ['type' => $link->type, 'url' => $link->url,];
+                        })->values(),
                     ];
                 }
             )
@@ -221,10 +222,7 @@ class BusinessService
             */
             if (!empty($data['social_links'])) {
                 foreach ($data['social_links'] as $link) {
-                    $business->socialLinks()->create([
-                        'type' => $link['type'],
-                        'url' => $link['url'],
-                    ]);
+                    $business->socialLinks()->create(['type' => $link['type'], 'url' => $link['url'],]);
                 }
             }
 
@@ -258,7 +256,6 @@ class BusinessService
         return ApiResponse::success('Business created.', $business->load(['menuItems', 'socialLinks', 'hours',]));
     }
 
-
     public function update(User $user, int $id, array $data)
     {
         $business = $user->business()->findOrFail($id);
@@ -285,7 +282,6 @@ class BusinessService
             |--------------------------------------------------------------------------
             */
             $business->socialLinks()->delete();
-
             foreach ($data['social_links'] ?? [] as $link) {
                 $business->socialLinks()->create(['type' => $link['type'], 'url' => $link['url'],]);
             }
@@ -296,7 +292,6 @@ class BusinessService
             |--------------------------------------------------------------------------
             */
             $business->menuItems()->delete();
-
             foreach ($data['menu'] ?? [] as $dish) {
                 $business->menuItems()->create([
                     'name' => $dish['name'],
@@ -313,9 +308,15 @@ class BusinessService
             $this->syncBusinessHours($business, $data['hours']);
         });
 
-        return ApiResponse::success('Business updated.', $business->load(['menuItems', 'socialLinks', 'hours',]));
+        return ApiResponse::success(
+            'Business updated.',
+            $business->load([
+                'menuItems',
+                'socialLinks',
+                'hours',
+            ])
+        );
     }
-
 
     public function updateStatus(User $user, int $id, array $data)
     {
@@ -327,15 +328,8 @@ class BusinessService
         |--------------------------------------------------------------------------
         */
         if (!$business->schedule_enabled) {
-            $business->update([
-                'manual_override' => $data['status'],
-                'manual_override_until' => null,
-            ]);
-
-            return ApiResponse::success(
-                'Business status updated.',
-                ['status' => $data['status'],]
-            );
+            $business->update(['manual_override' => $data['status'], 'manual_override_until' => null,]);
+            return ApiResponse::success('Business status updated.', ['status' => $data['status'],]);
         }
 
         /*
@@ -345,7 +339,6 @@ class BusinessService
         */
         $today = now()->dayOfWeek;
         $hours = $business->hours->firstWhere('day_of_week', $today);
-
         if (!$hours || !$hours->enabled) {
             return ApiResponse::error('Business is closed today.', null, 422);
         }
@@ -374,9 +367,9 @@ class BusinessService
         |--------------------------------------------------------------------------
         */
         $business->update(['manual_override' => 'closed', 'manual_override_until' => $close,]);
-
         return ApiResponse::success('Business closed.', ['status' => 'closed',]);
     }
+
     public function destroy(User $user, int $id)
     {
         $business = $user->business()->findOrFail($id);
@@ -384,7 +377,7 @@ class BusinessService
         return ApiResponse::success('Business deleted.');
     }
 
-    public function __construct(protected BusinessStatusService $statusService,) {}
+    public function __construct(protected BusinessStatusService $statusService) {}
 
     private function syncBusinessHours(Business $business, array $hours): void
     {

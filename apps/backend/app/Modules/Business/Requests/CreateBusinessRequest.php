@@ -19,8 +19,6 @@ class CreateBusinessRequest extends FormRequest
             'business_name' => ['required', 'string', 'max:255',],
             'logo' => ['nullable', 'string',],
             'description' => ['nullable', 'string',],
-            'latitude' => ['nullable', 'numeric',],
-            'longitude' => ['nullable', 'numeric',],
             'categories' => ['required', 'array', 'min:1', 'max:3',],
             'categories.*' => ['required', 'string', 'distinct', Rule::in(config('food_categories')),],
             'menu' => ['nullable', 'array',],
@@ -36,6 +34,8 @@ class CreateBusinessRequest extends FormRequest
             'social_links' => ['nullable', 'array', 'max:3'],
             'social_links.*.type' => ['required_with:social_links', 'in:website,instagram,whatsapp,uber_eats,rappi,didi_food,facebook',],
             'social_links.*.url' => ['required_with:social_links', 'string', 'max:255',],
+            'latitude' => ['required', 'numeric', 'between:-90,90',],
+            'longitude' => ['required', 'numeric', 'between:-180,180',],
         ];
     }
 }

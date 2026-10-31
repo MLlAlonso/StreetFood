@@ -12,8 +12,11 @@ import MenuItemCard from "@/components/cards/MenuItemCard";
 import MenuItemModal from "@/modules/auth/components/MenuItemModal";
 import BusinessScheduleSection from "./BusinessScheduleSection";
 import BusinessSocialLinksSection from "./BusinessSocialLinksSection";
+import MapPickerModal from "@/components/maps/MapPickerModal";
 import { useRouter } from "expo-router";
 import { useTranslation } from "@/translations/hooks/useTranslation";
+import { useEffect, useState } from "react";
+import { reverseGeocodeLocation } from "../services/businessLocation.service";
 
 interface Props {
     loading: boolean;
@@ -31,6 +34,9 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
     const trashIcon = require("@/assets/icons/trash.png");
     const router = useRouter();
     const { t } = useTranslation();
+    const [showLocationPicker, setShowLocationPicker] = useState(false);
+    const [locationAddress, setLocationAddress] = useState<string | null>(null);
+    const [loadingAddress, setLoadingAddress] = useState(false);
 
     const handleCancel = () => {
         if (onBack) {
@@ -41,22 +47,37 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
         router.back();
     };
 
+    const loadLocationAddress = async (latitude: number, longitude: number) => {
+        setLoadingAddress(true);
+
+        try {
+            const address = await reverseGeocodeLocation(latitude, longitude);
+            setLocationAddress(address);
+        } catch (error) {
+            console.warn("Could not retrieve business address:", error);
+            setLocationAddress(null);
+        } finally {
+            setLoadingAddress(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!state.location) {
+            setLocationAddress(null);
+            return;
+        }
+
+        loadLocationAddress(
+            state.location.latitude,
+            state.location.longitude
+        );
+    }, [state.location?.latitude, state.location?.longitude]);
+
     return (
         <>
             <View style={styles.row}>
-                <SelectorCard
-                    icon={foodTruckIcon}
-                    title="Food Truck"
-                    active={state.businessType === "food_truck"}
-                    onPress={() => actions.setBusinessType("food_truck")}
-                />
-
-                <SelectorCard
-                    icon={restaurantIcon}
-                    title="Restaurant"
-                    active={state.businessType === "restaurant"}
-                    onPress={() => actions.setBusinessType("restaurant")}
-                />
+                <SelectorCard icon={foodTruckIcon} title="Food Truck" active={state.businessType === "food_truck"} onPress={() => actions.setBusinessType("food_truck")} />
+                <SelectorCard icon={restaurantIcon} title="Restaurant" active={state.businessType === "restaurant"} onPress={() => actions.setBusinessType("restaurant")} />
             </View>
 
             <View style={styles.formGroup}>
@@ -110,24 +131,40 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
                 )}
             </View>
 
-            <View style={styles.formGroup}>
-                <Text style={styles.label}>
-                    Location
-                </Text>
-
-                <TouchableOpacity style={styles.inputButton} onPress={actions.handleLocation} >
-                    <Text style={styles.inputButtonText}>
-                        {state.location ? "Location selected" : "Select location"}
+            <View>
+                <TouchableOpacity onPress={() => setShowLocationPicker(true)} style={styles.locationButton} >
+                    <Text style={styles.locationButtonText}>
+                        {state.location ? "Change location" : "Select location"}
                     </Text>
                 </TouchableOpacity>
+
+                {loadingAddress ? (
+                    <Text style={styles.locationAddress}>
+                        Getting address...
+                    </Text>
+                ) : locationAddress ? (
+                    <Text style={styles.locationAddress}>
+                        {locationAddress}
+                    </Text>
+                ) : state.location ? (
+                    <Text style={styles.locationAddress}>
+                        Address unavailable. You can still use these coordinates.
+                    </Text>
+                ) : (
+                    <Text style={styles.locationAddress}>
+                        No location selected
+                    </Text>
+                )}
+
+                <MapPickerModal
+                    visible={showLocationPicker}
+                    initialLocation={state.location}
+                    onClose={() => setShowLocationPicker(false)}
+                    onSelect={(location) => { actions.setLocation(location); setShowLocationPicker(false); }}
+                />
             </View>
 
-            <BusinessScheduleSection
-                enabled={state.scheduleEnabled}
-                hours={state.hours}
-                onToggleEnabled={actions.setScheduleEnabled}
-                onHoursChange={actions.setHours}
-            />
+            <BusinessScheduleSection enabled={state.scheduleEnabled} hours={state.hours} onToggleEnabled={actions.setScheduleEnabled} onHoursChange={actions.setHours} />
 
             <BusinessSocialLinksSection links={state.socialLinks ?? []} onChange={actions.setSocialLinks} />
 
@@ -142,12 +179,7 @@ export default function BusinessForm({ loading, state, actions, submitLabel = "S
 
                 <View style={styles.chipsContainer}>
                     {FOOD_CATEGORIES.map((category) => (
-                        <Chip
-                            key={category}
-                            label={category}
-                            selected={state.categories.includes(category)}
-                            onPress={() => actions.toggleCategory(category)}
-                        />
+                        <Chip key={category} label={category} selected={state.categories.includes(category)} onPress={() => actions.toggleCategory(category)} />
                     ))}
                 </View>
             </View>

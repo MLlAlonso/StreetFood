@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+
 import AppHeader from "@/components/layout/AppHeader";
 import AppModal from "@/components/ui/AppModal";
 import BottomTabs from "@/components/layout/BottomTabs";
 import BusinessForm from "../components/BusinessForm";
+
 import { styles } from "@/modules/auth/styles/register.styles";
 import { MenuItem } from "@/modules/auth/types/MenuItem";
-import { pickImage, uploadToCloudinary } from "@/modules/auth/services/cloudinary.service";
-import * as Location from "expo-location";
+import { pickImage, uploadToCloudinary, } from "@/modules/auth/services/cloudinary.service";
 import { useBusiness } from "@/modules/profile/hooks/useBusiness";
 import { DEFAULT_BUSINESS_WEEK } from "../constants/businessWeek";
 import { BusinessSocialLink } from "../types/BusinessSocialLink";
@@ -61,11 +62,10 @@ export default function EditBusinessScreen() {
             setHours(data.hours?.length ? data.hours : DEFAULT_BUSINESS_WEEK);
             setSocialLinks(data.social_links ?? []);
 
-            if (data.latitude && data.longitude) {
-                setLocation({
-                    latitude: data.latitude,
-                    longitude: data.longitude,
-                });
+            if (data.latitude != null && data.longitude != null) {
+                setLocation({ latitude: data.latitude, longitude: data.longitude, });
+            } else {
+                setLocation(null);
             }
 
             setMenuItems(data.menu ?? []);
@@ -79,7 +79,7 @@ export default function EditBusinessScreen() {
 
     function toggleCategory(category: string) {
         if (categories.includes(category)) {
-            setCategories(prev => prev.filter(x => x !== category));
+            setCategories((prev) => prev.filter((x) => x !== category));
             return;
         }
 
@@ -88,7 +88,7 @@ export default function EditBusinessScreen() {
             return;
         }
 
-        setCategories(prev => [...prev, category]);
+        setCategories((prev) => [...prev, category]);
     }
 
     async function handlePickLogo() {
@@ -104,34 +104,12 @@ export default function EditBusinessScreen() {
         }
     }
 
-    async function handleLocation() {
-        const permission = await Location.requestForegroundPermissionsAsync();
-
-        if (permission.status !== "granted") {
-            openModal("Permission denied", "Location permission is required.");
-            return;
-        }
-
-        const current = await Location.getCurrentPositionAsync({});
-
-        setLocation({
-            latitude: current.coords.latitude,
-            longitude: current.coords.longitude,
-        });
-    }
-
     function handleAddDish(item: Omit<MenuItem, "id">) {
-        setMenuItems(prev => [
-            ...prev,
-            {
-                id: Date.now().toString(),
-                ...item,
-            },
-        ]);
+        setMenuItems((prev) => [...prev, { id: Date.now().toString(), ...item, },]);
     }
 
     function handleUpdateDish(updated: MenuItem) {
-        setMenuItems(prev => prev.map(item => item.id === updated.id ? updated : item));
+        setMenuItems((prev) => prev.map((item) => item.id === updated.id ? updated : item));
         setSelectedDish(null);
     }
 
@@ -157,18 +135,10 @@ export default function EditBusinessScreen() {
         }
 
         if (scheduleEnabled) {
-            const incompleteDay = hours.find(
-                (day) =>
-                    day.enabled &&
-                    (!day.open_time?.trim() || !day.close_time?.trim())
-            );
+            const incompleteDay = hours.find((day) => day.enabled && (!day.open_time?.trim() || !day.close_time?.trim()));
 
             if (incompleteDay) {
-                openModal(
-                    t("incompleteBusinessHours"),
-                    t("businessHoursRequired")
-                );
-
+                openModal(t("incompleteBusinessHours"), t("businessHoursRequired"));
                 return;
             }
         }
@@ -187,7 +157,7 @@ export default function EditBusinessScreen() {
                 schedule_enabled: scheduleEnabled,
                 hours,
 
-                menu: menuItems.map(item => ({
+                menu: menuItems.map((item) => ({
                     name: item.name,
                     description: item.description,
                     image: item.image,
@@ -208,7 +178,7 @@ export default function EditBusinessScreen() {
                 hours,
                 social_links: socialLinks,
 
-                menu: menuItems.map(item => ({
+                menu: menuItems.map((item) => ({
                     name: item.name,
                     description: item.description,
                     image: item.image,
@@ -216,15 +186,10 @@ export default function EditBusinessScreen() {
             });
 
             if (router.canGoBack()) {
-                if (router.canGoBack()) {
-                    router.back();
-                } else {
-                    router.replace("/profile");
-                }
+                router.back();
             } else {
                 router.replace("/profile");
             }
-
         } catch (error) {
             console.log(error);
             openModal("Error", "Could not update business.");
@@ -249,14 +214,11 @@ export default function EditBusinessScreen() {
 
     const actions = {
         setBusinessType,
-        setForm: (updatedForm: any) =>
-            setForm(prev => ({
-                ...prev,
-                ...updatedForm,
-            })),
-
+        setForm: (updatedForm: any) => setForm((prev) => ({ ...prev, ...updatedForm, })),
         toggleCategory,
-        handleLocation,
+
+        // La ubicación ahora se establece desde MapPickerModal.
+        setLocation: (selectedLocation: { latitude: number; longitude: number; } | null) => setLocation(selectedLocation),
         handlePickLogo,
         setLogo,
         setShowMenuModal,
@@ -290,12 +252,7 @@ export default function EditBusinessScreen() {
                 />
             </ScrollView>
 
-            <AppModal
-                visible={modalVisible}
-                title={modalTitle}
-                message={modalMessage}
-                onClose={() => setModalVisible(false)}
-            />
+            <AppModal visible={modalVisible} title={modalTitle} message={modalMessage} onClose={() => setModalVisible(false)} />
 
             <BottomTabs />
         </View>

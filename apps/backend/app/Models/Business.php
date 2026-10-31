@@ -23,12 +23,20 @@ class Business extends Model
         'schedule_enabled',
         'manual_override',
         'manual_override_until',
+        'live_location_enabled',
+        'live_latitude',
+        'live_longitude',
+        'live_location_updated_at',
     ];
 
     protected $casts = [
         'schedule_enabled' => 'boolean',
         'categories' => 'array',
         'manual_override_until' => 'datetime',
+        'live_location_enabled' => 'boolean',
+        'live_latitude' => 'float',
+        'live_longitude' => 'float',
+        'live_location_updated_at' => 'datetime',
     ];
 
     public function user()
@@ -65,5 +73,10 @@ class Business extends Model
     public function socialLinks(): HasMany
     {
         return $this->hasMany(BusinessSocialLink::class);
+    }
+
+    public function liveLocation()
+    {
+        return $this->hasOne(BusinessLiveLocation::class);
     }
 }

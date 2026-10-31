@@ -151,5 +151,16 @@ export type TranslationKeys =
     | "aboutUsPlatformWeb"
     | "aboutUsMissionTitle"
     | "aboutUsMissionDescription"
+
+    | "nearbyLocationPermissionRequired"
+    | "nearbyLoadError"
+    | "noNearbyBusinesses"
+    
+    | "locationUnavailable"
+    | "businessLocationUnavailable"
+    | "locationPermissionRequired"
+    | "locationPermissionDescription"
+    | "directionsLoadError"
+    | "loading"
     ;
 ;

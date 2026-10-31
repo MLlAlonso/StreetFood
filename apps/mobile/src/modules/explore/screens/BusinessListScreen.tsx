@@ -1,6 +1,6 @@
 import { View, ScrollView, StyleSheet, Text, ActivityIndicator, } from "react-native";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocalSearchParams } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import BottomTabs from "@/components/layout/BottomTabs";
@@ -8,13 +8,14 @@ import SearchBar from "@/components/search/SearchBar";
 import CategoryScroller from "@/components/categories/CategoryScroller";
 import BusinessCardLarge from "@/components/cards/BusinessCardLarge";
 import BusinessCardSmall from "@/components/cards/BusinessCardSmall";
-
 import { colors } from "@/styles/theme/colors";
 import { useResponsive } from "@/hooks/useResponsive";
-import { Business } from "@/modules/customer/types/Business";
-import { getBusinesses } from "@/modules/customer/services/business.service";
-import { useTranslation } from "@/translations/hooks/useTranslation";
+import type { Business } from "@/modules/customer/types/Business";
+import { getCurrentCoordinates } from "@/modules/maps/services/deviceLocation.service";
+import { getNearbyBusinesses } from "@/modules/maps/services/location.service";
+import { mapNearbyBusinesses } from "@/modules/explore/utils/mapNearbyBusinesses";
 import { rankTrendingBusinesses } from "@/modules/explore/utils/trendingBusinesses";
+import { useTranslation } from "@/translations/hooks/useTranslation";
 
 interface Props { mode: "nearby" | "trending"; }
 
@@ -24,26 +25,34 @@ export default function BusinessListScreen({ mode }: Props) {
     const [search, setSearch] = useState("");
     const [businesses, setBusinesses] = useState<Business[]>([]);
     const [loading, setLoading] = useState(true);
-
-    const [selectedCategory, setSelectedCategory] = useState(
-        typeof params.category === "string" ? params.category : ""
-    );
-
+    const [nearbyError, setNearbyError] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState(typeof params.category === "string" ? params.category : "");
     const { isTablet, isDesktop } = useResponsive();
 
-    useEffect(() => { void loadBusinesses(); }, []);
+    const loadBusinesses = useCallback(async () => {
+        setLoading(true);
+        setNearbyError(null);
+        setBusinesses([]);
 
-    const loadBusinesses = async () => {
         try {
-            setLoading(true);
-            const data = await getBusinesses();
-            setBusinesses(data);
+            const coordinates = await getCurrentCoordinates();
+
+            // Cantidad de candidatos según la sección.
+            const limit = mode === "nearby" ? 21 : 24;
+            const result = await getNearbyBusinesses(coordinates, 60, limit);
+            const mappedBusinesses = mapNearbyBusinesses(result.businesses);
+            setBusinesses(mappedBusinesses);
         } catch (error) {
-            console.error("Error loading businesses:", error);
+            console.error(`Error loading ${mode} businesses:`, error);
+            setBusinesses([]);
+            const message = error instanceof Error ? error.message : "NEARBY_BUSINESSES_FAILED";
+            setNearbyError(message);
         } finally {
             setLoading(false);
         }
-    };
+    }, [mode]);
+
+    useEffect(() => { void loadBusinesses(); }, [loadBusinesses]);
 
     const matchesFilters = (business: Business) => {
         const matchSearch = business.business_name.toLowerCase().includes(search.trim().toLowerCase());
@@ -51,12 +60,12 @@ export default function BusinessListScreen({ mode }: Props) {
         return matchSearch && matchCategory;
     };
 
-    // Nearby conserva el orden recibido del servicio.
-    const filteredBusinesses = businesses.filter(matchesFilters);
+    // Nearby: los 21 negocios más cercanos.
+    const nearbyBusinesses = businesses.filter(matchesFilters).slice(0, 21);
 
-    // Trending aplica el ranking y después los filtros.
-    const trendingBusinesses = rankTrendingBusinesses(businesses).filter(matchesFilters).slice(0, 20);
-    const hasBusinesses = mode === "trending" ? trendingBusinesses.length > 0 : filteredBusinesses.length > 0;
+    // Trending: conserva el ranking original, pero únicamente entre los 24 negocios más cercanos.
+    const trendingBusinesses = rankTrendingBusinesses(businesses).filter(matchesFilters).slice(0, 24);
+    const hasBusinesses = mode === "trending" ? trendingBusinesses.length > 0 : nearbyBusinesses.length > 0;
 
     return (
         <View style={styles.container}>
@@ -71,42 +80,68 @@ export default function BusinessListScreen({ mode }: Props) {
                     <ActivityIndicator size="large" color={colors.primary} />
                 )}
 
-                {!loading && hasBusinesses && mode === "nearby" && (
+                {!loading && (
                     <>
-                        <Text style={styles.sectionTitle}>
-                            {t("openNearby")}
-                        </Text>
+                        {nearbyError ? (
+                            <Text style={styles.emptyText}>
+                                {nearbyError === "LOCATION_PERMISSION_DENIED" ? t("nearbyLocationPermissionRequired") : t("nearbyLoadError")}
+                            </Text>
+                        ) : (
+                            <>
+                                {mode === "nearby" && (
+                                    <>
+                                        <Text style={styles.sectionTitle}>
+                                            {t("openNearby")}
+                                        </Text>
 
-                        <View style={styles.largeGrid}>
-                            {filteredBusinesses.map((business) => (
-                                <View key={business.id} style={[styles.largeWrapper, isTablet && styles.largeWrapperTablet, isDesktop && styles.largeWrapperDesktop,]} >
-                                    <BusinessCardLarge business={business} />
-                                </View>
-                            ))}
-                        </View>
+                                        {hasBusinesses ? (
+                                            <View style={styles.largeGrid}>
+                                                {nearbyBusinesses.map((business) => (
+                                                    <View
+                                                        key={business.id}
+                                                        style={[styles.largeWrapper, isTablet && styles.largeWrapperTablet, isDesktop && styles.largeWrapperDesktop,]}
+                                                    >
+                                                        <BusinessCardLarge
+                                                            business={business}
+                                                        />
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        ) : (
+                                            <Text style={styles.emptyText}>
+                                                {t("noNearbyBusinesses")}
+                                            </Text>
+                                        )}
+                                    </>
+                                )}
+
+                                {mode === "trending" && (
+                                    <>
+                                        <Text style={styles.sectionTitle}>
+                                            {t("trending")}
+                                        </Text>
+
+                                        {hasBusinesses ? (
+                                            <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]} >
+                                                {trendingBusinesses.map((business) => (
+                                                    <View
+                                                        key={business.id}
+                                                        style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]}
+                                                    >
+                                                        <BusinessCardSmall business={business} />
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        ) : (
+                                            <Text style={styles.emptyText}>
+                                                {t("noBusinessesYet")}
+                                            </Text>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        )}
                     </>
-                )}
-
-                {!loading && hasBusinesses && mode === "trending" && (
-                    <>
-                        <Text style={styles.sectionTitle}>
-                            {t("trending")}
-                        </Text>
-
-                        <View style={[styles.smallGrid, isTablet && styles.smallGridTablet, isDesktop && styles.smallGridDesktop,]}  >
-                            {trendingBusinesses.map((business) => (
-                                <View key={business.id} style={[styles.smallWrapper, isTablet && styles.smallWrapperTablet, isDesktop && styles.smallWrapperDesktop,]} >
-                                    <BusinessCardSmall business={business} />
-                                </View>
-                            ))}
-                        </View>
-                    </>
-                )}
-
-                {!loading && !hasBusinesses && (
-                    <Text style={styles.emptyText}>
-                        {t("noBusinessesYet")}
-                    </Text>
                 )}
             </ScrollView>
 
@@ -179,7 +214,7 @@ const styles = StyleSheet.create({
     smallWrapper: {
         width: "50%",
         paddingHorizontal: 6,
-        marginBottom: 12,
+        marginBottom: 10,
     },
 
     smallWrapperTablet: {

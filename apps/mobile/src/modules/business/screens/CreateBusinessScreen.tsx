@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useRouter } from "expo-router";
-import * as Location from "expo-location";
 
+import AppModal from "@/components/ui/AppModal";
+import AppHeader from "@/components/layout/AppHeader";
 import BusinessForm from "../components/BusinessForm";
 import { useBusiness } from "@/modules/profile/hooks/useBusiness";
 import { MenuItem } from "@/modules/auth/types/MenuItem";
-import { pickImage, uploadToCloudinary } from "@/modules/auth/services/cloudinary.service";
+import { pickImage, uploadToCloudinary, } from "@/modules/auth/services/cloudinary.service";
 import { styles } from "@/modules/auth/styles/register.styles";
-import AppHeader from "@/components/layout/AppHeader";
-import AppModal from "@/components/ui/AppModal";
 import { DEFAULT_BUSINESS_WEEK } from "../constants/businessWeek";
 import { BusinessSocialLink } from "../types/BusinessSocialLink";
 import { useTranslation } from "@/translations/hooks/useTranslation";
-
 
 export default function CreateBusinessScreen() {
     const router = useRouter();
@@ -43,7 +41,7 @@ export default function CreateBusinessScreen() {
 
     function toggleCategory(category: string) {
         if (categories.includes(category)) {
-            setCategories(prev => prev.filter(x => x !== category));
+            setCategories((prev) => prev.filter((x) => x !== category));
             return;
         }
 
@@ -52,7 +50,7 @@ export default function CreateBusinessScreen() {
             return;
         }
 
-        setCategories(prev => [...prev, category]);
+        setCategories((prev) => [...prev, category]);
     }
 
     async function handlePickLogo() {
@@ -68,34 +66,12 @@ export default function CreateBusinessScreen() {
         }
     }
 
-    async function handleLocation() {
-        const permission = await Location.requestForegroundPermissionsAsync();
-
-        if (permission.status !== "granted") {
-            openModal("Permission denied", "Location permission is required.");
-            return;
-        }
-
-        const current = await Location.getCurrentPositionAsync({});
-
-        setLocation({
-            latitude: current.coords.latitude,
-            longitude: current.coords.longitude,
-        });
-    }
-
     function handleAddDish(item: Omit<MenuItem, "id">) {
-        setMenuItems(prev => [
-            ...prev,
-            {
-                id: Date.now().toString(),
-                ...item,
-            },
-        ]);
+        setMenuItems((prev) => [...prev, { id: Date.now().toString(), ...item, },]);
     }
 
     function handleUpdateDish(updated: MenuItem) {
-        setMenuItems(prev => prev.map(item => item.id === updated.id ? updated : item));
+        setMenuItems((prev) => prev.map((item) => item.id === updated.id ? updated : item));
         setSelectedDish(null);
     }
 
@@ -121,18 +97,10 @@ export default function CreateBusinessScreen() {
         }
 
         if (scheduleEnabled) {
-            const incompleteDay = hours.find(
-                (day) =>
-                    day.enabled &&
-                    (!day.open_time?.trim() || !day.close_time?.trim())
-            );
+            const incompleteDay = hours.find((day) => day.enabled && (!day.open_time?.trim() || !day.close_time?.trim()));
 
             if (incompleteDay) {
-                openModal(
-                    t("incompleteBusinessHours"),
-                    t("businessHoursRequired")
-                );
-
+                openModal(t("incompleteBusinessHours"), t("businessHoursRequired"));
                 return;
             }
         }
@@ -151,13 +119,13 @@ export default function CreateBusinessScreen() {
                 schedule_enabled: scheduleEnabled,
                 hours,
                 social_links: socialLinks,
-
-                menu: menuItems.map(item => ({
+                menu: menuItems.map((item) => ({
                     name: item.name,
                     description: item.description,
                     image: item.image,
                 })),
             });
+
             router.back();
         } finally {
             setLoading(false);
@@ -180,14 +148,11 @@ export default function CreateBusinessScreen() {
 
     const actions = {
         setBusinessType,
-        setForm: (updatedForm: any) =>
-            setForm(prev => ({
-                ...prev,
-                ...updatedForm,
-            })),
-
+        setForm: (updatedForm: any) => setForm((prev) => ({ ...prev, ...updatedForm, })),
         toggleCategory,
-        handleLocation,
+
+        // La ubicación ahora se establece desde MapPickerModal.
+        setLocation: (selectedLocation: { latitude: number; longitude: number; } | null) => setLocation(selectedLocation),
         handlePickLogo,
         setLogo,
         setShowMenuModal,

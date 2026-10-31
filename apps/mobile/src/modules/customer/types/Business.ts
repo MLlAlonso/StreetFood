@@ -6,7 +6,6 @@ export interface Business {
     image: string;
     categories: string[];
     rating: number;
-    distance: number;
     reviews_count?: number;
     favorites_count?: number;
     menu_items_count?: number;
@@ -14,4 +13,8 @@ export interface Business {
     status_reason: "manual" | "schedule";
     opens_at: string | null;
     closes_at: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    distance?: number | null;
+    live_location_enabled?: boolean;
 }

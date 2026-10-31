@@ -17,4 +17,5 @@ export interface BusinessFormActions {
     setScheduleEnabled(value: boolean): void;
     setHours: React.Dispatch<React.SetStateAction<BusinessHour[]>>;
     setSocialLinks: React.Dispatch<React.SetStateAction<BusinessSocialLink[]>>;
+    setLocation(location: { latitude: number; longitude: number } | null): void;
 }

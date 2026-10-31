@@ -154,7 +154,19 @@ const es: Record<TranslationKeys, string> = {
     aboutUsAvailabilityDescription: "Descubre Buska desde nuestro sitio web y nuestras aplicaciones para Android e iOS. La disponibilidad y las funciones pueden variar según la plataforma.",
     aboutUsPlatformWeb: "Web",
     aboutUsMissionTitle: "Nuestra misión",
-    aboutUsMissionDescription: "Hacer más sencillo descubrir comida local, acercar a los clientes y a los negocios, y ayudar a crecer a las comunidades gastronómicas."
+    aboutUsMissionDescription: "Hacer más sencillo descubrir comida local, acercar a los clientes y a los negocios, y ayudar a crecer a las comunidades gastronómicas.",
+
+    nearbyLocationPermissionRequired: "Necesitamos tu ubicación para mostrar los negocios más cercanos.",
+    nearbyLoadError: "No fue posible cargar los negocios cercanos. Inténtalo nuevamente.",
+    noNearbyBusinesses: "No encontramos negocios cercanos a tu ubicación.",
+    
+    locationUnavailable: "Ubicación no disponible",
+    businessLocationUnavailable: "Este negocio todavía no tiene una ubicación registrada.",
+    locationPermissionRequired: "Permiso de ubicación requerido",
+    locationPermissionDescription: "Necesitamos acceder a tu ubicación para mostrarte cómo llegar al negocio.",
+    directionsLoadError: "No fue posible obtener tu ubicación. Inténtalo nuevamente.",
+    loading: "Cargando...",
+
 };
 
 export default es;

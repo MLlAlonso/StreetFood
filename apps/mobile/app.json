@@ -17,7 +17,14 @@
       "@react-native-community/datetimepicker",
       "expo-splash-screen",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Buska necesita tu ubicación para encontrar negocios cercanos y compartir la ubicación de tu negocio cuando lo actives."
+        }
+      ],
+      "react-native-maps"
     ],
     "ios": {
       "supportsTablet": true
@@ -29,7 +36,7 @@
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./src/assets/logo/icon_web.png"
+      "favicon": "./src/assets/logo/icon.png"
     },
     "extra": {
       "router": {},
