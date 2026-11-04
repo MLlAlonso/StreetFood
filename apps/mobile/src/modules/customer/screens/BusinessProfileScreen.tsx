@@ -11,15 +11,16 @@ import ReviewCard from "@/components/cards/ReviewCard";
 
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useBusiness } from "@/modules/profile/hooks/useBusiness";
+import { getCurrentCoordinates } from "@/modules/maps/services/deviceLocation.service";
+import { useBusinessLiveTracking } from "@/modules/maps/hooks/useBusinessLiveTracking";
+import { useFavorite } from "../hooks/useFavorite";
 import { useResponsive } from "@/hooks/useResponsive";
 import { BusinessProfile } from "../types/BusinessProfile";
 import { createReview } from "../services/review.service";
 import { getBusiness } from "../services/businessProfile.service";
-import { useFavorite } from "../hooks/useFavorite";
-import { getCurrentCoordinates } from "@/modules/maps/services/deviceLocation.service";
-import { styles } from "../styles/businessProfile.styles";
 import { useTranslation } from "@/translations/hooks/useTranslation";
 import { colors } from "@/styles/theme/colors";
+import { styles } from "../styles/businessProfile.styles";
 
 export default function BusinessProfileScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -64,6 +65,13 @@ export default function BusinessProfileScreen() {
         rappi: { icon: rappiIcon, backgroundColor: "#FF4040", },
         didi_food: { icon: didiFoodIcon, backgroundColor: "#FF6A00", },
     };
+
+    const {
+        active: liveLocationActive,
+        loading: liveLocationLoading,
+        start: startLiveTracking,
+        stop: stopLiveTracking,
+    } = useBusinessLiveTracking(Number(id));
 
     useEffect(() => {
         const listener = animatedRating.addListener(({ value }) => { setDisplayRating(Number(value.toFixed(1))); });
@@ -189,6 +197,39 @@ export default function BusinessProfileScreen() {
         } catch (error: any) {
             console.log(error?.response?.data);
             Alert.alert("Error", error?.response?.data?.message ?? "Unknown error");
+        }
+    };
+
+    const handleToggleLiveLocation = async () => {
+        try {
+            if (liveLocationActive) {
+                await stopLiveTracking();
+                Alert.alert(
+                    "Ubicación en vivo",
+                    "La ubicación de este negocio se ha desactivado."
+                );
+            } else {
+                await startLiveTracking();
+                Alert.alert(
+                    "Ubicación en vivo",
+                    "Este negocio ya está compartiendo la ubicación del dispositivo."
+                );
+            }
+        } catch (error: any) {
+            const messages: Record<string, string> = {
+                LOCATION_PERMISSION_DENIED:
+                    "Necesitas permitir el acceso a la ubicación.",
+                BACKGROUND_LOCATION_PERMISSION_DENIED:
+                    "Necesitas permitir el acceso a la ubicación en segundo plano desde los ajustes del dispositivo.",
+                BACKGROUND_LOCATION_NOT_SUPPORTED_ON_WEB:
+                    "El seguimiento en segundo plano está disponible en la aplicación móvil, no en el navegador.",
+            };
+
+            Alert.alert(
+                "No se pudo actualizar la ubicación",
+                messages[error?.message] ??
+                "Ocurrió un error al configurar el seguimiento."
+            );
         }
     };
 
@@ -424,6 +465,35 @@ export default function BusinessProfileScreen() {
                                     {business.status === "open" ? t("closeTemporarily") : t("openNow")}
                                 </Text>
                             </TouchableOpacity>
+
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                disabled={liveLocationLoading}
+                                onPress={handleToggleLiveLocation}
+                                style={[
+                                    styles.liveLocationButton,
+                                    isDesktop && styles.liveLocationButtonDesktop,
+                                    liveLocationActive && styles.liveLocationButtonActive,
+                                ]}
+                            >
+                                {liveLocationLoading ? (
+                                    <ActivityIndicator color="#FFFFFF" />
+                                ) : (
+                                    <>
+                                        <Image
+                                            source={require("@/assets/icons/location.png")}
+                                            style={styles.liveLocationIcon}
+                                        />
+
+                                        <Text style={styles.liveLocationButtonText}>
+                                            {liveLocationActive
+                                                ? "Desactivar seguimiento en vivo"
+                                                : "Compartir ubicación en vivo"}
+                                        </Text>
+                                    </>
+                                )}
+                            </TouchableOpacity>
+
                         </View>
                     ) : (
                         <Animated.View style={[styles.profileButtonsRow, isDesktop && styles.profileButtonsRowDesktop,]} >

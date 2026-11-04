@@ -21,7 +21,11 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Buska necesita tu ubicación para encontrar negocios cercanos y compartir la ubicación de tu negocio cuando lo actives."
+          "locationWhenInUsePermission": "Buska necesita tu ubicación para encontrar negocios cercanos.",
+          "locationAlwaysAndWhenInUsePermission": "Buska necesita acceso a tu ubicación en segundo plano para compartir la ubicación en vivo de tu negocio mientras esté activa.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
         }
       ],
       "react-native-maps"

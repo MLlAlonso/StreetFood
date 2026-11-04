@@ -580,4 +580,46 @@ export const styles = StyleSheet.create({
         resizeMode: "contain",
     },
 
+
+
+
+
+
+
+
+    liveLocationButton: {
+        marginHorizontal: 20,
+        marginTop: 12,
+        height: 58,
+        borderRadius: 15,
+        backgroundColor: colors.primary,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 15,
+    },
+
+    liveLocationButtonActive: {
+        backgroundColor: "#DC2626",
+    },
+
+    liveLocationIcon: {
+        width: 22,
+        height: 22,
+        resizeMode: "contain",
+        tintColor: "#FFFFFF",
+        marginRight: 10,
+    },
+
+    liveLocationButtonText: {
+        color: "#FFFFFF",
+        fontSize: 16,
+        fontWeight: "700",
+    },
+
+    liveLocationButtonDesktop: {
+        marginHorizontal: 0,
+        width: 280,
+    },
+
 });

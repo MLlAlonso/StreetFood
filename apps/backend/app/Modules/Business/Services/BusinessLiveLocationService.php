@@ -10,26 +10,20 @@ use Illuminate\Support\Facades\DB;
 
 class BusinessLiveLocationService
 {
+
     public function start(User $user, int $id, array $data)
     {
         $business = $user->business()->findOrFail($id);
 
-        $location = DB::transaction(function () use ($user, $business, $data) {
-            $otherBusinessIds = $user->business()->where('id', '!=', $business->id)->select('id');
-
-            BusinessLiveLocation::query()->whereIn('business_id', $otherBusinessIds)
-                ->update(['active' => false, 'latitude' => null, 'longitude' => null, 'updated_at' => null,]);
-
-            return BusinessLiveLocation::updateOrCreate(
-                ['business_id' => $business->id],
-                [
-                    'active' => true,
-                    'latitude' => $data['latitude'],
-                    'longitude' => $data['longitude'],
-                    'updated_at' => now(),
-                ]
-            );
-        });
+        $location = BusinessLiveLocation::updateOrCreate(
+            ['business_id' => $business->id],
+            [
+                'active' => true,
+                'latitude' => $data['latitude'],
+                'longitude' => $data['longitude'],
+                'updated_at' => now(),
+            ]
+        );
 
         return ApiResponse::success('Live location enabled.', $this->formatLocation($location));
     }

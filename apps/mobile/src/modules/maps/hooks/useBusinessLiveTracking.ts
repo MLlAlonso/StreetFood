@@ -1,100 +1,80 @@
-
-import { useCallback, useEffect, useRef, useState } from "react";
-import * as Location from "expo-location";
-
-import { startLiveLocation, stopLiveLocation, updateLiveLocation, } from "../services/location.service";
-import type { Coordinates } from "../types/LiveLocation";
+import { useCallback, useEffect, useState } from "react";
+import { AppState, Platform } from "react-native";
+import { getLiveLocation } from "../services/location.service";
+import { startBusinessLiveTracking, stopBusinessLiveTracking, } from "../services/businessLiveTracking.service";
 
 export function useBusinessLiveTracking(businessId: number) {
-    const subscription = useRef<Location.LocationSubscription | null>(null);
-    const sending = useRef(false);
     const [active, setActive] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const sendCoordinates = useCallback(
-        async (coordinates: Coordinates) => {
-            if (sending.current) return;
-            sending.current = true;
-
-            try {
-                await updateLiveLocation(businessId, coordinates);
-            } catch {
-                setError("LIVE_LOCATION_UPDATE_FAILED");
-            } finally {
-                sending.current = false;
-            }
-        },
-        [businessId]
-    );
-
-    const stop = useCallback(async () => {
-        setLoading(true);
-        setError(null);
+    const refresh = useCallback(async () => {
+        if (!businessId) return;
 
         try {
-            subscription.current?.remove();
-            subscription.current = null;
-            await stopLiveLocation(businessId);
-            setActive(false);
+            const location = await getLiveLocation(businessId);
+            setActive(location.active);
+            setError(null);
         } catch {
-            setError("LIVE_LOCATION_STOP_FAILED");
-        } finally {
-            setLoading(false);
+            setError("LIVE_LOCATION_STATUS_FAILED");
         }
     }, [businessId]);
 
+    useEffect(() => {
+        void refresh();
+
+        const subscription = AppState.addEventListener(
+            "change",
+            (state) => {
+                if (state === "active") {
+                    void refresh();
+                }
+            }
+        );
+
+        return () => subscription.remove();
+    }, [refresh]);
+
     const start = useCallback(async () => {
+        if (Platform.OS === "web") {
+            const message = "BACKGROUND_LOCATION_NOT_SUPPORTED_ON_WEB";
+            setError(message);
+            throw new Error(message);
+        }
+
+        if (loading || active) return;
+
         setLoading(true);
         setError(null);
 
         try {
-            const permission = await Location.requestForegroundPermissionsAsync();
-
-            if (permission.status !== "granted") {
-                throw new Error("LOCATION_PERMISSION_DENIED");
-            }
-
-            const firstPosition = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced, });
-
-            const firstCoordinates: Coordinates = {
-                latitude: firstPosition.coords.latitude,
-                longitude: firstPosition.coords.longitude,
-            };
-
-            await startLiveLocation(businessId, firstCoordinates);
-            subscription.current?.remove();
-            subscription.current = await Location.watchPositionAsync(
-                {
-                    accuracy: Location.Accuracy.Balanced,
-                    timeInterval: 10_000,
-                    distanceInterval: 20,
-                },
-                (position) => {
-                    void sendCoordinates({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    });
-                }
-            );
-
+            await startBusinessLiveTracking(businessId);
             setActive(true);
         } catch (exception) {
             const message = exception instanceof Error ? exception.message : "LIVE_LOCATION_START_FAILED";
             setError(message);
-            subscription.current?.remove();
-            subscription.current = null;
+            throw exception;
         } finally {
             setLoading(false);
         }
-    }, [businessId, sendCoordinates]);
+    }, [businessId, loading, active]);
 
-    useEffect(() => {
-        return () => {
-            subscription.current?.remove();
-            subscription.current = null;
-        };
-    }, []);
+    const stop = useCallback(async () => {
+        if (loading || !active) return;
+        setLoading(true);
+        setError(null);
 
-    return { active, loading, error, start, stop, };
+        try {
+            await stopBusinessLiveTracking(businessId);
+            setActive(false);
+        } catch (exception) {
+            const message = exception instanceof Error ? exception.message : "LIVE_LOCATION_STOP_FAILED";
+            setError(message);
+            throw exception;
+        } finally {
+            setLoading(false);
+        }
+    }, [businessId, loading, active]);
+
+    return { active, loading, error, start, stop, refresh, };
 }

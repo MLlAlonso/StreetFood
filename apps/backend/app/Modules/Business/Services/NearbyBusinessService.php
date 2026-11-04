@@ -4,7 +4,7 @@ namespace App\Modules\Business\Services;
 
 use App\Models\Business;
 use App\Modules\Business\Services\BusinessStatusService;
-use App\Support\ApiResponse;
+use App\Modules\Shared\Responses\ApiResponse;
 
 class NearbyBusinessService
 {
@@ -24,7 +24,6 @@ class NearbyBusinessService
             ->get();
 
         $results = $businesses->map(function ($business) use ($latitude, $longitude) {
-
             $liveLocation = $business->liveLocation;
             $hasValidLiveCoordinates =
                 $liveLocation !== null &&
@@ -40,9 +39,7 @@ class NearbyBusinessService
             $liveLocationIsFresh =
                 $liveLocation !== null &&
                 $liveLocation->updated_at !== null &&
-                $liveLocation->updated_at->greaterThanOrEqualTo(
-                    now()->subMinutes(2)
-                );
+                $liveLocation->updated_at->greaterThanOrEqualTo(now()->subMinutes(2));
 
             $useLiveLocation = $liveLocation !== null && $liveLocation->active && $hasValidLiveCoordinates && $liveLocationIsFresh;
             $businessLatitude = $useLiveLocation ? (float) $liveLocation->latitude : (float) $business->latitude;

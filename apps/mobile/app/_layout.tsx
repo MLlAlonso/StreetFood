@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-
 import { TranslationProvider } from "@/translations/context/TranslationContext";
+import "@/modules/maps/tasks/businessLiveLocation.task";
 
 export default function RootLayout() {
     const [loaded] = useFonts({
@@ -15,11 +15,7 @@ export default function RootLayout() {
 
     return (
         <TranslationProvider>
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                }}
-            />
+            <Stack screenOptions={{ headerShown: false, }} />
         </TranslationProvider>
     );
 }
