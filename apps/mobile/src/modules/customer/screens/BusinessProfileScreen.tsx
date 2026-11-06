@@ -486,9 +486,7 @@ export default function BusinessProfileScreen() {
                                         />
 
                                         <Text style={styles.liveLocationButtonText}>
-                                            {liveLocationActive
-                                                ? "Desactivar seguimiento en vivo"
-                                                : "Compartir ubicación en vivo"}
+                                            {liveLocationActive ? "Desactivar seguimiento" : "Compartir ubicación"}
                                         </Text>
                                     </>
                                 )}

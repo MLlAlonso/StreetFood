@@ -1,6 +1,6 @@
-import { StyleSheet, } from "react-native";
-import { colors, } from "@/styles/theme/colors";
-import { typography, } from "@/styles/theme/typography";
+import { StyleSheet } from "react-native";
+import { colors } from "@/styles/theme/colors";
+import { typography } from "@/styles/theme/typography";
 
 export const styles = StyleSheet.create({
     /* GENERAL */
@@ -14,6 +14,27 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.background,
+    },
+
+    content: {
+        flexGrow: 1,
+    },
+
+    contentDesktop: {
+        alignItems: "center",
+        paddingHorizontal: 20,
+        paddingTop: 25,
+        paddingBottom: 40,
+    },
+
+    mobileWrapper: {
+        width: "100%",
+    },
+
+    desktopWrapper: {
+        width: "100%",
+        maxWidth: 1400,
+        alignSelf: "center",
     },
 
     /* ------------------------- */
@@ -97,10 +118,9 @@ export const styles = StyleSheet.create({
     },
 
     /* ------------------------- */
-    /* BUTTON */
+    /* BUTTONS */
     /* ------------------------- */
     editButton: {
-        marginHorizontal: 20,
         height: 58,
         borderRadius: 15,
         padding: 10,
@@ -138,6 +158,7 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
+        paddingHorizontal: 10,
     },
 
     rateButton: {
@@ -148,6 +169,7 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
+        paddingHorizontal: 10,
     },
 
     directionIcon: {
@@ -161,6 +183,8 @@ export const styles = StyleSheet.create({
         color: "#FFF",
         fontSize: 18,
         fontWeight: typography.weight.bold as any,
+        flexShrink: 1,
+        textAlign: "center",
     },
 
     /* ------------------------- */
@@ -227,37 +251,6 @@ export const styles = StyleSheet.create({
     },
 
     /* ------------------------- */
-    /* DESKTOP */
-    /* ------------------------- */
-    desktopWrapper: {
-        width: "100%",
-        maxWidth: 1200,
-        alignSelf: "center",
-    },
-
-    heroDesktop: {
-        height: 430,
-        borderRadius: 18,
-        overflow: "hidden",
-    },
-
-    businessNameDesktop: {
-        fontSize: 48,
-    },
-
-    statsDesktop: {
-        marginHorizontal: 120,
-    },
-
-    buttonDesktop: {
-        marginHorizontal: 120,
-    },
-
-    sectionDesktop: {
-        marginHorizontal: 120,
-    },
-
-    /* ------------------------- */
     /* ACTION BUTTONS */
     /* ------------------------- */
     actionsContainer: {
@@ -303,13 +296,15 @@ export const styles = StyleSheet.create({
         height: 35,
     },
 
-
-
-
+    /* ------------------------- */
+    /* OWNER ACTIONS */
+    /* ------------------------- */
     ownerActions: {
         flexDirection: "row",
-        gap: 10,
+        alignItems: "stretch",
+        marginHorizontal: 5,
         marginTop: 20,
+        gap: 5,
     },
 
     statusBadge: {
@@ -335,12 +330,18 @@ export const styles = StyleSheet.create({
         fontSize: 12,
     },
 
+    /* ------------------------- */
+    /* STATUS BUTTON */
+    /* ------------------------- */
     statusButton: {
+        flex: 1,
+        minWidth: 0,
+        minHeight: 58,
+        borderRadius: 14,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 14,
-        padding: 10,
-        height: "auto",
     },
 
     openButton: {
@@ -354,9 +355,50 @@ export const styles = StyleSheet.create({
     statusButtonText: {
         color: "#FFF",
         fontWeight: "700",
-        fontSize: 20,
+        fontSize: 15,
+        textAlign: "center",
+        flexShrink: 1,
     },
 
+    /* ------------------------- */
+    /* LIVE LOCATION BUTTON */
+    /* ------------------------- */
+    liveLocationButton: {
+        flex: 1,
+        minWidth: 0,
+        minHeight: 58,
+        borderRadius: 15,
+        backgroundColor: colors.primary,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+    },
+
+    liveLocationButtonActive: {
+        backgroundColor: "#DC2626",
+    },
+
+    liveLocationIcon: {
+        width: 20,
+        height: 20,
+        resizeMode: "contain",
+        tintColor: "#FFFFFF",
+        marginRight: 6,
+    },
+
+    liveLocationButtonText: {
+        color: "#FFFFFF",
+        fontSize: 14,
+        fontWeight: "700",
+        textAlign: "center",
+        flexShrink: 1,
+    },
+
+    /* ------------------------- */
+    /* SCHEDULE */
+    /* ------------------------- */
     scheduleCard: {
         backgroundColor: colors.background,
         borderRadius: 16,
@@ -396,32 +438,9 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
     },
 
-
-    /* DESKTOP LAYOUT */
-
-    content: {
-        flexGrow: 1,
-    },
-
-    contentDesktop: {
-        alignItems: "center",
-        paddingHorizontal: 20,
-        paddingTop: 25,
-        paddingBottom: 40,
-    },
-
-    mobileWrapper: {
-        width: "100%",
-    },
-
-    desktopWrapper: {
-        width: "100%",
-        maxWidth: 1400,
-        alignSelf: "center",
-    },
-
-    /* HERO */
-
+    /* ------------------------- */
+    /* DESKTOP */
+    /* ------------------------- */
     heroDesktop: {
         height: 420,
         borderRadius: 20,
@@ -464,20 +483,14 @@ export const styles = StyleSheet.create({
         paddingVertical: 22,
     },
 
-    /* ACTIONS */
+    /* OWNER ACTIONS */
     ownerActionsDesktop: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
         gap: 16,
         marginTop: 24,
-    },
-
-    profileButtonsRowDesktop: {
-        alignSelf: "flex-start",
-        width: 520,
         marginHorizontal: 0,
-        marginTop: 24,
     },
 
     editButtonDesktop: {
@@ -486,9 +499,24 @@ export const styles = StyleSheet.create({
     },
 
     statusButtonDesktop: {
-        minWidth: 220,
+        maxWidth: 120,
         height: 58,
         paddingHorizontal: 24,
+    },
+
+    liveLocationButtonDesktop: {
+        flex: 0,
+        width: 280,
+        minWidth: 280,
+        marginHorizontal: 0,
+    },
+
+    /* PROFILE BUTTONS */
+    profileButtonsRowDesktop: {
+        alignSelf: "flex-start",
+        width: 520,
+        marginHorizontal: 0,
+        marginTop: 24,
     },
 
     /* DETAILS GRID */
@@ -551,7 +579,6 @@ export const styles = StyleSheet.create({
     },
 
     /* SOCIAL LINKS */
-
     actionsContainerDesktop: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -579,47 +606,4 @@ export const styles = StyleSheet.create({
         height: 26,
         resizeMode: "contain",
     },
-
-
-
-
-
-
-
-
-    liveLocationButton: {
-        marginHorizontal: 20,
-        marginTop: 12,
-        height: 58,
-        borderRadius: 15,
-        backgroundColor: colors.primary,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 15,
-    },
-
-    liveLocationButtonActive: {
-        backgroundColor: "#DC2626",
-    },
-
-    liveLocationIcon: {
-        width: 22,
-        height: 22,
-        resizeMode: "contain",
-        tintColor: "#FFFFFF",
-        marginRight: 10,
-    },
-
-    liveLocationButtonText: {
-        color: "#FFFFFF",
-        fontSize: 16,
-        fontWeight: "700",
-    },
-
-    liveLocationButtonDesktop: {
-        marginHorizontal: 0,
-        width: 280,
-    },
-
 });

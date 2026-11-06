@@ -159,7 +159,7 @@ const es: Record<TranslationKeys, string> = {
     nearbyLocationPermissionRequired: "Necesitamos tu ubicación para mostrar los negocios más cercanos.",
     nearbyLoadError: "No fue posible cargar los negocios cercanos. Inténtalo nuevamente.",
     noNearbyBusinesses: "No encontramos negocios cercanos a tu ubicación.",
-    
+
     locationUnavailable: "Ubicación no disponible",
     businessLocationUnavailable: "Este negocio todavía no tiene una ubicación registrada.",
     locationPermissionRequired: "Permiso de ubicación requerido",
@@ -167,6 +167,14 @@ const es: Record<TranslationKeys, string> = {
     directionsLoadError: "No fue posible obtener tu ubicación. Inténtalo nuevamente.",
     loading: "Cargando...",
 
+    // Mapa de negocios
+    loadingMap: "Preparando mapa...",
+    searchingBusinesses: "Buscando negocios...",
+    businessesOnMap: "Negocios en el mapa",
+    noBusinessesOnMap: "No encontramos negocios en esta zona.",
+    retry: "Intentar nuevamente",
+    closeMapCard: "Cerrar tarjeta del negocio",
+    viewBusinessProfile: "Toca para ver el perfil completo",
 };
 
 export default es;

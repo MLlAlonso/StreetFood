@@ -166,6 +166,15 @@ const en: Record<TranslationKeys, string> = {
     locationPermissionDescription: "We need access to your location to show you how to reach this business.",
     directionsLoadError: "Unable to get your location. Please try again.",
     loading: "Loading...",
+
+    // Business map
+    loadingMap: "Preparing map...",
+    searchingBusinesses: "Searching businesses...",
+    businessesOnMap: "businesses on the map",
+    noBusinessesOnMap: "No businesses found in this area.",
+    retry: "Try again",
+    closeMapCard: "Close business card",
+    viewBusinessProfile: "Tap to view full profile",
 };
 
 export default en;

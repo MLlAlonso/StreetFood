@@ -1,7 +1,6 @@
 import api from "@/services/api/api";
 
 import type { Coordinates, NearbyBusiness, LiveLocationResponse, } from "../types/LiveLocation";
-
 interface ApiResponse<T> { success: boolean; message: string; data: T; }
 
 export interface NearbyResponse {

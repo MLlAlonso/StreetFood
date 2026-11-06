@@ -155,12 +155,21 @@ export type TranslationKeys =
     | "nearbyLocationPermissionRequired"
     | "nearbyLoadError"
     | "noNearbyBusinesses"
-    
+
     | "locationUnavailable"
     | "businessLocationUnavailable"
     | "locationPermissionRequired"
     | "locationPermissionDescription"
     | "directionsLoadError"
     | "loading"
+
+    // Business map
+    | "loadingMap"
+    | "searchingBusinesses"
+    | "businessesOnMap"
+    | "noBusinessesOnMap"
+    | "retry"
+    | "closeMapCard"
+    | "viewBusinessProfile"
     ;
 ;

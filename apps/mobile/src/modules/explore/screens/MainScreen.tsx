@@ -1,7 +1,7 @@
 import { View, ScrollView, StyleSheet, Text, ActivityIndicator, TouchableOpacity, } from "react-native";
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "expo-router";
+import { useState, useCallback } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
 import AppHeader from "@/components/layout/AppHeader";
 import SearchBar from "@/components/search/SearchBar";
 import BottomTabs from "@/components/layout/BottomTabs";
@@ -46,7 +46,11 @@ export default function MainScreen() {
         }
     }, []);
 
-    useEffect(() => { void loadBusinesses(); }, [loadBusinesses]);
+    useFocusEffect(
+        useCallback(() => {
+            void loadBusinesses();
+        }, [loadBusinesses])
+    );
 
     const matchesFilters = (business: Business) => {
         const matchSearch = business.business_name.toLowerCase().includes(search.trim().toLowerCase());

@@ -36,12 +36,6 @@ export function useBusinessLiveTracking(businessId: number) {
     }, [refresh]);
 
     const start = useCallback(async () => {
-        if (Platform.OS === "web") {
-            const message = "BACKGROUND_LOCATION_NOT_SUPPORTED_ON_WEB";
-            setError(message);
-            throw new Error(message);
-        }
-
         if (loading || active) return;
 
         setLoading(true);

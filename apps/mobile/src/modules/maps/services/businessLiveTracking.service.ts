@@ -3,6 +3,7 @@ import * as Location from "expo-location";
 import { startLiveLocation, stopLiveLocation, } from "./location.service";
 import { addActiveTrackingBusiness, getActiveTrackingBusinessIds, removeActiveTrackingBusiness, } from "./businessLiveTracking.storage";
 import { BUSINESS_LIVE_LOCATION_TASK, } from "../tasks/businessLiveLocation.task";
+import { startWebLiveTracking, stopWebLiveTracking,} from "./businessLiveTracking.web";
 
 function ensureNativePlatform() {
     if (Platform.OS === "web") {
@@ -48,43 +49,48 @@ async function ensureLocationTaskStarted() {
 }
 
 export async function startBusinessLiveTracking(businessId: number) {
-    ensureNativePlatform();
+    if (Platform.OS === "web") {
+        await startWebLiveTracking(businessId);
+        return;
+    }
+
     await requestTrackingPermissions();
     const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, });
-    const coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude, };
 
-    // Primero se activa el registro correspondiente en Laravel.
+    const coordinates = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+    };
+
     await startLiveLocation(businessId, coordinates);
 
     try {
-        // Se agrega solamente el negocio solicitado.
         await addActiveTrackingBusiness(businessId);
-
-        // Todos los negocios comparten una sola tarea GPS.
         await ensureLocationTaskStarted();
     } catch (error) {
         await removeActiveTrackingBusiness(businessId);
-
-        // Revertir la activación si no se pudo registrar el seguimiento en el dispositivo.
         await stopLiveLocation(businessId);
         throw error;
     }
 }
 
 export async function stopBusinessLiveTracking(businessId: number) {
-    ensureNativePlatform();
+    if (Platform.OS === "web") {
+        await stopWebLiveTracking(businessId);
+        return;
+    }
 
-    // Desactivar únicamente el negocio solicitado en Laravel.
     await stopLiveLocation(businessId);
     await removeActiveTrackingBusiness(businessId);
     const remainingIds = await getActiveTrackingBusinessIds();
 
-    // La tarea GPS solo se detiene cuando no quedan negocios activos.
     if (remainingIds.length === 0) {
-        const started = await Location.hasStartedLocationUpdatesAsync(BUSINESS_LIVE_LOCATION_TASK);
+        const started = await Location.hasStartedLocationUpdatesAsync( BUSINESS_LIVE_LOCATION_TASK );
 
         if (started) {
-            await Location.stopLocationUpdatesAsync(BUSINESS_LIVE_LOCATION_TASK);
+            await Location.stopLocationUpdatesAsync(
+                BUSINESS_LIVE_LOCATION_TASK
+            );
         }
     }
 }
