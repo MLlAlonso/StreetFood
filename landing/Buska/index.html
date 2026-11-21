@@ -6,25 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buska — Discover something delicious</title>
 
-    <meta name="description" content="Buska helps you discover local food businesses, explore menus, find nearby places, save favorites and share your experience.">
-    <meta name="keywords" content="Buska, local food, food trucks, restaurants, food discovery, local restaurants, food near me">
+    <meta name="description"
+        content="Buska helps you discover local food businesses, explore menus, find nearby places, save favorites and share your experience.">
+    <meta name="keywords"
+        content="Buska, local food, food trucks, restaurants, food discovery, local restaurants, food near me">
     <meta name="author" content="Buska">
     <meta property="og:title" content="Buska — Discover something delicious">
-    <meta property="og:description" content="Discover local food businesses, explore menus, find nearby places and discover your next favorite spot with Buska.">
+    <meta property="og:description"
+        content="Discover local food businesses, explore menus, find nearby places and discover your next favorite spot with Buska.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#0A0F23">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"  rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562047/buska-isotipo-negativo.svg" />
+
+    <link rel="apple-touch-icon"
+        href="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562047/buska-isotipo-negativo.svg" />
 </head>
 
 <body>
     <header class="header">
         <div class="container header__inner">
             <a href="#top" class="logo" aria-label="Buska home">
-                <span class="logo__mark">B</span>
-                <span class="logo__text">Buska</span>
+                <img src="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562047/buska-principal-color.svg"
+                    alt="Buska" class="logo__image" />
             </a>
 
             <nav class="nav" aria-label="Main navigation">
@@ -654,11 +666,13 @@
                 </p>
 
                 <div class="cta__actions">
-                    <a href="#features" class="button button--white" data-i18n="ctaPrimary">
+                    <a href="https://app.buskapp.co/main" target="_blank" class="button button--white"
+                        data-i18n="ctaPrimary">
                         Discover Buska
                     </a>
 
-                    <a href="#businesses" class="button button--light-outline" data-i18n="ctaSecondary">
+                    <a href="https://app.buskapp.co/register" target="_blank" class="button button--light-outline"
+                        data-i18n="ctaSecondary">
                         For businesses
                     </a>
                 </div>
@@ -669,9 +683,9 @@
     <footer class="footer">
         <div class="container footer__top">
             <div class="footer__brand">
-                <a href="#top" class="logo logo--footer">
-                    <span class="logo__mark">B</span>
-                    <span class="logo__text">Buska</span>
+                <a href="#top" class="logo logo--footer" aria-label="Buska home">
+                    <img src="https://res.cloudinary.com/bcyzogrf/image/upload/v1792562047/buska-principal-mono-negativo.svg"
+                        alt="Buska" class="logo__image" />
                 </a>
 
                 <p data-i18n="footerDescription">
@@ -925,11 +939,11 @@
             });
 
             languageButtons.forEach((button) => {
-                button.classList.toggle( "is-active", button.dataset.language === language );
+                button.classList.toggle("is-active", button.dataset.language === language);
             });
 
             document.documentElement.lang = language;
-            localStorage.setItem( "buska-language", language );
+            localStorage.setItem("buska-language", language);
         }
 
         languageButtons.forEach((button) => {
